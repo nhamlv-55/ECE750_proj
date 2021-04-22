@@ -1,0 +1,654 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - src/dthinker.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - dthinker.cpp<span style="font-size: 80%;"> (source / <a href="dthinker.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">237</td>
+            <td class="headerCovTableEntry">463</td>
+            <td class="headerCovTableEntryLo">51.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntryLo">57.1 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            : ** dthinker.cpp</a>
+<a name="3"><span class="lineNum">       3 </span>            : ** Implements the base class for almost anything in a level that might think</a>
+<a name="4"><span class="lineNum">       4 </span>            : **</a>
+<a name="5"><span class="lineNum">       5 </span>            : **---------------------------------------------------------------------------</a>
+<a name="6"><span class="lineNum">       6 </span>            : ** Copyright 1998-2006 Randy Heit</a>
+<a name="7"><span class="lineNum">       7 </span>            : ** All rights reserved.</a>
+<a name="8"><span class="lineNum">       8 </span>            : **</a>
+<a name="9"><span class="lineNum">       9 </span>            : ** Redistribution and use in source and binary forms, with or without</a>
+<a name="10"><span class="lineNum">      10 </span>            : ** modification, are permitted provided that the following conditions</a>
+<a name="11"><span class="lineNum">      11 </span>            : ** are met:</a>
+<a name="12"><span class="lineNum">      12 </span>            : **</a>
+<a name="13"><span class="lineNum">      13 </span>            : ** 1. Redistributions of source code must retain the above copyright</a>
+<a name="14"><span class="lineNum">      14 </span>            : **    notice, this list of conditions and the following disclaimer.</a>
+<a name="15"><span class="lineNum">      15 </span>            : ** 2. Redistributions in binary form must reproduce the above copyright</a>
+<a name="16"><span class="lineNum">      16 </span>            : **    notice, this list of conditions and the following disclaimer in the</a>
+<a name="17"><span class="lineNum">      17 </span>            : **    documentation and/or other materials provided with the distribution.</a>
+<a name="18"><span class="lineNum">      18 </span>            : ** 3. The name of the author may not be used to endorse or promote products</a>
+<a name="19"><span class="lineNum">      19 </span>            : **    derived from this software without specific prior written permission.</a>
+<a name="20"><span class="lineNum">      20 </span>            : **</a>
+<a name="21"><span class="lineNum">      21 </span>            : ** THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR</a>
+<a name="22"><span class="lineNum">      22 </span>            : ** IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES</a>
+<a name="23"><span class="lineNum">      23 </span>            : ** OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</a>
+<a name="24"><span class="lineNum">      24 </span>            : ** IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,</a>
+<a name="25"><span class="lineNum">      25 </span>            : ** INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT</a>
+<a name="26"><span class="lineNum">      26 </span>            : ** NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</a>
+<a name="27"><span class="lineNum">      27 </span>            : ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY</a>
+<a name="28"><span class="lineNum">      28 </span>            : ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</a>
+<a name="29"><span class="lineNum">      29 </span>            : ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF</a>
+<a name="30"><span class="lineNum">      30 </span>            : ** THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</a>
+<a name="31"><span class="lineNum">      31 </span>            : **---------------------------------------------------------------------------</a>
+<a name="32"><span class="lineNum">      32 </span>            : **</a>
+<a name="33"><span class="lineNum">      33 </span>            : */</a>
+<a name="34"><span class="lineNum">      34 </span>            : </a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &quot;dthinker.h&quot;</a>
+<a name="36"><span class="lineNum">      36 </span>            : #include &quot;stats.h&quot;</a>
+<a name="37"><span class="lineNum">      37 </span>            : #include &quot;p_local.h&quot;</a>
+<a name="38"><span class="lineNum">      38 </span>            : #include &quot;statnums.h&quot;</a>
+<a name="39"><span class="lineNum">      39 </span>            : #include &quot;i_system.h&quot;</a>
+<a name="40"><span class="lineNum">      40 </span>            : #include &quot;doomerrors.h&quot;</a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &quot;farchive.h&quot;</a>
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<a name="44"><span class="lineNum">      44 </span>            : static cycle_t ThinkCycles;</a>
+<a name="45"><span class="lineNum">      45 </span>            : extern cycle_t BotSupportCycles;</a>
+<a name="46"><span class="lineNum">      46 </span>            : extern int BotWTG;</a>
+<a name="47"><span class="lineNum">      47 </span>            : </a>
+<a name="48"><span class="lineNum">      48 </span>            : IMPLEMENT_CLASS (DThinker)</a>
+<a name="49"><span class="lineNum">      49 </span>            : </a>
+<a name="50"><span class="lineNum">      50 </span>            : DThinker *NextToThink;</a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span>            : FThinkerList DThinker::Thinkers[MAX_STATNUM+2];</a>
+<a name="53"><span class="lineNum">      53 </span>            : FThinkerList DThinker::FreshThinkers[MAX_STATNUM+1];</a>
+<a name="54"><span class="lineNum">      54 </span>            : bool DThinker::bSerialOverride = false;</a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span>            : void FThinkerList::AddTail(DThinker *thinker)</a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">       1267 : {</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1267 :         assert(thinker-&gt;PrevThinker == NULL &amp;&amp; thinker-&gt;NextThinker == NULL);</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       1267 :         assert(!(thinker-&gt;ObjectFlags &amp; OF_EuthanizeMe));</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       1267 :         if (Sentinel == NULL)</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1267 :         {</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         18 :                 Sentinel = new DThinker(DThinker::NO_LINK);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         18 :                 Sentinel-&gt;ObjectFlags |= OF_Sentinel;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         18 :                 Sentinel-&gt;NextThinker = Sentinel;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         18 :                 Sentinel-&gt;PrevThinker = Sentinel;</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         18 :                 GC::WriteBarrier(Sentinel);</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         18 :         }</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">       1267 :         DThinker *tail = Sentinel-&gt;PrevThinker;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       1267 :         assert(tail-&gt;NextThinker == Sentinel);</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">       1267 :         thinker-&gt;PrevThinker = tail;</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">       1267 :         thinker-&gt;NextThinker = Sentinel;</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">       1267 :         tail-&gt;NextThinker = thinker;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       1267 :         Sentinel-&gt;PrevThinker = thinker;</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       1267 :         GC::WriteBarrier(thinker, tail);</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       1267 :         GC::WriteBarrier(thinker, Sentinel);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">       1267 :         GC::WriteBarrier(tail, thinker);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       1267 :         GC::WriteBarrier(Sentinel, thinker);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">       1267 : }</span></a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span>            : DThinker *FThinkerList::GetHead() const</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">      77396 : {</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">      77396 :         if (Sentinel == NULL || Sentinel-&gt;NextThinker == Sentinel)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">      75850 :         {</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">      75850 :                 return NULL;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">      75850 :         }</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">       1546 :         assert(Sentinel-&gt;NextThinker-&gt;PrevThinker == Sentinel);</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">       1546 :         return Sentinel-&gt;NextThinker;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       1546 : }</span></a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span>            : DThinker *FThinkerList::GetTail() const</a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :         if (Sentinel == NULL || Sentinel-&gt;PrevThinker == Sentinel)</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :                 return NULL;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :         return Sentinel-&gt;PrevThinker;</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="98"><span class="lineNum">      98 </span>            : </a>
+<a name="99"><span class="lineNum">      99 </span>            : bool FThinkerList::IsEmpty() const</a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :         return Sentinel == NULL || Sentinel-&gt;NextThinker == NULL;</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="103"><span class="lineNum">     103 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span>            : void DThinker::SaveList(FArchive &amp;arc, DThinker *node)</a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :         if (node != NULL)</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 while (!(node-&gt;ObjectFlags &amp; OF_Sentinel))</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :                         assert(node-&gt;NextThinker != NULL &amp;&amp; !(node-&gt;NextThinker-&gt;ObjectFlags &amp; OF_EuthanizeMe));</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :                         arc &lt;&lt; node;</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :                         node = node-&gt;NextThinker;</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<a name="117"><span class="lineNum">     117 </span>            : void DThinker::SerializeAll(FArchive &amp;arc, bool hubLoad)</a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :         DThinker *thinker;</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :         BYTE stat;</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :         int statcount;</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :         int i;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 : </span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :         // Save lists of thinkers, but not by storing the first one and letting</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         // the archiver catch the rest. (Which leads to buttloads of recursion</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :         // and makes the file larger.) Instead, we explicitly save each thinker</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :         // in sequence. When restoring an archive, we also have to maintain</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :         // the thinker lists here instead of relying on the archiver to do it</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :         // for us.</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 : </span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         if (arc.IsStoring())</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 for (statcount = i = 0; i &lt;= MAX_STATNUM; i++)</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :                         statcount += (!Thinkers[i].IsEmpty() || !FreshThinkers[i].IsEmpty());</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 arc &lt;&lt; statcount;</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt;= MAX_STATNUM; i++)</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :                         if (!Thinkers[i].IsEmpty() || !FreshThinkers[i].IsEmpty())</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :                                 stat = i;</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :                                 arc &lt;&lt; stat;</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :                                 SaveList(arc, Thinkers[i].GetHead());</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :                                 SaveList(arc, FreshThinkers[i].GetHead());</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :                                 thinker = NULL;</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :                                 arc &lt;&lt; thinker;           // Save a final NULL for this list</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :         else</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 if (hubLoad)</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :                         DestroyMostThinkers();</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 else</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :                         DestroyAllThinkers();</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 : </span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 // Prevent the constructor from inserting thinkers into a list.</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 bSerialOverride = true;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : </span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 try</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :                         arc &lt;&lt; statcount;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 :                         while (statcount &gt; 0)</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :                                 arc &lt;&lt; stat &lt;&lt; thinker;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :                                 while (thinker != NULL)</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :                                 {</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :                                         // This may be a player stored in their ancillary list. Remove</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :                                         // them first before inserting them into the new list.</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :                                         if (thinker-&gt;NextThinker != NULL)</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :                                                 thinker-&gt;Remove();</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :                                         // Thinkers with the OF_JustSpawned flag set go in the FreshThinkers</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :                                         // list. Anything else goes in the regular Thinkers list.</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :                                         if (thinker-&gt;ObjectFlags &amp; OF_EuthanizeMe)</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :                                                 // This thinker was destroyed during the loading process. Do</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :                                                 // not link it in to any list.</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                                         else if (thinker-&gt;ObjectFlags &amp; OF_JustSpawned)</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                                                 FreshThinkers[stat].AddTail(thinker);</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                                         else</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :                                                 Thinkers[stat].AddTail(thinker);</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                                         arc &lt;&lt; thinker;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                                 }</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :                                 statcount--;</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                 catch (class CDoomError &amp;)</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                         bSerialOverride = false;</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :                         DestroyAllThinkers();</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                         throw;</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 bSerialOverride = false;</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<a name="205"><span class="lineNum">     205 </span>            : DThinker::DThinker (int statnum) throw()</a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       1225 : {</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">       1225 :         NextThinker = NULL;</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">       1225 :         PrevThinker = NULL;</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">       1225 :         if (bSerialOverride)</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         { // The serializer will insert us into the right list</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">       1225 : </span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">       1225 :         ObjectFlags |= OF_JustSpawned;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">       1225 :         if ((unsigned)statnum &gt; MAX_STATNUM)</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :                 statnum = MAX_STATNUM;</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">       1225 :         FreshThinkers[statnum].AddTail (this);</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">       1225 : }</span></a>
+<a name="221"><span class="lineNum">     221 </span>            : </a>
+<a name="222"><span class="lineNum">     222 </span>            : DThinker::DThinker(no_link_type foo) throw()</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">         18 : {</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">         18 :         foo;    // Avoid unused argument warnings.</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">         18 : }</span></a>
+<a name="226"><span class="lineNum">     226 </span>            : </a>
+<a name="227"><span class="lineNum">     227 </span>            : DThinker::~DThinker ()</a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">       1243 : {</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">       1243 :         assert(NextThinker == NULL &amp;&amp; PrevThinker == NULL);</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">       1243 : }</span></a>
+<a name="231"><span class="lineNum">     231 </span>            : </a>
+<a name="232"><span class="lineNum">     232 </span>            : void DThinker::Destroy ()</a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">       1243 : {</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">       1243 :         assert((NextThinker != NULL &amp;&amp; PrevThinker != NULL) ||</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">       1243 :                    (NextThinker == NULL &amp;&amp; PrevThinker == NULL));</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">       1243 :         if (NextThinker != NULL)</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">       1243 :         {</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">       1243 :                 Remove();</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">       1243 :         }</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">       1243 :         Super::Destroy();</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">       1243 : }</span></a>
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<a name="243"><span class="lineNum">     243 </span>            : void DThinker::Remove()</a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">       1285 : {</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">       1285 :         if (this == NextToThink)</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          3 :         {</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          3 :                 NextToThink = NextThinker;</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          3 :         }</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">       1285 :         DThinker *prev = PrevThinker;</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       1285 :         DThinker *next = NextThinker;</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">       1285 :         assert(prev != NULL &amp;&amp; next != NULL);</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">       1285 :         assert((ObjectFlags &amp; OF_Sentinel) || (prev != this &amp;&amp; next != this));</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">       1285 :         assert(prev-&gt;NextThinker == this);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">       1285 :         assert(next-&gt;PrevThinker == this);</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">       1285 :         prev-&gt;NextThinker = next;</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">       1285 :         next-&gt;PrevThinker = prev;</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">       1285 :         GC::WriteBarrier(prev, next);</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">       1285 :         GC::WriteBarrier(next, prev);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">       1285 :         NextThinker = NULL;</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">       1285 :         PrevThinker = NULL;</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">       1285 : }</span></a>
+<a name="262"><span class="lineNum">     262 </span>            : </a>
+<a name="263"><span class="lineNum">     263 </span>            : void DThinker::PostBeginPlay ()</a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">          3 : {</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          3 : }</span></a>
+<a name="266"><span class="lineNum">     266 </span>            : </a>
+<a name="267"><span class="lineNum">     267 </span>            : DThinker *DThinker::FirstThinker (int statnum)</a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :         DThinker *node;</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 : </span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :         if ((unsigned)statnum &gt; MAX_STATNUM)</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :                 statnum = MAX_STATNUM;</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         node = Thinkers[statnum].GetHead();</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :         if (node == NULL)</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 node = FreshThinkers[statnum].GetHead();</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 if (node == NULL)</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineNoCov">          0 :                         return NULL;</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         return node;</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<a name="287"><span class="lineNum">     287 </span>            : void DThinker::ChangeStatNum (int statnum)</a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">         14 : {</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">         14 :         FThinkerList *list;</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">         14 : </span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">         14 :         // This thinker should already be in a list; verify that.</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">         14 :         assert(NextThinker != NULL &amp;&amp; PrevThinker != NULL);</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">         14 : </span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">         14 :         if ((unsigned)statnum &gt; MAX_STATNUM)</span></a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 statnum = MAX_STATNUM;</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">         14 :         Remove();</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">         14 :         if ((ObjectFlags &amp; OF_JustSpawned) &amp;&amp; statnum &gt;= STAT_FIRST_THINKING)</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">         14 :         {</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineCov">         14 :                 list = &amp;FreshThinkers[statnum];</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">         14 :         }</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :         else</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :                 list = &amp;Thinkers[statnum];</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">         14 :         list-&gt;AddTail(this);</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">         14 : }</span></a>
+<a name="309"><span class="lineNum">     309 </span>            : </a>
+<a name="310"><span class="lineNum">     310 </span>            : // Mark the first thinker of each list</a>
+<a name="311"><span class="lineNum">     311 </span>            : void DThinker::MarkRoots()</a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          5 : {</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">        645 :         for (int i = 0; i &lt;= MAX_STATNUM; ++i)</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">        640 :         {</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">        640 :                 GC::Mark(Thinkers[i].Sentinel);</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">        640 :                 GC::Mark(FreshThinkers[i].Sentinel);</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        640 :         }</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">          5 :         GC::Mark(Thinkers[MAX_STATNUM+1].Sentinel);</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">          5 : }</span></a>
+<a name="320"><span class="lineNum">     320 </span>            : </a>
+<a name="321"><span class="lineNum">     321 </span>            : // Destroy every thinker</a>
+<a name="322"><span class="lineNum">     322 </span>            : void DThinker::DestroyAllThinkers ()</a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          3 : {</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          3 :         int i;</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          3 : </span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">        387 :         for (i = 0; i &lt;= MAX_STATNUM; i++)</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">        384 :         {</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">        384 :                 if (i != STAT_TRAVELLING)</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">        381 :                 {</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">        381 :                         DestroyThinkersInList (Thinkers[i]);</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineCov">        381 :                         DestroyThinkersInList (FreshThinkers[i]);</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">        381 :                 }</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">        384 :         }</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">          3 :         DestroyThinkersInList (Thinkers[MAX_STATNUM+1]);</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">          3 :         GC::FullGC();</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">          3 : }</span></a>
+<a name="337"><span class="lineNum">     337 </span>            : </a>
+<a name="338"><span class="lineNum">     338 </span>            : // Destroy all thinkers except for player-controlled actors</a>
+<a name="339"><span class="lineNum">     339 </span>            : // Players are simply removed from the list of thinkers and</a>
+<a name="340"><span class="lineNum">     340 </span>            : // will be added back after serialization is complete.</a>
+<a name="341"><span class="lineNum">     341 </span>            : void DThinker::DestroyMostThinkers ()</a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :         int i;</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 : </span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt;= MAX_STATNUM; i++)</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :                 if (i != STAT_TRAVELLING)</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :                         DestroyMostThinkersInList (Thinkers[i], i);</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineNoCov">          0 :                         DestroyMostThinkersInList (FreshThinkers[i], i);</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         GC::FullGC();</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="355"><span class="lineNum">     355 </span>            : </a>
+<a name="356"><span class="lineNum">     356 </span>            : void DThinker::DestroyThinkersInList (FThinkerList &amp;list)</a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">        765 : {</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">        765 :         if (list.Sentinel != NULL)</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">        765 :         {</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         25 :                 for (DThinker *node = list.Sentinel-&gt;NextThinker; node != list.Sentinel; node = list.Sentinel-&gt;NextThinker)</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">          7 :                 {</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">          7 :                         assert(node != NULL);</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          7 :                         node-&gt;Destroy();</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          7 :                 }</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">         18 :                 list.Sentinel-&gt;Destroy();</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">         18 :                 list.Sentinel = NULL;</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">         18 :         }</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">        765 : }</span></a>
+<a name="369"><span class="lineNum">     369 </span>            : </a>
+<a name="370"><span class="lineNum">     370 </span>            : void DThinker::DestroyMostThinkersInList (FThinkerList &amp;list, int stat)</a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :         if (stat != STAT_PLAYER)</span></a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 DestroyThinkersInList (list);</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :         else if (list.Sentinel != NULL)</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :         { // If it's a voodoo doll, destroy it. Otherwise, simply remove</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :           // it from the list. G_FinishTravel() will find it later from</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :           // a players[].mo link and destroy it then, after copying various</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :           // information to a new player.</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :                 for (DThinker *probe = list.Sentinel-&gt;NextThinker; probe != list.Sentinel; probe = list.Sentinel-&gt;NextThinker)</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :                         if (!probe-&gt;IsKindOf(RUNTIME_CLASS(APlayerPawn)) ||          // &lt;- should not happen</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :                                 static_cast&lt;AActor *&gt;(probe)-&gt;player == NULL ||</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 :                                 static_cast&lt;AActor *&gt;(probe)-&gt;player-&gt;mo != probe)</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :                                 probe-&gt;Destroy();</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :                         else</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :                                 probe-&gt;Remove();</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :                                 // Technically, this doesn't need to be in any list now, since</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineNoCov">          0 :                                 // it's only going to be found later and destroyed before ever</span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :                                 // needing to tick again, but by moving it to a separate list,</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :                                 // I can keep my debug assertions that all thinkers are either</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :                                 // euthanizing or in a list.</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 :                                 Thinkers[MAX_STATNUM+1].AddTail(probe);</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<a name="403"><span class="lineNum">     403 </span>            : void DThinker::RunThinkers ()</a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">        190 : {</span></a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineCov">        190 :         int i, count;</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        190 : </span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">        190 :         ThinkCycles.Reset();</span></a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineCov">        190 :         BotSupportCycles.Reset();</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">        190 :         BotWTG = 0;</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">        190 : </span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">        190 :         ThinkCycles.Clock();</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineCov">        190 : </span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineCov">        190 :         // Tick every thinker left from last time</span></a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineCov">      18430 :         for (i = STAT_FIRST_THINKING; i &lt;= MAX_STATNUM; ++i)</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">      18240 :         {</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineCov">      18240 :                 TickThinkers (&amp;Thinkers[i], NULL);</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">      18240 :         }</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">        190 : </span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">        190 :         // Keep ticking the fresh thinkers until there are no new ones.</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">        190 :         do</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">        204 :         {</span></a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineCov">        204 :                 count = 0;</span></a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">      19788 :                 for (i = STAT_FIRST_THINKING; i &lt;= MAX_STATNUM; ++i)</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineCov">      19584 :                 {</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineCov">      19584 :                         count += TickThinkers (&amp;FreshThinkers[i], &amp;Thinkers[i]);</span></a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineCov">      19584 :                 }</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">        204 :         } while (count != 0);</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineCov">        190 : </span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineCov">        190 :         ThinkCycles.Unclock();</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">        190 : }</span></a>
+<a name="431"><span class="lineNum">     431 </span>            : </a>
+<a name="432"><span class="lineNum">     432 </span>            : int DThinker::TickThinkers (FThinkerList *list, FThinkerList *dest)</a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineCov">      37824 : {</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineCov">      37824 :         int count = 0;</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineCov">      37824 :         DThinker *node = list-&gt;GetHead();</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineCov">      37824 : </span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">      37824 :         if (node == NULL)</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineCov">      37824 :         {</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineCov">      37058 :                 return 0;</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">      37058 :         }</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">        766 : </span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">       2218 :         while (node != list-&gt;Sentinel)</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">       1452 :         {</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">       1452 :                 ++count;</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">       1452 :                 NextToThink = node-&gt;NextThinker;</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">       1452 :                 if (node-&gt;ObjectFlags &amp; OF_JustSpawned)</span></a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineCov">         28 :                 {</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">         28 :                         // Leave OF_JustSpawn set until after Tick() so the ticker can check it.</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineCov">         28 :                         if (dest != NULL)</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">         28 :                         { // Move thinker from this list to the destination list</span></a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineCov">         28 :                                 node-&gt;Remove();</span></a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineCov">         28 :                                 dest-&gt;AddTail(node);</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineCov">         28 :                         }</span></a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineCov">         28 :                         node-&gt;PostBeginPlay();</span></a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineCov">         28 :                 }</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineCov">       1424 :                 else if (dest != NULL)</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineCov">       1424 :                 {</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :                         I_Error(&quot;There is a thinker in the fresh list that has already ticked.\n&quot;);</span></a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineCov">       1452 : </span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineCov">       1452 :                 if (!(node-&gt;ObjectFlags &amp; OF_EuthanizeMe))</span></a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineCov">       1452 :                 { // Only tick thinkers not scheduled for destruction</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineCov">       1452 :                         node-&gt;Tick();</span></a>
+<a name="464"><span class="lineNum">     464 </span><span class="lineCov">       1452 :                         node-&gt;ObjectFlags &amp;= ~OF_JustSpawned;</span></a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineCov">       1452 :                         GC::CheckGC();</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">       1452 :                 }</span></a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineCov">       1452 :                 node = NextToThink;</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">       1452 :         }</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">        766 :         return count;</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineCov">        766 : }</span></a>
+<a name="471"><span class="lineNum">     471 </span>            : </a>
+<a name="472"><span class="lineNum">     472 </span>            : void DThinker::Tick ()</a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<a name="476"><span class="lineNum">     476 </span>            : size_t DThinker::PropagateMark()</a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :         assert(NextThinker != NULL &amp;&amp; !(NextThinker-&gt;ObjectFlags &amp; OF_EuthanizeMe));</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :         assert(PrevThinker != NULL &amp;&amp; !(PrevThinker-&gt;ObjectFlags &amp; OF_EuthanizeMe));</span></a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :         GC::Mark(NextThinker);</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :         GC::Mark(PrevThinker);</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :         return Super::PropagateMark();</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="484"><span class="lineNum">     484 </span>            : </a>
+<a name="485"><span class="lineNum">     485 </span>            : FThinkerIterator::FThinkerIterator (const PClass *type, int statnum)</a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">        714 : {</span></a>
+<a name="487"><span class="lineNum">     487 </span><span class="lineCov">        714 :         if ((unsigned)statnum &gt; MAX_STATNUM)</span></a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineCov">        197 :         {</span></a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineCov">        197 :                 m_Stat = STAT_FIRST_THINKING;</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineCov">        197 :                 m_SearchStats = true;</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineCov">        197 :         }</span></a>
+<a name="492"><span class="lineNum">     492 </span><span class="lineCov">        517 :         else</span></a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineCov">        517 :         {</span></a>
+<a name="494"><span class="lineNum">     494 </span><span class="lineCov">        517 :                 m_Stat = statnum;</span></a>
+<a name="495"><span class="lineNum">     495 </span><span class="lineCov">        517 :                 m_SearchStats = false;</span></a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineCov">        517 :         }</span></a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineCov">        714 :         m_ParentType = type;</span></a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineCov">        714 :         m_CurrThinker = DThinker::Thinkers[m_Stat].GetHead();</span></a>
+<a name="499"><span class="lineNum">     499 </span><span class="lineCov">        714 :         m_SearchingFresh = false;</span></a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineCov">        714 : }</span></a>
+<a name="501"><span class="lineNum">     501 </span>            : </a>
+<a name="502"><span class="lineNum">     502 </span>            : FThinkerIterator::FThinkerIterator (const PClass *type, int statnum, DThinker *prev)</a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineNoCov">          0 :         if ((unsigned)statnum &gt; MAX_STATNUM)</span></a>
+<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :                 m_Stat = STAT_FIRST_THINKING;</span></a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :                 m_SearchStats = true;</span></a>
+<a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 :         else</span></a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineNoCov">          0 :                 m_Stat = statnum;</span></a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 :                 m_SearchStats = false;</span></a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :         m_ParentType = type;</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :         if (prev == NULL || (prev-&gt;NextThinker-&gt;ObjectFlags &amp; OF_Sentinel))</span></a>
+<a name="516"><span class="lineNum">     516 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineNoCov">          0 :                 Reinit();</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="519"><span class="lineNum">     519 </span><span class="lineNoCov">          0 :         else</span></a>
+<a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :                 m_CurrThinker = prev-&gt;NextThinker;</span></a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :                 m_SearchingFresh = false;</span></a>
+<a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="525"><span class="lineNum">     525 </span>            : </a>
+<a name="526"><span class="lineNum">     526 </span>            : void FThinkerIterator::Reinit ()</a>
+<a name="527"><span class="lineNum">     527 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineNoCov">          0 :         m_CurrThinker = DThinker::Thinkers[m_Stat].GetHead();</span></a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineNoCov">          0 :         m_SearchingFresh = false;</span></a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="531"><span class="lineNum">     531 </span>            : </a>
+<a name="532"><span class="lineNum">     532 </span>            : DThinker *FThinkerIterator::Next ()</a>
+<a name="533"><span class="lineNum">     533 </span><span class="lineCov">       1992 : {</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineCov">       1992 :         if (m_ParentType == NULL)</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">       1992 :         {</span></a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :                 return NULL;</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineCov">       1992 :         do</span></a>
+<a name="539"><span class="lineNum">     539 </span><span class="lineCov">      20707 :         {</span></a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineCov">      20707 :                 do</span></a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineCov">      40136 :                 {</span></a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineCov">      40136 :                         if (m_CurrThinker != NULL)</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineCov">      40136 :                         {</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">       2283 :                                 while (!(m_CurrThinker-&gt;ObjectFlags &amp; OF_Sentinel))</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">       1503 :                                 {</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineCov">       1503 :                                         DThinker *thinker = m_CurrThinker;</span></a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineCov">       1503 :                                         m_CurrThinker = thinker-&gt;NextThinker;</span></a>
+<a name="548"><span class="lineNum">     548 </span><span class="lineCov">       1503 :                                         if (thinker-&gt;IsKindOf(m_ParentType))</span></a>
+<a name="549"><span class="lineNum">     549 </span><span class="lineCov">       1278 :                                         {</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">       1278 :                                                 return thinker;</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">       1278 :                                         }</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">       1503 :                                 }</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">       2058 :                         }</span></a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">      40136 :                         if ((m_SearchingFresh = !m_SearchingFresh))</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">      19429 :                         {</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">      19429 :                                 m_CurrThinker = DThinker::FreshThinkers[m_Stat].GetHead();</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">      19429 :                         }</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">      38858 :                 } while (m_SearchingFresh);</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineCov">      20707 :                 if (m_SearchStats)</span></a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineCov">      18912 :                 {</span></a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineCov">      18912 :                         m_Stat++;</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">      18912 :                         if (m_Stat &gt; MAX_STATNUM)</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">        197 :                         {</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">        197 :                                 m_Stat = STAT_FIRST_THINKING;</span></a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineCov">        197 :                         }</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineCov">      18912 :                 }</span></a>
+<a name="567"><span class="lineNum">     567 </span><span class="lineCov">      19429 :                 m_CurrThinker = DThinker::Thinkers[m_Stat].GetHead();</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineCov">      19429 :                 m_SearchingFresh = false;</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineCov">      19429 :         } while (m_SearchStats &amp;&amp; m_Stat != STAT_FIRST_THINKING);</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">       1992 :         return NULL;</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">       1992 : }</span></a>
+<a name="572"><span class="lineNum">     572 </span>            : </a>
+<a name="573"><span class="lineNum">     573 </span>            : ADD_STAT (think)</a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineNoCov">          0 :         FString out;</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineNoCov">          0 :         out.Format (&quot;Think time = %04.1f ms&quot;, ThinkCycles.TimeMS());</span></a>
+<a name="577"><span class="lineNum">     577 </span><span class="lineNoCov">          0 :         return out;</span></a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineNoCov">          0 : }</span></a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

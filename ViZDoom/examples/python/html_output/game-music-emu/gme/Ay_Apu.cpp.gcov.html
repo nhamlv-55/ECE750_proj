@@ -1,0 +1,471 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - game-music-emu/gme/Ay_Apu.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">game-music-emu/gme</a> - Ay_Apu.cpp<span style="font-size: 80%;"> (source / <a href="Ay_Apu.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">316</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Game_Music_Emu 0.6.0. http://www.slack.net/~ant/</a>
+<a name="2"><span class="lineNum">       2 </span>            : </a>
+<a name="3"><span class="lineNum">       3 </span>            : #include &quot;Ay_Apu.h&quot;</a>
+<a name="4"><span class="lineNum">       4 </span>            : </a>
+<a name="5"><span class="lineNum">       5 </span>            : /* Copyright (C) 2006 Shay Green. This module is free software; you</a>
+<a name="6"><span class="lineNum">       6 </span>            : can redistribute it and/or modify it under the terms of the GNU Lesser</a>
+<a name="7"><span class="lineNum">       7 </span>            : General Public License as published by the Free Software Foundation; either</a>
+<a name="8"><span class="lineNum">       8 </span>            : version 2.1 of the License, or (at your option) any later version. This</a>
+<a name="9"><span class="lineNum">       9 </span>            : module is distributed in the hope that it will be useful, but WITHOUT ANY</a>
+<a name="10"><span class="lineNum">      10 </span>            : WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS</a>
+<a name="11"><span class="lineNum">      11 </span>            : FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more</a>
+<a name="12"><span class="lineNum">      12 </span>            : details. You should have received a copy of the GNU Lesser General Public</a>
+<a name="13"><span class="lineNum">      13 </span>            : License along with this module; if not, write to the Free Software Foundation,</a>
+<a name="14"><span class="lineNum">      14 </span>            : Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */</a>
+<a name="15"><span class="lineNum">      15 </span>            : </a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &quot;blargg_source.h&quot;</a>
+<a name="17"><span class="lineNum">      17 </span>            : </a>
+<a name="18"><span class="lineNum">      18 </span>            : // Emulation inaccuracies:</a>
+<a name="19"><span class="lineNum">      19 </span>            : // * Noise isn't run when not in use</a>
+<a name="20"><span class="lineNum">      20 </span>            : // * Changes to envelope and noise periods are delayed until next reload</a>
+<a name="21"><span class="lineNum">      21 </span>            : // * Super-sonic tone should attenuate output to about 60%, not 50%</a>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<a name="23"><span class="lineNum">      23 </span>            : // Tones above this frequency are treated as disabled tone at half volume.</a>
+<a name="24"><span class="lineNum">      24 </span>            : // Power of two is more efficient (avoids division).</a>
+<a name="25"><span class="lineNum">      25 </span>            : unsigned const inaudible_freq = 16384;</a>
+<a name="26"><span class="lineNum">      26 </span>            : </a>
+<a name="27"><span class="lineNum">      27 </span>            : int const period_factor = 16;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : static byte const amp_table [16] =</a>
+<a name="30"><span class="lineNum">      30 </span>            : {</a>
+<a name="31"><span class="lineNum">      31 </span>            : #define ENTRY( n ) byte (n * Ay_Apu::amp_range + 0.5)</a>
+<a name="32"><span class="lineNum">      32 </span>            :         // With channels tied together and 1K resistor to ground (as datasheet recommends),</a>
+<a name="33"><span class="lineNum">      33 </span>            :         // output nearly matches logarithmic curve as claimed. Approx. 1.5 dB per step.</a>
+<a name="34"><span class="lineNum">      34 </span>            :         ENTRY(0.000000),ENTRY(0.007813),ENTRY(0.011049),ENTRY(0.015625),</a>
+<a name="35"><span class="lineNum">      35 </span>            :         ENTRY(0.022097),ENTRY(0.031250),ENTRY(0.044194),ENTRY(0.062500),</a>
+<a name="36"><span class="lineNum">      36 </span>            :         ENTRY(0.088388),ENTRY(0.125000),ENTRY(0.176777),ENTRY(0.250000),</a>
+<a name="37"><span class="lineNum">      37 </span>            :         ENTRY(0.353553),ENTRY(0.500000),ENTRY(0.707107),ENTRY(1.000000),</a>
+<a name="38"><span class="lineNum">      38 </span>            :         </a>
+<a name="39"><span class="lineNum">      39 </span>            :         /*</a>
+<a name="40"><span class="lineNum">      40 </span>            :         // Measured from an AY-3-8910A chip with date code 8611.</a>
+<a name="41"><span class="lineNum">      41 </span>            :         </a>
+<a name="42"><span class="lineNum">      42 </span>            :         // Direct voltages without any load (very linear)</a>
+<a name="43"><span class="lineNum">      43 </span>            :         ENTRY(0.000000),ENTRY(0.046237),ENTRY(0.064516),ENTRY(0.089785),</a>
+<a name="44"><span class="lineNum">      44 </span>            :         ENTRY(0.124731),ENTRY(0.173118),ENTRY(0.225806),ENTRY(0.329032),</a>
+<a name="45"><span class="lineNum">      45 </span>            :         ENTRY(0.360215),ENTRY(0.494624),ENTRY(0.594624),ENTRY(0.672043),</a>
+<a name="46"><span class="lineNum">      46 </span>            :         ENTRY(0.766129),ENTRY(0.841935),ENTRY(0.926882),ENTRY(1.000000),</a>
+<a name="47"><span class="lineNum">      47 </span>            :         // With only some load</a>
+<a name="48"><span class="lineNum">      48 </span>            :         ENTRY(0.000000),ENTRY(0.011940),ENTRY(0.017413),ENTRY(0.024876),</a>
+<a name="49"><span class="lineNum">      49 </span>            :         ENTRY(0.036318),ENTRY(0.054229),ENTRY(0.072637),ENTRY(0.122388),</a>
+<a name="50"><span class="lineNum">      50 </span>            :         ENTRY(0.174129),ENTRY(0.239303),ENTRY(0.323881),ENTRY(0.410945),</a>
+<a name="51"><span class="lineNum">      51 </span>            :         ENTRY(0.527363),ENTRY(0.651741),ENTRY(0.832338),ENTRY(1.000000),</a>
+<a name="52"><span class="lineNum">      52 </span>            :         */</a>
+<a name="53"><span class="lineNum">      53 </span>            : #undef ENTRY</a>
+<a name="54"><span class="lineNum">      54 </span>            : };</a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span>            : static byte const modes [8] =</a>
+<a name="57"><span class="lineNum">      57 </span>            : {</a>
+<a name="58"><span class="lineNum">      58 </span>            : #define MODE( a0,a1, b0,b1, c0,c1 ) \</a>
+<a name="59"><span class="lineNum">      59 </span>            :                 (a0 | a1&lt;&lt;1 | b0&lt;&lt;2 | b1&lt;&lt;3 | c0&lt;&lt;4 | c1&lt;&lt;5)</a>
+<a name="60"><span class="lineNum">      60 </span>            :         MODE( 1,0, 1,0, 1,0 ),</a>
+<a name="61"><span class="lineNum">      61 </span>            :         MODE( 1,0, 0,0, 0,0 ),</a>
+<a name="62"><span class="lineNum">      62 </span>            :         MODE( 1,0, 0,1, 1,0 ),</a>
+<a name="63"><span class="lineNum">      63 </span>            :         MODE( 1,0, 1,1, 1,1 ),</a>
+<a name="64"><span class="lineNum">      64 </span>            :         MODE( 0,1, 0,1, 0,1 ),</a>
+<a name="65"><span class="lineNum">      65 </span>            :         MODE( 0,1, 1,1, 1,1 ),</a>
+<a name="66"><span class="lineNum">      66 </span>            :         MODE( 0,1, 1,0, 0,1 ),</a>
+<a name="67"><span class="lineNum">      67 </span>            :         MODE( 0,1, 0,0, 0,0 ),</a>
+<a name="68"><span class="lineNum">      68 </span>            : };</a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            : Ay_Apu::Ay_Apu()</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :         // build full table of the upper 8 envelope waveforms</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :         for ( int m = 8; m--; )</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 byte* out = env.modes [m];</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 int flags = modes [m];</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 for ( int x = 3; --x &gt;= 0; )</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :                         int amp = flags &amp; 1;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :                         int end = flags &gt;&gt; 1 &amp; 1;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :                         int step = end - amp;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :                         amp *= 15;</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :                         for ( int y = 16; --y &gt;= 0; )</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :                                 *out++ = amp_table [amp];</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :                                 amp += step;</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :                         flags &gt;&gt;= 2;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :         output( 0 );</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :         volume( 1.0 );</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :         reset();</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="96"><span class="lineNum">      96 </span>            : </a>
+<a name="97"><span class="lineNum">      97 </span>            : void Ay_Apu::reset()</a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :         last_time   = 0;</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :         noise.delay = 0;</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :         noise.lfsr  = 1;</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :         osc_t* osc = &amp;oscs [osc_count];</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :         do</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :                 osc--;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                 osc-&gt;period   = period_factor;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 osc-&gt;delay    = 0;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 osc-&gt;last_amp = 0;</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :                 osc-&gt;phase    = 0;</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :         while ( osc != oscs );</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :         for ( int i = sizeof regs; --i &gt;= 0; )</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 regs [i] = 0;</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :         regs [7] = 0xFF;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :         write_data_( 13, 0 );</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<a name="120"><span class="lineNum">     120 </span>            : void Ay_Apu::write_data_( int addr, int data )</a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :         assert( (unsigned) addr &lt; reg_count );</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :         if ( (unsigned) addr &gt;= 14 )</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 #ifdef debug_printf</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :                         debug_printf( &quot;Wrote to I/O port %02X\n&quot;, (int) addr );</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :                 #endif</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         // envelope mode</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         if ( addr == 13 )</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 if ( !(data &amp; 8) ) // convert modes 0-7 to proper equivalents</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :                         data = (data &amp; 4) ? 15 : 9;</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 env.wave = env.modes [data - 7];</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 env.pos = -48;</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :                 env.delay = 0; // will get set to envelope period in run_until()</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :         regs [addr] = data;</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :         // handle period changes accurately</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :         int i = addr &gt;&gt; 1;</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :         if ( i &lt; osc_count )</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :                 blip_time_t period = (regs [i * 2 + 1] &amp; 0x0F) * (0x100L * period_factor) +</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :                                 regs [i * 2] * period_factor;</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :                 if ( !period )</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :                         period = period_factor;</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 // adjust time of next timer expiration based on change in period</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 osc_t&amp; osc = oscs [i];</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 if ( (osc.delay += period - osc.period) &lt; 0 )</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :                         osc.delay = 0;</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 osc.period = period;</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :         // TODO: same as above for envelope timer, and it also has a divide by two after it</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="160"><span class="lineNum">     160 </span>            : </a>
+<a name="161"><span class="lineNum">     161 </span>            : int const noise_off = 0x08;</a>
+<a name="162"><span class="lineNum">     162 </span>            : int const tone_off  = 0x01;</a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span>            : void Ay_Apu::run_until( blip_time_t final_end_time )</a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         require( final_end_time &gt;= last_time );</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :         // noise period and initial values</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :         blip_time_t const noise_period_factor = period_factor * 2; // verified</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :         blip_time_t noise_period = (regs [6] &amp; 0x1F) * noise_period_factor;</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :         if ( !noise_period )</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :                 noise_period = noise_period_factor;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :         blip_time_t const old_noise_delay = noise.delay;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :         blargg_ulong const old_noise_lfsr = noise.lfsr;</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :         // envelope period</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :         blip_time_t const env_period_factor = period_factor * 2; // verified</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :         blip_time_t env_period = (regs [12] * 0x100L + regs [11]) * env_period_factor;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :         if ( !env_period )</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 env_period = env_period_factor; // same as period 1 on my AY chip</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :         if ( !env.delay )</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 env.delay = env_period;</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :         // run each osc separately</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :         for ( int index = 0; index &lt; osc_count; index++ )</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                 osc_t* const osc = &amp;oscs [index];</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :                 int osc_mode = regs [7] &gt;&gt; index;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 // output</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 Blip_Buffer* const osc_output = osc-&gt;output;</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :                 if ( !osc_output )</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :                 osc_output-&gt;set_modified();</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 // period</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 int half_vol = 0;</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 blip_time_t inaudible_period = (blargg_ulong) (osc_output-&gt;clock_rate() +</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                                 inaudible_freq) / (inaudible_freq * 2);</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :                 if ( osc-&gt;period &lt;= inaudible_period &amp;&amp; !(osc_mode &amp; tone_off) )</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :                         half_vol = 1; // Actually around 60%, but 50% is close enough</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                         osc_mode |= tone_off;</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 // envelope</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :                 blip_time_t start_time = last_time;</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :                 blip_time_t end_time   = final_end_time;</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 int const vol_mode = regs [0x08 + index];</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 int volume = amp_table [vol_mode &amp; 0x0F] &gt;&gt; half_vol;</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 int osc_env_pos = env.pos;</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :                 if ( vol_mode &amp; 0x10 )</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :                         volume = env.wave [osc_env_pos] &gt;&gt; half_vol;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :                         // use envelope only if it's a repeating wave or a ramp that hasn't finished</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :                         if ( !(regs [13] &amp; 1) || osc_env_pos &lt; -32 )</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :                                 end_time = start_time + env.delay;</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :                                 if ( end_time &gt;= final_end_time )</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :                                         end_time = final_end_time;</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :                                 </span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :                                 //if ( !(regs [12] | regs [11]) )</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :                                 //  debug_printf( &quot;Used envelope period 0\n&quot; );</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :                         else if ( !volume )</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :                                 osc_mode = noise_off | tone_off;</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :                 else if ( !volume )</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :                         osc_mode = noise_off | tone_off;</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :                 // tone time</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :                 blip_time_t const period = osc-&gt;period;</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :                 blip_time_t time = start_time + osc-&gt;delay;</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :                 if ( osc_mode &amp; tone_off ) // maintain tone's phase when off</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                         blargg_long count = (final_end_time - time + period - 1) / period;</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                         time += count * period;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :                         osc-&gt;phase ^= count &amp; 1;</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :                 // noise time</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :                 blip_time_t ntime = final_end_time;</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                 blargg_ulong noise_lfsr = 1;</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 if ( !(osc_mode &amp; noise_off) )</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :                         ntime = start_time + old_noise_delay;</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                         noise_lfsr = old_noise_lfsr;</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                         //if ( (regs [6] &amp; 0x1F) == 0 )</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                         //  debug_printf( &quot;Used noise period 0\n&quot; );</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 // The following efficiently handles several cases (least demanding first):</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 // * Tone, noise, and envelope disabled, where channel acts as 4-bit DAC</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 // * Just tone or just noise, envelope disabled</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                 // * Envelope controlling tone and/or noise</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 // * Tone and noise disabled, envelope enabled with high frequency</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :                 // * Tone and noise together</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 // * Tone and noise together with envelope</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 // This loop only runs one iteration if envelope is disabled. If envelope</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :                 // is being used as a waveform (tone and noise disabled), this loop will</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :                 // still be reasonably efficient since the bulk of it will be skipped.</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 while ( 1 )</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :                         // current amplitude</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :                         int amp = 0;</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :                         if ( (osc_mode | osc-&gt;phase) &amp; 1 &amp; (osc_mode &gt;&gt; 3 | noise_lfsr) )</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :                                 amp = volume;</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :                                 int delta = amp - osc-&gt;last_amp;</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                                 if ( delta )</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                                 {</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                                         osc-&gt;last_amp = amp;</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                                         synth_.offset( start_time, delta, osc_output );</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                                 }</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineNoCov">          0 :                         </span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :                         // Run wave and noise interleved with each catching up to the other.</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :                         // If one or both are disabled, their &quot;current time&quot; will be past end time,</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :                         // so there will be no significant performance hit.</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :                         if ( ntime &lt; end_time || time &lt; end_time )</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                                 // Since amplitude was updated above, delta will always be +/- volume,</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                                 // so we can avoid using last_amp every time to calculate the delta.</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                                 int delta = amp * 2 - volume;</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :                                 int delta_non_zero = delta != 0;</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                                 int phase = osc-&gt;phase | (osc_mode &amp; tone_off); assert( tone_off == 0x01 );</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :                                 do</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :                                 {</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                                         // run noise</span></a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :                                         blip_time_t end = end_time;</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                                         if ( end_time &gt; time ) end = time;</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :                                         if ( phase &amp; delta_non_zero )</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :                                                 while ( ntime &lt;= end ) // must advance *past* time to avoid hang</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :                                                 {</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :                                                         int changed = noise_lfsr + 1;</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :                                                         noise_lfsr = ((blargg_ulong)-(blargg_long)(noise_lfsr &amp; 1) &amp; 0x12000) ^ (noise_lfsr &gt;&gt; 1);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :                                                         if ( changed &amp; 2 )</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :                                                         {</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :                                                                 delta = -delta;</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :                                                                 synth_.offset( ntime, delta, osc_output );</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :                                                         }</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :                                                         ntime += noise_period;</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :                                                 }</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :                                         else</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 :                                                 // 20 or more noise periods on average for some music</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :                                                 blargg_long remain = end - ntime;</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :                                                 blargg_long count = remain / noise_period;</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :                                                 if ( remain &gt;= 0 )</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :                                                         ntime += noise_period + count * noise_period;</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :                                         </span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :                                         // run tone</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :                                         end = end_time;</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :                                         if ( end_time &gt; ntime ) end = ntime;</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :                                         if ( noise_lfsr &amp; delta_non_zero )</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :                                                 while ( time &lt; end )</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :                                                 {</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :                                                         delta = -delta;</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :                                                         synth_.offset( time, delta, osc_output );</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :                                                         time += period;</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :                                                         //phase ^= 1;</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :                                                 }</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :                                                 //assert( phase == (delta &gt; 0) );</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :                                                 phase = unsigned (-delta) &gt;&gt; (CHAR_BIT * sizeof (unsigned) - 1);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :                                                 // (delta &gt; 0)</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :                                         else</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :                                         {</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :                                                 // loop usually runs less than once</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :                                                 //SUB_CASE_COUNTER( (time &lt; end) * (end - time + period - 1) / period );</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :                                                 </span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :                                                 while ( time &lt; end )</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :                                                 {</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :                                                         time += period;</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 :                                                         phase ^= 1;</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :                                                 }</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :                                         }</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :                                 }</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :                                 while ( time &lt; end_time || ntime &lt; end_time );</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :                                 </span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineNoCov">          0 :                                 osc-&gt;last_amp = (delta + volume) &gt;&gt; 1;</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :                                 if ( !(osc_mode &amp; tone_off) )</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :                                         osc-&gt;phase = phase;</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :                         </span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :                         if ( end_time &gt;= final_end_time )</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :                                 break; // breaks first time when envelope is disabled</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineNoCov">          0 :                         </span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :                         // next envelope step</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :                         if ( ++osc_env_pos &gt;= 0 )</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :                                 osc_env_pos -= 32;</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                         volume = env.wave [osc_env_pos] &gt;&gt; half_vol;</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                         </span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                         start_time = end_time;</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                         end_time += env_period;</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :                         if ( end_time &gt; final_end_time )</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                                 end_time = final_end_time;</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :                 osc-&gt;delay = time - final_end_time;</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 if ( !(osc_mode &amp; noise_off) )</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :                         noise.delay = ntime - final_end_time;</span></a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 :                         noise.lfsr = noise_lfsr;</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :         // TODO: optimized saw wave envelope?</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :         // maintain envelope phase</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :         blip_time_t remain = final_end_time - last_time - env.delay;</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :         if ( remain &gt;= 0 )</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :                 blargg_long count = (remain + env_period) / env_period;</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :                 env.pos += count;</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 :                 if ( env.pos &gt;= 0 )</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :                         env.pos = (env.pos &amp; 31) - 32;</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :                 remain -= count * env_period;</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :                 assert( -remain &lt;= env_period );</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :         env.delay = -remain;</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :         assert( env.delay &gt; 0 );</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :         assert( env.pos &lt; 0 );</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :         last_time = final_end_time;</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 : }</span></a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

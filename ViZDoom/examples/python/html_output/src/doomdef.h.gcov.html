@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - src/doomdef.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - doomdef.h<span style="font-size: 80%;"> (source / <a href="doomdef.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntryLo">11.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Emacs style mode select       -*- C++ -*- </a>
+<a name="2"><span class="lineNum">       2 </span>            : //-----------------------------------------------------------------------------</a>
+<a name="3"><span class="lineNum">       3 </span>            : //</a>
+<a name="4"><span class="lineNum">       4 </span>            : // $Id:$</a>
+<a name="5"><span class="lineNum">       5 </span>            : //</a>
+<a name="6"><span class="lineNum">       6 </span>            : // Copyright (C) 1993-1996 by id Software, Inc.</a>
+<a name="7"><span class="lineNum">       7 </span>            : //</a>
+<a name="8"><span class="lineNum">       8 </span>            : // This source is available for distribution and/or modification</a>
+<a name="9"><span class="lineNum">       9 </span>            : // only under the terms of the DOOM Source Code License as</a>
+<a name="10"><span class="lineNum">      10 </span>            : // published by id Software. All rights reserved.</a>
+<a name="11"><span class="lineNum">      11 </span>            : //</a>
+<a name="12"><span class="lineNum">      12 </span>            : // The source is distributed in the hope that it will be useful,</a>
+<a name="13"><span class="lineNum">      13 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of</a>
+<a name="14"><span class="lineNum">      14 </span>            : // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License</a>
+<a name="15"><span class="lineNum">      15 </span>            : // for more details.</a>
+<a name="16"><span class="lineNum">      16 </span>            : //</a>
+<a name="17"><span class="lineNum">      17 </span>            : // DESCRIPTION:</a>
+<a name="18"><span class="lineNum">      18 </span>            : //      Internally used data structures for virtually everything,</a>
+<a name="19"><span class="lineNum">      19 </span>            : //       key definitions, lots of other stuff.</a>
+<a name="20"><span class="lineNum">      20 </span>            : //</a>
+<a name="21"><span class="lineNum">      21 </span>            : //-----------------------------------------------------------------------------</a>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<a name="23"><span class="lineNum">      23 </span>            : #ifndef __DOOMDEF_H__</a>
+<a name="24"><span class="lineNum">      24 </span>            : #define __DOOMDEF_H__</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;stdio.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;string.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : //</a>
+<a name="30"><span class="lineNum">      30 </span>            : // Global parameters/defines.</a>
+<a name="31"><span class="lineNum">      31 </span>            : //</a>
+<a name="32"><span class="lineNum">      32 </span>            : </a>
+<a name="33"><span class="lineNum">      33 </span>            : // Game mode handling - identify IWAD version</a>
+<a name="34"><span class="lineNum">      34 </span>            : //      to handle IWAD dependend animations etc.</a>
+<a name="35"><span class="lineNum">      35 </span>            : typedef enum</a>
+<a name="36"><span class="lineNum">      36 </span>            : {</a>
+<a name="37"><span class="lineNum">      37 </span>            :         shareware,              // DOOM 1 shareware, E1, M9</a>
+<a name="38"><span class="lineNum">      38 </span>            :         registered,             // DOOM 1 registered, E3, M27</a>
+<a name="39"><span class="lineNum">      39 </span>            :         commercial,             // DOOM 2 retail, E1 M34</a>
+<a name="40"><span class="lineNum">      40 </span>            :         // DOOM 2 german edition not handled</a>
+<a name="41"><span class="lineNum">      41 </span>            :         retail,                 // DOOM 1 retail, E4, M36</a>
+<a name="42"><span class="lineNum">      42 </span>            :         undetermined    // Well, no IWAD found.</a>
+<a name="43"><span class="lineNum">      43 </span>            :   </a>
+<a name="44"><span class="lineNum">      44 </span>            : } GameMode_t;</a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<a name="47"><span class="lineNum">      47 </span>            : // If rangecheck is undefined, most parameter validation debugging code</a>
+<a name="48"><span class="lineNum">      48 </span>            : // will not be compiled</a>
+<a name="49"><span class="lineNum">      49 </span>            : #ifndef NORANGECHECKING</a>
+<a name="50"><span class="lineNum">      50 </span>            : #ifndef RANGECHECK</a>
+<a name="51"><span class="lineNum">      51 </span>            : #define RANGECHECK</a>
+<a name="52"><span class="lineNum">      52 </span>            : #endif</a>
+<a name="53"><span class="lineNum">      53 </span>            : #endif</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            : // The maximum number of players, multiplayer/networking.</a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">      29062 : #define MAXPLAYERS              16</span></a>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<a name="58"><span class="lineNum">      58 </span>            : // State updates, number of tics / second.</a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       1582 : #define TICRATE                 35</span></a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span>            : // Amount of damage done by a telefrag.</a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : #define TELEFRAG_DAMAGE 1000000</span></a>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<a name="64"><span class="lineNum">      64 </span>            : // The current state of the game: whether we are</a>
+<a name="65"><span class="lineNum">      65 </span>            : // playing, gazing at the intermission screen,</a>
+<a name="66"><span class="lineNum">      66 </span>            : // the game final animation, or a demo. </a>
+<a name="67"><span class="lineNum">      67 </span>            : typedef enum</a>
+<a name="68"><span class="lineNum">      68 </span>            : {</a>
+<a name="69"><span class="lineNum">      69 </span>            :         GS_LEVEL,</a>
+<a name="70"><span class="lineNum">      70 </span>            :         GS_INTERMISSION,</a>
+<a name="71"><span class="lineNum">      71 </span>            :         GS_FINALE,</a>
+<a name="72"><span class="lineNum">      72 </span>            :         GS_DEMOSCREEN,</a>
+<a name="73"><span class="lineNum">      73 </span>            :         GS_FULLCONSOLE,         // [RH] Fullscreen console</a>
+<a name="74"><span class="lineNum">      74 </span>            :         GS_HIDECONSOLE,         // [RH] The menu just did something that should hide fs console</a>
+<a name="75"><span class="lineNum">      75 </span>            :         GS_STARTUP,                     // [RH] Console is fullscreen, and game is just starting</a>
+<a name="76"><span class="lineNum">      76 </span>            :         GS_TITLELEVEL,          // [RH] A combination of GS_LEVEL and GS_DEMOSCREEN</a>
+<a name="77"><span class="lineNum">      77 </span>            : </a>
+<a name="78"><span class="lineNum">      78 </span>            :         GS_FORCEWIPE = -1,</a>
+<a name="79"><span class="lineNum">      79 </span>            :         GS_FORCEWIPEFADE = -2,</a>
+<a name="80"><span class="lineNum">      80 </span>            :         GS_FORCEWIPEBURN = -3,</a>
+<a name="81"><span class="lineNum">      81 </span>            :         GS_FORCEWIPEMELT = -4</a>
+<a name="82"><span class="lineNum">      82 </span>            : } gamestate_t;</a>
+<a name="83"><span class="lineNum">      83 </span>            : </a>
+<a name="84"><span class="lineNum">      84 </span>            : extern  gamestate_t     gamestate;</a>
+<a name="85"><span class="lineNum">      85 </span>            : </a>
+<a name="86"><span class="lineNum">      86 </span>            : // wipegamestate can be set to -1</a>
+<a name="87"><span class="lineNum">      87 </span>            : //      to force a wipe on the next draw</a>
+<a name="88"><span class="lineNum">      88 </span>            : extern gamestate_t wipegamestate;</a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span>            : </a>
+<a name="91"><span class="lineNum">      91 </span>            : typedef float skill_t;</a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span>            : /*</a>
+<a name="94"><span class="lineNum">      94 </span>            : enum ESkillLevels</a>
+<a name="95"><span class="lineNum">      95 </span>            : {</a>
+<a name="96"><span class="lineNum">      96 </span>            :         sk_baby,</a>
+<a name="97"><span class="lineNum">      97 </span>            :         sk_easy,</a>
+<a name="98"><span class="lineNum">      98 </span>            :         sk_medium,</a>
+<a name="99"><span class="lineNum">      99 </span>            :         sk_hard,</a>
+<a name="100"><span class="lineNum">     100 </span>            :         sk_nightmare</a>
+<a name="101"><span class="lineNum">     101 </span>            : };</a>
+<a name="102"><span class="lineNum">     102 </span>            : */</a>
+<a name="103"><span class="lineNum">     103 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<a name="105"><span class="lineNum">     105 </span>            : </a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 : #define TELEFOGHEIGHT                   (gameinfo.telefogheight)</span></a>
+<a name="107"><span class="lineNum">     107 </span>            : </a>
+<a name="108"><span class="lineNum">     108 </span>            : //</a>
+<a name="109"><span class="lineNum">     109 </span>            : // DOOM keyboard definition. Everything below 0x100 matches</a>
+<a name="110"><span class="lineNum">     110 </span>            : // a mode 1 keyboard scan code.</a>
+<a name="111"><span class="lineNum">     111 </span>            : //</a>
+<a name="112"><span class="lineNum">     112 </span>            : #define KEY_PAUSE                               0xc5    // DIK_PAUSE</a>
+<a name="113"><span class="lineNum">     113 </span>            : #define KEY_RIGHTARROW                  0xcd    // DIK_RIGHT</a>
+<a name="114"><span class="lineNum">     114 </span>            : #define KEY_LEFTARROW                   0xcb    // DIK_LEFT</a>
+<a name="115"><span class="lineNum">     115 </span>            : #define KEY_UPARROW                     0xc8    // DIK_UP</a>
+<a name="116"><span class="lineNum">     116 </span>            : #define KEY_DOWNARROW                   0xd0    // DIK_DOWN</a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 : #define KEY_ESCAPE                              0x01    // DIK_ESCAPE</span></a>
+<a name="118"><span class="lineNum">     118 </span>            : #define KEY_ENTER                               0x1c    // DIK_RETURN</a>
+<a name="119"><span class="lineNum">     119 </span>            : #define KEY_SPACE                               0x39    // DIK_SPACE</a>
+<a name="120"><span class="lineNum">     120 </span>            : #define KEY_TAB                                 0x0f    // DIK_TAB</a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 : #define KEY_F1                                  0x3b    // DIK_F1</span></a>
+<a name="122"><span class="lineNum">     122 </span>            : #define KEY_F2                                  0x3c    // DIK_F2</a>
+<a name="123"><span class="lineNum">     123 </span>            : #define KEY_F3                                  0x3d    // DIK_F3</a>
+<a name="124"><span class="lineNum">     124 </span>            : #define KEY_F4                                  0x3e    // DIK_F4</a>
+<a name="125"><span class="lineNum">     125 </span>            : #define KEY_F5                                  0x3f    // DIK_F5</a>
+<a name="126"><span class="lineNum">     126 </span>            : #define KEY_F6                                  0x40    // DIK_F6</a>
+<a name="127"><span class="lineNum">     127 </span>            : #define KEY_F7                                  0x41    // DIK_F7</a>
+<a name="128"><span class="lineNum">     128 </span>            : #define KEY_F8                                  0x42    // DIK_F8</a>
+<a name="129"><span class="lineNum">     129 </span>            : #define KEY_F9                                  0x43    // DIK_F9</a>
+<a name="130"><span class="lineNum">     130 </span>            : #define KEY_F10                                 0x44    // DIK_F10</a>
+<a name="131"><span class="lineNum">     131 </span>            : #define KEY_F11                                 0x57    // DIK_F11</a>
+<a name="132"><span class="lineNum">     132 </span>            : #define KEY_F12                                 0x58    // DIK_F12</a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 : #define KEY_GRAVE                               0x29    // DIK_GRAVE</span></a>
+<a name="134"><span class="lineNum">     134 </span>            : </a>
+<a name="135"><span class="lineNum">     135 </span>            : #define KEY_BACKSPACE                   0x0e    // DIK_BACK</a>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<a name="137"><span class="lineNum">     137 </span>            : #define KEY_EQUALS                              0x0d    // DIK_EQUALS</a>
+<a name="138"><span class="lineNum">     138 </span>            : #define KEY_MINUS                               0x0c    // DIK_MINUS</a>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<a name="140"><span class="lineNum">     140 </span>            : #define KEY_LSHIFT                              0x2A    // DIK_LSHIFT</a>
+<a name="141"><span class="lineNum">     141 </span>            : #define KEY_LCTRL                               0x1d    // DIK_LCONTROL</a>
+<a name="142"><span class="lineNum">     142 </span>            : #define KEY_LALT                                0x38    // DIK_LMENU</a>
+<a name="143"><span class="lineNum">     143 </span>            : </a>
+<a name="144"><span class="lineNum">     144 </span>            : #define KEY_RSHIFT                              KEY_LSHIFT</a>
+<a name="145"><span class="lineNum">     145 </span>            : #define KEY_RCTRL                               KEY_LCTRL</a>
+<a name="146"><span class="lineNum">     146 </span>            : #define KEY_RALT                                KEY_LALT</a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span>            : #define KEY_INS                                 0xd2    // DIK_INSERT</a>
+<a name="149"><span class="lineNum">     149 </span>            : #define KEY_DEL                                 0xd3    // DIK_DELETE</a>
+<a name="150"><span class="lineNum">     150 </span>            : #define KEY_END                                 0xcf    // DIK_END</a>
+<a name="151"><span class="lineNum">     151 </span>            : #define KEY_HOME                                0xc7    // DIK_HOME</a>
+<a name="152"><span class="lineNum">     152 </span>            : #define KEY_PGUP                                0xc9    // DIK_PRIOR</a>
+<a name="153"><span class="lineNum">     153 </span>            : #define KEY_PGDN                                0xd1    // DIK_NEXT</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 : #define KEY_MOUSE1                              0x100</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 : #define KEY_MOUSE2                              0x101</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 : #define KEY_MOUSE3                              0x102</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 : #define KEY_MOUSE4                              0x103</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 : #define KEY_MOUSE5                              0x104</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : #define KEY_MOUSE6                              0x105</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 : #define KEY_MOUSE7                              0x106</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 : #define KEY_MOUSE8                              0x107</span></a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 : #define KEY_FIRSTJOYBUTTON              0x108</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 : #define KEY_JOY1                                (KEY_FIRSTJOYBUTTON+0)</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : #define KEY_JOY2                                (KEY_FIRSTJOYBUTTON+1)</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 : #define KEY_JOY3                                (KEY_FIRSTJOYBUTTON+2)</span></a>
+<a name="168"><span class="lineNum">     168 </span>            : #define KEY_JOY4                                (KEY_FIRSTJOYBUTTON+3)</a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 : #define KEY_JOY5                                (KEY_FIRSTJOYBUTTON+4)</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 : #define KEY_JOY6                                (KEY_FIRSTJOYBUTTON+5)</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : #define KEY_JOY7                                (KEY_FIRSTJOYBUTTON+6)</a>
+<a name="172"><span class="lineNum">     172 </span>            : #define KEY_JOY8                                (KEY_FIRSTJOYBUTTON+7)</a>
+<a name="173"><span class="lineNum">     173 </span>            : #define KEY_LASTJOYBUTTON               0x187</a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 : #define KEY_JOYPOV1_UP                  0x188</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 : #define KEY_JOYPOV1_RIGHT               0x189</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 : #define KEY_JOYPOV1_DOWN                0x18a</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 : #define KEY_JOYPOV1_LEFT                0x18b</span></a>
+<a name="178"><span class="lineNum">     178 </span>            : #define KEY_JOYPOV2_UP                  0x18c</a>
+<a name="179"><span class="lineNum">     179 </span>            : #define KEY_JOYPOV3_UP                  0x190</a>
+<a name="180"><span class="lineNum">     180 </span>            : #define KEY_JOYPOV4_UP                  0x194</a>
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 : #define KEY_MWHEELUP                    0x198</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 : #define KEY_MWHEELDOWN                  0x199</span></a>
+<a name="184"><span class="lineNum">     184 </span>            : #define KEY_MWHEELRIGHT                 0x19A</a>
+<a name="185"><span class="lineNum">     185 </span>            : #define KEY_MWHEELLEFT                  0x19B</a>
+<a name="186"><span class="lineNum">     186 </span>            : </a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 : #define KEY_JOYAXIS1PLUS                0x19C</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 : #define KEY_JOYAXIS1MINUS               0x19D</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 : #define KEY_JOYAXIS2PLUS                0x19E</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 : #define KEY_JOYAXIS2MINUS               0x19F</span></a>
+<a name="191"><span class="lineNum">     191 </span>            : #define KEY_JOYAXIS3PLUS                0x1A0</a>
+<a name="192"><span class="lineNum">     192 </span>            : #define KEY_JOYAXIS3MINUS               0x1A1</a>
+<a name="193"><span class="lineNum">     193 </span>            : #define KEY_JOYAXIS4PLUS                0x1A2</a>
+<a name="194"><span class="lineNum">     194 </span>            : #define KEY_JOYAXIS4MINUS               0x1A3</a>
+<a name="195"><span class="lineNum">     195 </span>            : #define KEY_JOYAXIS5PLUS                0x1A4</a>
+<a name="196"><span class="lineNum">     196 </span>            : #define KEY_JOYAXIS5MINUS               0x1A5</a>
+<a name="197"><span class="lineNum">     197 </span>            : #define KEY_JOYAXIS6PLUS                0x1A6</a>
+<a name="198"><span class="lineNum">     198 </span>            : #define KEY_JOYAXIS6MINUS               0x1A7</a>
+<a name="199"><span class="lineNum">     199 </span>            : #define KEY_JOYAXIS7PLUS                0x1A8</a>
+<a name="200"><span class="lineNum">     200 </span>            : #define KEY_JOYAXIS7MINUS               0x1A9</a>
+<a name="201"><span class="lineNum">     201 </span>            : #define KEY_JOYAXIS8PLUS                0x1AA</a>
+<a name="202"><span class="lineNum">     202 </span>            : #define KEY_JOYAXIS8MINUS               0x1AB</a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 : #define NUM_JOYAXISBUTTONS              8</span></a>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 : #define KEY_PAD_LTHUMB_RIGHT    0x1AC</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 : #define KEY_PAD_LTHUMB_LEFT             0x1AD</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 : #define KEY_PAD_LTHUMB_DOWN             0x1AE</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 : #define KEY_PAD_LTHUMB_UP               0x1AF</span></a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span>            : #define KEY_PAD_RTHUMB_RIGHT    0x1B0</a>
+<a name="211"><span class="lineNum">     211 </span>            : #define KEY_PAD_RTHUMB_LEFT             0x1B1</a>
+<a name="212"><span class="lineNum">     212 </span>            : #define KEY_PAD_RTHUMB_DOWN             0x1B2</a>
+<a name="213"><span class="lineNum">     213 </span>            : #define KEY_PAD_RTHUMB_UP               0x1B3</a>
+<a name="214"><span class="lineNum">     214 </span>            : </a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 : #define KEY_PAD_DPAD_UP                 0x1B4</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 : #define KEY_PAD_DPAD_DOWN               0x1B5</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 : #define KEY_PAD_DPAD_LEFT               0x1B6</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 : #define KEY_PAD_DPAD_RIGHT              0x1B7</span></a>
+<a name="219"><span class="lineNum">     219 </span>            : #define KEY_PAD_START                   0x1B8</a>
+<a name="220"><span class="lineNum">     220 </span>            : #define KEY_PAD_BACK                    0x1B9</a>
+<a name="221"><span class="lineNum">     221 </span>            : #define KEY_PAD_LTHUMB                  0x1BA</a>
+<a name="222"><span class="lineNum">     222 </span>            : #define KEY_PAD_RTHUMB                  0x1BB</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 : #define KEY_PAD_LSHOULDER               0x1BC</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 : #define KEY_PAD_RSHOULDER               0x1BD</span></a>
+<a name="225"><span class="lineNum">     225 </span>            : #define KEY_PAD_LTRIGGER                0x1BE</a>
+<a name="226"><span class="lineNum">     226 </span>            : #define KEY_PAD_RTRIGGER                0x1BF</a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 : #define KEY_PAD_A                               0x1C0</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 : #define KEY_PAD_B                               0x1C1</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 : #define KEY_PAD_X                               0x1C2</span></a>
+<a name="230"><span class="lineNum">     230 </span>            : #define KEY_PAD_Y                               0x1C3</a>
+<a name="231"><span class="lineNum">     231 </span>            : </a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">      36904 : #define NUM_KEYS                                0x1C4</span></a>
+<a name="233"><span class="lineNum">     233 </span>            : </a>
+<a name="234"><span class="lineNum">     234 </span>            : // [RH] dmflags bits (based on Q2's)</a>
+<a name="235"><span class="lineNum">     235 </span>            : enum</a>
+<a name="236"><span class="lineNum">     236 </span>            : {</a>
+<a name="237"><span class="lineNum">     237 </span>            :         DF_NO_HEALTH                    = 1 &lt;&lt; 0, // Do not spawn health items (DM)</a>
+<a name="238"><span class="lineNum">     238 </span>            :         DF_NO_ITEMS                             = 1 &lt;&lt; 1, // Do not spawn powerups (DM)</a>
+<a name="239"><span class="lineNum">     239 </span>            :         DF_WEAPONS_STAY                 = 1 &lt;&lt; 2, // Leave weapons around after pickup (DM)</a>
+<a name="240"><span class="lineNum">     240 </span>            :         DF_FORCE_FALLINGZD              = 1 &lt;&lt; 3, // Falling too far hurts (old ZDoom style)</a>
+<a name="241"><span class="lineNum">     241 </span>            :         DF_FORCE_FALLINGHX              = 2 &lt;&lt; 3, // Falling too far hurts (Hexen style)</a>
+<a name="242"><span class="lineNum">     242 </span>            :         DF_FORCE_FALLINGST              = 3 &lt;&lt; 3, // Falling too far hurts (Strife style)</a>
+<a name="243"><span class="lineNum">     243 </span>            : //                                                        1 &lt;&lt; 5  -- this space left blank --</a>
+<a name="244"><span class="lineNum">     244 </span>            :         DF_SAME_LEVEL                   = 1 &lt;&lt; 6, // Stay on the same map when someone exits (DM)</a>
+<a name="245"><span class="lineNum">     245 </span>            :         DF_SPAWN_FARTHEST               = 1 &lt;&lt; 7, // Spawn players as far as possible from other players (DM)</a>
+<a name="246"><span class="lineNum">     246 </span>            :         DF_FORCE_RESPAWN                = 1 &lt;&lt; 8, // Automatically respawn dead players after respawn_time is up (DM)</a>
+<a name="247"><span class="lineNum">     247 </span>            :         DF_NO_ARMOR                             = 1 &lt;&lt; 9, // Do not spawn armor (DM)</a>
+<a name="248"><span class="lineNum">     248 </span>            :         DF_NO_EXIT                              = 1 &lt;&lt; 10,        // Kill anyone who tries to exit the level (DM)</a>
+<a name="249"><span class="lineNum">     249 </span>            :         DF_INFINITE_AMMO                = 1 &lt;&lt; 11,        // Don't use up ammo when firing</a>
+<a name="250"><span class="lineNum">     250 </span>            :         DF_NO_MONSTERS                  = 1 &lt;&lt; 12,        // Don't spawn monsters (replaces -nomonsters parm)</a>
+<a name="251"><span class="lineNum">     251 </span>            :         DF_MONSTERS_RESPAWN             = 1 &lt;&lt; 13,        // Monsters respawn sometime after their death (replaces -respawn parm)</a>
+<a name="252"><span class="lineNum">     252 </span>            :         DF_ITEMS_RESPAWN                = 1 &lt;&lt; 14,        // Items other than invuln. and invis. respawn</a>
+<a name="253"><span class="lineNum">     253 </span>            :         DF_FAST_MONSTERS                = 1 &lt;&lt; 15,        // Monsters are fast (replaces -fast parm)</a>
+<a name="254"><span class="lineNum">     254 </span>            :         DF_NO_JUMP                              = 1 &lt;&lt; 16,        // Don't allow jumping</a>
+<a name="255"><span class="lineNum">     255 </span>            :         DF_YES_JUMP                             = 2 &lt;&lt; 16,</a>
+<a name="256"><span class="lineNum">     256 </span>            :         DF_NO_FREELOOK                  = 1 &lt;&lt; 18,        // Don't allow freelook</a>
+<a name="257"><span class="lineNum">     257 </span>            :         DF_YES_FREELOOK                 = 2 &lt;&lt; 18,</a>
+<a name="258"><span class="lineNum">     258 </span>            :         DF_NO_FOV                               = 1 &lt;&lt; 20,        // Only let the arbitrator set FOV (for all players)</a>
+<a name="259"><span class="lineNum">     259 </span>            :         DF_NO_COOP_WEAPON_SPAWN = 1 &lt;&lt; 21,        // Don't spawn multiplayer weapons in coop games</a>
+<a name="260"><span class="lineNum">     260 </span>            :         DF_NO_CROUCH                    = 1 &lt;&lt; 22,        // Don't allow crouching</a>
+<a name="261"><span class="lineNum">     261 </span>            :         DF_YES_CROUCH                   = 2 &lt;&lt; 22,        //</a>
+<a name="262"><span class="lineNum">     262 </span>            :         DF_COOP_LOSE_INVENTORY  = 1 &lt;&lt; 24,        // Lose all your old inventory when respawning in coop</a>
+<a name="263"><span class="lineNum">     263 </span>            :         DF_COOP_LOSE_KEYS               = 1 &lt;&lt; 25,        // Lose keys when respawning in coop</a>
+<a name="264"><span class="lineNum">     264 </span>            :         DF_COOP_LOSE_WEAPONS    = 1 &lt;&lt; 26,        // Lose weapons when respawning in coop</a>
+<a name="265"><span class="lineNum">     265 </span>            :         DF_COOP_LOSE_ARMOR              = 1 &lt;&lt; 27,        // Lose armor when respawning in coop</a>
+<a name="266"><span class="lineNum">     266 </span>            :         DF_COOP_LOSE_POWERUPS   = 1 &lt;&lt; 28,        // Lose powerups when respawning in coop</a>
+<a name="267"><span class="lineNum">     267 </span>            :         DF_COOP_LOSE_AMMO               = 1 &lt;&lt; 29,        // Lose ammo when respawning in coop</a>
+<a name="268"><span class="lineNum">     268 </span>            :         DF_COOP_HALVE_AMMO              = 1 &lt;&lt; 30,        // Lose half your ammo when respawning in coop (but not less than the normal starting amount)</a>
+<a name="269"><span class="lineNum">     269 </span>            : };</a>
+<a name="270"><span class="lineNum">     270 </span>            : </a>
+<a name="271"><span class="lineNum">     271 </span>            : // [BC] More dmflags. w00p!</a>
+<a name="272"><span class="lineNum">     272 </span>            : enum</a>
+<a name="273"><span class="lineNum">     273 </span>            : {</a>
+<a name="274"><span class="lineNum">     274 </span>            : //      DF2_YES_IMPALING                = 1 &lt;&lt; 0, // Player gets implaed on MF2_IMPALE items</a>
+<a name="275"><span class="lineNum">     275 </span>            :         DF2_YES_WEAPONDROP              = 1 &lt;&lt; 1, // Drop current weapon upon death</a>
+<a name="276"><span class="lineNum">     276 </span>            : //      DF2_NO_RUNES                    = 1 &lt;&lt; 2, // Don't spawn runes</a>
+<a name="277"><span class="lineNum">     277 </span>            : //      DF2_INSTANT_RETURN              = 1 &lt;&lt; 3, // Instantly return flags and skulls when player carrying it dies (ST/CTF)</a>
+<a name="278"><span class="lineNum">     278 </span>            :         DF2_NO_TEAM_SWITCH              = 1 &lt;&lt; 4, // Do not allow players to switch teams in teamgames</a>
+<a name="279"><span class="lineNum">     279 </span>            : //      DF2_NO_TEAM_SELECT              = 1 &lt;&lt; 5, // Player is automatically placed on a team.</a>
+<a name="280"><span class="lineNum">     280 </span>            :         DF2_YES_DOUBLEAMMO              = 1 &lt;&lt; 6, // Double amount of ammo that items give you like skill 1 and 5 do</a>
+<a name="281"><span class="lineNum">     281 </span>            :         DF2_YES_DEGENERATION    = 1 &lt;&lt; 7, // Player slowly loses health when over 100% (Quake-style)</a>
+<a name="282"><span class="lineNum">     282 </span>            :         DF2_NO_FREEAIMBFG               = 1 &lt;&lt; 8, // Disallow BFG freeaiming. Prevents cheap BFG frags by aiming at floor or ceiling</a>
+<a name="283"><span class="lineNum">     283 </span>            :         DF2_BARRELS_RESPAWN             = 1 &lt;&lt; 9, // Barrels respawn (duh)</a>
+<a name="284"><span class="lineNum">     284 </span>            :         DF2_YES_RESPAWN_INVUL   = 1 &lt;&lt; 10,        // Player is temporarily invulnerable when respawned</a>
+<a name="285"><span class="lineNum">     285 </span>            : //      DF2_COOP_SHOTGUNSTART   = 1 &lt;&lt; 11,        // All playres start with a shotgun when they respawn</a>
+<a name="286"><span class="lineNum">     286 </span>            :         DF2_SAME_SPAWN_SPOT             = 1 &lt;&lt; 12,        // Players respawn in the same place they died (co-op)</a>
+<a name="287"><span class="lineNum">     287 </span>            :         DF2_YES_KEEPFRAGS               = 1 &lt;&lt; 13,        // Don't clear frags after each level</a>
+<a name="288"><span class="lineNum">     288 </span>            :         DF2_NO_RESPAWN                  = 1 &lt;&lt; 14,        // Player cannot respawn</a>
+<a name="289"><span class="lineNum">     289 </span>            :         DF2_YES_LOSEFRAG                = 1 &lt;&lt; 15,        // Lose a frag when killed. More incentive to try to not get yerself killed</a>
+<a name="290"><span class="lineNum">     290 </span>            :         DF2_INFINITE_INVENTORY  = 1 &lt;&lt; 16,        // Infinite inventory.</a>
+<a name="291"><span class="lineNum">     291 </span>            :         DF2_KILL_MONSTERS               = 1 &lt;&lt; 17,        // All monsters must be killed before the level exits.</a>
+<a name="292"><span class="lineNum">     292 </span>            :         DF2_NO_AUTOMAP                  = 1 &lt;&lt; 18,        // Players are allowed to see the automap.</a>
+<a name="293"><span class="lineNum">     293 </span>            :         DF2_NO_AUTOMAP_ALLIES   = 1 &lt;&lt; 19,        // Allies can been seen on the automap.</a>
+<a name="294"><span class="lineNum">     294 </span>            :         DF2_DISALLOW_SPYING             = 1 &lt;&lt; 20,        // You can spy on your allies.</a>
+<a name="295"><span class="lineNum">     295 </span>            :         DF2_CHASECAM                    = 1 &lt;&lt; 21,        // Players can use the chasecam cheat.</a>
+<a name="296"><span class="lineNum">     296 </span>            :         DF2_NOSUICIDE                   = 1 &lt;&lt; 22,        // Players are not allowed to suicide.</a>
+<a name="297"><span class="lineNum">     297 </span>            :         DF2_NOAUTOAIM                   = 1 &lt;&lt; 23,        // Players cannot use autoaim.</a>
+<a name="298"><span class="lineNum">     298 </span>            :         DF2_DONTCHECKAMMO               = 1 &lt;&lt; 24,        // Don't Check ammo when switching weapons.</a>
+<a name="299"><span class="lineNum">     299 </span>            :         DF2_KILLBOSSMONST               = 1 &lt;&lt; 25,        // Kills all monsters spawned by a boss cube when the boss dies</a>
+<a name="300"><span class="lineNum">     300 </span>            :         DF2_NOCOUNTENDMONST             = 1 &lt;&lt; 26,        // Do not count monsters in 'end level when dying' sectors towards kill count</a>
+<a name="301"><span class="lineNum">     301 </span>            :         DF2_RESPAWN_SUPER               = 1 &lt;&lt; 27,        // Respawn invulnerability and invisibility</a>
+<a name="302"><span class="lineNum">     302 </span>            : };</a>
+<a name="303"><span class="lineNum">     303 </span>            : </a>
+<a name="304"><span class="lineNum">     304 </span>            : // [RH] Compatibility flags.</a>
+<a name="305"><span class="lineNum">     305 </span>            : enum</a>
+<a name="306"><span class="lineNum">     306 </span>            : {</a>
+<a name="307"><span class="lineNum">     307 </span>            :         COMPATF_SHORTTEX                = 1 &lt;&lt; 0, // Use Doom's shortest texture around behavior?</a>
+<a name="308"><span class="lineNum">     308 </span>            :         COMPATF_STAIRINDEX              = 1 &lt;&lt; 1, // Don't fix loop index for stair building?</a>
+<a name="309"><span class="lineNum">     309 </span>            :         COMPATF_LIMITPAIN               = 1 &lt;&lt; 2, // Pain elemental is limited to 20 lost souls?</a>
+<a name="310"><span class="lineNum">     310 </span>            :         COMPATF_SILENTPICKUP    = 1 &lt;&lt; 3, // Pickups are only heard locally?</a>
+<a name="311"><span class="lineNum">     311 </span>            :         COMPATF_NO_PASSMOBJ             = 1 &lt;&lt; 4, // Pretend every actor is infinitely tall?</a>
+<a name="312"><span class="lineNum">     312 </span>            :         COMPATF_MAGICSILENCE    = 1 &lt;&lt; 5, // Limit actors to one sound at a time?</a>
+<a name="313"><span class="lineNum">     313 </span>            :         COMPATF_WALLRUN                 = 1 &lt;&lt; 6, // Enable buggier wall clipping so players can wallrun?</a>
+<a name="314"><span class="lineNum">     314 </span>            :         COMPATF_NOTOSSDROPS             = 1 &lt;&lt; 7, // Spawn dropped items directly on the floor?</a>
+<a name="315"><span class="lineNum">     315 </span>            :         COMPATF_USEBLOCKING             = 1 &lt;&lt; 8, // Any special line can block a use line</a>
+<a name="316"><span class="lineNum">     316 </span>            :         COMPATF_NODOORLIGHT             = 1 &lt;&lt; 9, // Don't do the BOOM local door light effect</a>
+<a name="317"><span class="lineNum">     317 </span>            :         COMPATF_RAVENSCROLL             = 1 &lt;&lt; 10,        // Raven's scrollers use their original carrying speed</a>
+<a name="318"><span class="lineNum">     318 </span>            :         COMPATF_SOUNDTARGET             = 1 &lt;&lt; 11,        // Use sector based sound target code.</a>
+<a name="319"><span class="lineNum">     319 </span>            :         COMPATF_DEHHEALTH               = 1 &lt;&lt; 12,        // Limit deh.MaxHealth to the health bonus (as in Doom2.exe)</a>
+<a name="320"><span class="lineNum">     320 </span>            :         COMPATF_TRACE                   = 1 &lt;&lt; 13,        // Trace ignores lines with the same sector on both sides</a>
+<a name="321"><span class="lineNum">     321 </span>            :         COMPATF_DROPOFF                 = 1 &lt;&lt; 14,        // Monsters cannot move when hanging over a dropoff</a>
+<a name="322"><span class="lineNum">     322 </span>            :         COMPATF_BOOMSCROLL              = 1 &lt;&lt; 15,        // Scrolling sectors are additive like in Boom</a>
+<a name="323"><span class="lineNum">     323 </span>            :         COMPATF_INVISIBILITY    = 1 &lt;&lt; 16,        // Monsters can see semi-invisible players</a>
+<a name="324"><span class="lineNum">     324 </span>            :         COMPATF_SILENT_INSTANT_FLOORS = 1&lt;&lt;17,    // Instantly moving floors are not silent</a>
+<a name="325"><span class="lineNum">     325 </span>            :         COMPATF_SECTORSOUNDS    = 1 &lt;&lt; 18,        // Sector sounds use original method for sound origin.</a>
+<a name="326"><span class="lineNum">     326 </span>            :         COMPATF_MISSILECLIP             = 1 &lt;&lt; 19,        // Use original Doom heights for clipping against projectiles</a>
+<a name="327"><span class="lineNum">     327 </span>            :         COMPATF_CROSSDROPOFF    = 1 &lt;&lt; 20,        // monsters can't be pushed over dropoffs</a>
+<a name="328"><span class="lineNum">     328 </span>            :         COMPATF_ANYBOSSDEATH    = 1 &lt;&lt; 21,        // [GZ] Any monster which calls BOSSDEATH counts for level specials</a>
+<a name="329"><span class="lineNum">     329 </span>            :         COMPATF_MINOTAUR                = 1 &lt;&lt; 22,        // Minotaur's floor flame is exploded immediately when feet are clipped</a>
+<a name="330"><span class="lineNum">     330 </span>            :         COMPATF_MUSHROOM                = 1 &lt;&lt; 23,        // Force original velocity calculations for A_Mushroom in Dehacked mods.</a>
+<a name="331"><span class="lineNum">     331 </span>            :         COMPATF_MBFMONSTERMOVE  = 1 &lt;&lt; 24,        // Monsters are affected by friction and pushers/pullers.</a>
+<a name="332"><span class="lineNum">     332 </span>            :         COMPATF_CORPSEGIBS              = 1 &lt;&lt; 25,        // Crushed monsters are turned into gibs, rather than replaced by gibs.</a>
+<a name="333"><span class="lineNum">     333 </span>            :         COMPATF_NOBLOCKFRIENDS  = 1 &lt;&lt; 26,        // Friendly monsters aren't blocked by monster-blocking lines.</a>
+<a name="334"><span class="lineNum">     334 </span>            :         COMPATF_SPRITESORT              = 1 &lt;&lt; 27,        // Invert sprite sorting order for sprites of equal distance</a>
+<a name="335"><span class="lineNum">     335 </span>            :         COMPATF_HITSCAN                 = 1 &lt;&lt; 28,        // Hitscans use original blockmap anf hit check code.</a>
+<a name="336"><span class="lineNum">     336 </span>            :         COMPATF_LIGHT                   = 1 &lt;&lt; 29,        // Find neighboring light level like Doom</a>
+<a name="337"><span class="lineNum">     337 </span>            :         COMPATF_POLYOBJ                 = 1 &lt;&lt; 30,        // Draw polyobjects the old fashioned way</a>
+<a name="338"><span class="lineNum">     338 </span>            :         COMPATF_MASKEDMIDTEX    = 1u &lt;&lt; 31,       // Ignore compositing when drawing masked midtextures</a>
+<a name="339"><span class="lineNum">     339 </span>            : </a>
+<a name="340"><span class="lineNum">     340 </span>            :         COMPATF2_BADANGLES              = 1 &lt;&lt; 0, // It is impossible to face directly NSEW.</a>
+<a name="341"><span class="lineNum">     341 </span>            :         COMPATF2_FLOORMOVE              = 1 &lt;&lt; 1, // Use the same floor motion behavior as Doom.</a>
+<a name="342"><span class="lineNum">     342 </span>            :         COMPATF2_SOUNDCUTOFF    = 1 &lt;&lt; 2, // Cut off sounds when an actor vanishes instead of making it owner-less</a>
+<a name="343"><span class="lineNum">     343 </span>            :         COMPATF2_POINTONLINE    = 1 &lt;&lt; 3, // Use original but buggy P_PointOnLineSide() and P_PointOnDivlineSide()</a>
+<a name="344"><span class="lineNum">     344 </span>            : };</a>
+<a name="345"><span class="lineNum">     345 </span>            : </a>
+<a name="346"><span class="lineNum">     346 </span>            : // Emulate old bugs for select maps. These are not exposed by a cvar</a>
+<a name="347"><span class="lineNum">     347 </span>            : // or mapinfo because we do not want new maps to use these bugs.</a>
+<a name="348"><span class="lineNum">     348 </span>            : enum</a>
+<a name="349"><span class="lineNum">     349 </span>            : {</a>
+<a name="350"><span class="lineNum">     350 </span>            :         BCOMPATF_SETSLOPEOVERFLOW       = 1 &lt;&lt; 0, // SetSlope things can overflow</a>
+<a name="351"><span class="lineNum">     351 </span>            :         BCOMPATF_RESETPLAYERSPEED       = 1 &lt;&lt; 1, // Set player speed to 1.0 when changing maps</a>
+<a name="352"><span class="lineNum">     352 </span>            :         BCOMPATF_VILEGHOSTS                     = 1 &lt;&lt; 2, // Monsters' radius and height aren't restored properly when resurrected.</a>
+<a name="353"><span class="lineNum">     353 </span>            :         BCOMPATF_BADTELEPORTERS         = 1 &lt;&lt; 3, // Ignore tags on Teleport specials</a>
+<a name="354"><span class="lineNum">     354 </span>            :         BCOMPATF_BADPORTALS                     = 1 &lt;&lt; 4, // Restores the old unstable portal behavior</a>
+<a name="355"><span class="lineNum">     355 </span>            :         BCOMPATF_REBUILDNODES           = 1 &lt;&lt; 5, // Force node rebuild</a>
+<a name="356"><span class="lineNum">     356 </span>            :         BCOMPATF_LINKFROZENPROPS        = 1 &lt;&lt; 6, // Clearing PROP_TOTALLYFROZEN or PROP_FROZEN also clears the other</a>
+<a name="357"><span class="lineNum">     357 </span>            :         BCOMPATF_NOWINDOWCHECK          = 1 &lt;&lt; 7, // Disable the window check in CheckForPushSpecial()</a>
+<a name="358"><span class="lineNum">     358 </span>            :         BCOMPATF_FLOATBOB                       = 1 &lt;&lt; 8, // Use Hexen's original method of preventing floatbobbing items from falling down</a>
+<a name="359"><span class="lineNum">     359 </span>            : };</a>
+<a name="360"><span class="lineNum">     360 </span>            : </a>
+<a name="361"><span class="lineNum">     361 </span>            : // phares 3/20/98:</a>
+<a name="362"><span class="lineNum">     362 </span>            : //</a>
+<a name="363"><span class="lineNum">     363 </span>            : // Player friction is variable, based on controlling</a>
+<a name="364"><span class="lineNum">     364 </span>            : // linedefs. More friction can create mud, sludge,</a>
+<a name="365"><span class="lineNum">     365 </span>            : // magnetized floors, etc. Less friction can create ice.</a>
+<a name="366"><span class="lineNum">     366 </span>            : </a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 : #define MORE_FRICTION_VELOCITY  15000   // mud factor based on velocity</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">        845 : #define ORIG_FRICTION                   0xE800  // original value</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">        509 : #define ORIG_FRICTION_FACTOR    2048    // original value</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 : #define FRICTION_LOW                    0xf900</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 : #define FRICTION_FLY                    0xeb00</span></a>
+<a name="372"><span class="lineNum">     372 </span>            : </a>
+<a name="373"><span class="lineNum">     373 </span>            : </a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 : #define BLINKTHRESHOLD (4*32)</span></a>
+<a name="375"><span class="lineNum">     375 </span>            : </a>
+<a name="376"><span class="lineNum">     376 </span>            : #ifndef __BIG_ENDIAN__</a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">      19983 : #define MAKE_ID(a,b,c,d)        ((DWORD)((a)|((b)&lt;&lt;8)|((c)&lt;&lt;16)|((d)&lt;&lt;24)))</span></a>
+<a name="378"><span class="lineNum">     378 </span>            : #else</a>
+<a name="379"><span class="lineNum">     379 </span>            : #define MAKE_ID(a,b,c,d)        ((DWORD)((d)|((c)&lt;&lt;8)|((b)&lt;&lt;16)|((a)&lt;&lt;24)))</a>
+<a name="380"><span class="lineNum">     380 </span>            : #endif</a>
+<a name="381"><span class="lineNum">     381 </span>            : </a>
+<a name="382"><span class="lineNum">     382 </span>            : #endif  // __DOOMDEF_H__</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

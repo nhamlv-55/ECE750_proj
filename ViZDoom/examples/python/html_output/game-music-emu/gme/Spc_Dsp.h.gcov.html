@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - game-music-emu/gme/Spc_Dsp.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">game-music-emu/gme</a> - Spc_Dsp.h<span style="font-size: 80%;"> (source / <a href="Spc_Dsp.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">44</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Fast SNES SPC-700 DSP emulator (about 3x speed of accurate one)</a>
+<a name="2"><span class="lineNum">       2 </span>            : </a>
+<a name="3"><span class="lineNum">       3 </span>            : // Game_Music_Emu 0.6.0</a>
+<a name="4"><span class="lineNum">       4 </span>            : #ifndef SPC_DSP_H</a>
+<a name="5"><span class="lineNum">       5 </span>            : #define SPC_DSP_H</a>
+<a name="6"><span class="lineNum">       6 </span>            : </a>
+<a name="7"><span class="lineNum">       7 </span>            : #include &quot;blargg_common.h&quot;</a>
+<a name="8"><span class="lineNum">       8 </span>            : </a>
+<a name="9"><span class="lineNum">       9 </span>            : struct Spc_Dsp {</a>
+<a name="10"><span class="lineNum">      10 </span>            : public:</a>
+<a name="11"><span class="lineNum">      11 </span>            :         typedef BOOST::uint8_t uint8_t;</a>
+<a name="12"><span class="lineNum">      12 </span>            :         </a>
+<a name="13"><span class="lineNum">      13 </span>            : // Setup</a>
+<a name="14"><span class="lineNum">      14 </span>            :         </a>
+<a name="15"><span class="lineNum">      15 </span>            :         // Initializes DSP and has it use the 64K RAM provided</a>
+<a name="16"><span class="lineNum">      16 </span>            :         void init( void* ram_64k );</a>
+<a name="17"><span class="lineNum">      17 </span>            : </a>
+<a name="18"><span class="lineNum">      18 </span>            :         // Sets destination for output samples. If out is NULL or out_size is 0,</a>
+<a name="19"><span class="lineNum">      19 </span>            :         // doesn't generate any.</a>
+<a name="20"><span class="lineNum">      20 </span>            :         typedef short sample_t;</a>
+<a name="21"><span class="lineNum">      21 </span>            :         void set_output( sample_t* out, int out_size );</a>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<a name="23"><span class="lineNum">      23 </span>            :         // Number of samples written to output since it was last set, always</a>
+<a name="24"><span class="lineNum">      24 </span>            :         // a multiple of 2. Undefined if more samples were generated than</a>
+<a name="25"><span class="lineNum">      25 </span>            :         // output buffer could hold.</a>
+<a name="26"><span class="lineNum">      26 </span>            :         int sample_count() const;</a>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<a name="28"><span class="lineNum">      28 </span>            : // Emulation</a>
+<a name="29"><span class="lineNum">      29 </span>            :         </a>
+<a name="30"><span class="lineNum">      30 </span>            :         // Resets DSP to power-on state</a>
+<a name="31"><span class="lineNum">      31 </span>            :         void reset();</a>
+<a name="32"><span class="lineNum">      32 </span>            : </a>
+<a name="33"><span class="lineNum">      33 </span>            :         // Emulates pressing reset switch on SNES</a>
+<a name="34"><span class="lineNum">      34 </span>            :         void soft_reset();</a>
+<a name="35"><span class="lineNum">      35 </span>            :         </a>
+<a name="36"><span class="lineNum">      36 </span>            :         // Reads/writes DSP registers. For accuracy, you must first call spc_run_dsp()</a>
+<a name="37"><span class="lineNum">      37 </span>            :         // to catch the DSP up to present.</a>
+<a name="38"><span class="lineNum">      38 </span>            :         int  read ( int addr ) const;</a>
+<a name="39"><span class="lineNum">      39 </span>            :         void write( int addr, int data );</a>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<a name="41"><span class="lineNum">      41 </span>            :         // Runs DSP for specified number of clocks (~1024000 per second). Every 32 clocks</a>
+<a name="42"><span class="lineNum">      42 </span>            :         // a pair of samples is be generated.</a>
+<a name="43"><span class="lineNum">      43 </span>            :         void run( int clock_count );</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span>            : // Sound control</a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<a name="47"><span class="lineNum">      47 </span>            :         // Mutes voices corresponding to non-zero bits in mask (overrides VxVOL with 0).</a>
+<a name="48"><span class="lineNum">      48 </span>            :         // Reduces emulation accuracy.</a>
+<a name="49"><span class="lineNum">      49 </span>            :         enum { voice_count = 8 };</a>
+<a name="50"><span class="lineNum">      50 </span>            :         void mute_voices( int mask );</a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span>            :         // If true, prevents channels and global volumes from being phase-negated</a>
+<a name="53"><span class="lineNum">      53 </span>            :         void disable_surround( bool disable = true );</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            : // State</a>
+<a name="56"><span class="lineNum">      56 </span>            :         </a>
+<a name="57"><span class="lineNum">      57 </span>            :         // Resets DSP and uses supplied values to initialize registers</a>
+<a name="58"><span class="lineNum">      58 </span>            :         enum { register_count = 128 };</a>
+<a name="59"><span class="lineNum">      59 </span>            :         void load( uint8_t const regs [register_count] );</a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span>            : // DSP register addresses</a>
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<a name="63"><span class="lineNum">      63 </span>            :         // Global registers</a>
+<a name="64"><span class="lineNum">      64 </span>            :         enum {</a>
+<a name="65"><span class="lineNum">      65 </span>            :             r_mvoll = 0x0C, r_mvolr = 0x1C,</a>
+<a name="66"><span class="lineNum">      66 </span>            :             r_evoll = 0x2C, r_evolr = 0x3C,</a>
+<a name="67"><span class="lineNum">      67 </span>            :             r_kon   = 0x4C, r_koff  = 0x5C,</a>
+<a name="68"><span class="lineNum">      68 </span>            :             r_flg   = 0x6C, r_endx  = 0x7C,</a>
+<a name="69"><span class="lineNum">      69 </span>            :             r_efb   = 0x0D, r_pmon  = 0x2D,</a>
+<a name="70"><span class="lineNum">      70 </span>            :             r_non   = 0x3D, r_eon   = 0x4D,</a>
+<a name="71"><span class="lineNum">      71 </span>            :             r_dir   = 0x5D, r_esa   = 0x6D,</a>
+<a name="72"><span class="lineNum">      72 </span>            :             r_edl   = 0x7D,</a>
+<a name="73"><span class="lineNum">      73 </span>            :             r_fir   = 0x0F // 8 coefficients at 0x0F, 0x1F ... 0x7F</a>
+<a name="74"><span class="lineNum">      74 </span>            :         };</a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span>            :         // Voice registers</a>
+<a name="77"><span class="lineNum">      77 </span>            :         enum {</a>
+<a name="78"><span class="lineNum">      78 </span>            :                 v_voll   = 0x00, v_volr   = 0x01,</a>
+<a name="79"><span class="lineNum">      79 </span>            :                 v_pitchl = 0x02, v_pitchh = 0x03,</a>
+<a name="80"><span class="lineNum">      80 </span>            :                 v_srcn   = 0x04, v_adsr0  = 0x05,</a>
+<a name="81"><span class="lineNum">      81 </span>            :                 v_adsr1  = 0x06, v_gain   = 0x07,</a>
+<a name="82"><span class="lineNum">      82 </span>            :                 v_envx   = 0x08, v_outx   = 0x09</a>
+<a name="83"><span class="lineNum">      83 </span>            :         };</a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span>            : public:</a>
+<a name="86"><span class="lineNum">      86 </span>            :         enum { extra_size = 16 };</a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :         sample_t* extra()               { return m.extra; }</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :         sample_t const* out_pos() const { return m.out; }</span></a>
+<a name="89"><span class="lineNum">      89 </span>            : public:</a>
+<a name="90"><span class="lineNum">      90 </span>            :         BLARGG_DISABLE_NOTHROW</a>
+<a name="91"><span class="lineNum">      91 </span>            :         </a>
+<a name="92"><span class="lineNum">      92 </span>            :         typedef BOOST::int8_t   int8_t;</a>
+<a name="93"><span class="lineNum">      93 </span>            :         typedef BOOST::int16_t int16_t;</a>
+<a name="94"><span class="lineNum">      94 </span>            :         </a>
+<a name="95"><span class="lineNum">      95 </span>            :         enum { echo_hist_size = 8 };</a>
+<a name="96"><span class="lineNum">      96 </span>            :         </a>
+<a name="97"><span class="lineNum">      97 </span>            :         enum env_mode_t { env_release, env_attack, env_decay, env_sustain };</a>
+<a name="98"><span class="lineNum">      98 </span>            :         enum { brr_buf_size = 12 };</a>
+<a name="99"><span class="lineNum">      99 </span>            :         struct voice_t</a>
+<a name="100"><span class="lineNum">     100 </span>            :         {</a>
+<a name="101"><span class="lineNum">     101 </span>            :                 int buf [brr_buf_size*2];// decoded samples (twice the size to simplify wrap handling)</a>
+<a name="102"><span class="lineNum">     102 </span>            :                 int* buf_pos;           // place in buffer where next samples will be decoded</a>
+<a name="103"><span class="lineNum">     103 </span>            :                 int interp_pos;         // relative fractional position in sample (0x1000 = 1.0)</a>
+<a name="104"><span class="lineNum">     104 </span>            :                 int brr_addr;           // address of current BRR block</a>
+<a name="105"><span class="lineNum">     105 </span>            :                 int brr_offset;         // current decoding offset in BRR block</a>
+<a name="106"><span class="lineNum">     106 </span>            :                 int kon_delay;          // KON delay/current setup phase</a>
+<a name="107"><span class="lineNum">     107 </span>            :                 env_mode_t env_mode;</a>
+<a name="108"><span class="lineNum">     108 </span>            :                 int env;                // current envelope level</a>
+<a name="109"><span class="lineNum">     109 </span>            :                 int hidden_env;         // used by GAIN mode 7, very obscure quirk</a>
+<a name="110"><span class="lineNum">     110 </span>            :                 int volume [2];         // copy of volume from DSP registers, with surround disabled</a>
+<a name="111"><span class="lineNum">     111 </span>            :                 int enabled;            // -1 if enabled, 0 if muted</a>
+<a name="112"><span class="lineNum">     112 </span>            :         };</a>
+<a name="113"><span class="lineNum">     113 </span>            : private:</a>
+<a name="114"><span class="lineNum">     114 </span>            :         struct state_t</a>
+<a name="115"><span class="lineNum">     115 </span>            :         {</a>
+<a name="116"><span class="lineNum">     116 </span>            :                 uint8_t regs [register_count];</a>
+<a name="117"><span class="lineNum">     117 </span>            :                 </a>
+<a name="118"><span class="lineNum">     118 </span>            :                 // Echo history keeps most recent 8 samples (twice the size to simplify wrap handling)</a>
+<a name="119"><span class="lineNum">     119 </span>            :                 int echo_hist [echo_hist_size * 2] [2];</a>
+<a name="120"><span class="lineNum">     120 </span>            :                 int (*echo_hist_pos) [2]; // &amp;echo_hist [0 to 7]</a>
+<a name="121"><span class="lineNum">     121 </span>            :                 </a>
+<a name="122"><span class="lineNum">     122 </span>            :                 int every_other_sample; // toggles every sample</a>
+<a name="123"><span class="lineNum">     123 </span>            :                 int kon;                // KON value when last checked</a>
+<a name="124"><span class="lineNum">     124 </span>            :                 int noise;</a>
+<a name="125"><span class="lineNum">     125 </span>            :                 int echo_offset;        // offset from ESA in echo buffer</a>
+<a name="126"><span class="lineNum">     126 </span>            :                 int echo_length;        // number of bytes that echo_offset will stop at</a>
+<a name="127"><span class="lineNum">     127 </span>            :                 int phase;              // next clock cycle to run (0-31)</a>
+<a name="128"><span class="lineNum">     128 </span>            :                 unsigned counters [4];</a>
+<a name="129"><span class="lineNum">     129 </span>            :                 </a>
+<a name="130"><span class="lineNum">     130 </span>            :                 int new_kon;</a>
+<a name="131"><span class="lineNum">     131 </span>            :                 int t_koff;</a>
+<a name="132"><span class="lineNum">     132 </span>            :                 </a>
+<a name="133"><span class="lineNum">     133 </span>            :                 voice_t voices [voice_count];</a>
+<a name="134"><span class="lineNum">     134 </span>            :                 </a>
+<a name="135"><span class="lineNum">     135 </span>            :                 unsigned* counter_select [32];</a>
+<a name="136"><span class="lineNum">     136 </span>            :                 </a>
+<a name="137"><span class="lineNum">     137 </span>            :                 // non-emulation state</a>
+<a name="138"><span class="lineNum">     138 </span>            :                 uint8_t* ram; // 64K shared RAM between DSP and SMP</a>
+<a name="139"><span class="lineNum">     139 </span>            :                 int mute_mask;</a>
+<a name="140"><span class="lineNum">     140 </span>            :                 int surround_threshold;</a>
+<a name="141"><span class="lineNum">     141 </span>            :                 sample_t* out;</a>
+<a name="142"><span class="lineNum">     142 </span>            :                 sample_t* out_end;</a>
+<a name="143"><span class="lineNum">     143 </span>            :                 sample_t* out_begin;</a>
+<a name="144"><span class="lineNum">     144 </span>            :                 sample_t extra [extra_size];</a>
+<a name="145"><span class="lineNum">     145 </span>            :         };</a>
+<a name="146"><span class="lineNum">     146 </span>            :         state_t m;</a>
+<a name="147"><span class="lineNum">     147 </span>            :         </a>
+<a name="148"><span class="lineNum">     148 </span>            :         void init_counter();</a>
+<a name="149"><span class="lineNum">     149 </span>            :         void run_counter( int );</a>
+<a name="150"><span class="lineNum">     150 </span>            :         void soft_reset_common();</a>
+<a name="151"><span class="lineNum">     151 </span>            :         void write_outline( int addr, int data );</a>
+<a name="152"><span class="lineNum">     152 </span>            :         void update_voice_vol( int addr );</a>
+<a name="153"><span class="lineNum">     153 </span>            : };</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span>            : #include &lt;assert.h&gt;</a>
+<a name="156"><span class="lineNum">     156 </span>            : </a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 : inline int Spc_Dsp::sample_count() const { return int(m.out - m.out_begin); }</span></a>
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<a name="159"><span class="lineNum">     159 </span>            : inline int Spc_Dsp::read( int addr ) const</a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :         assert( (unsigned) addr &lt; register_count );</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :         return m.regs [addr];</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<a name="165"><span class="lineNum">     165 </span>            : inline void Spc_Dsp::update_voice_vol( int addr )</a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :         int l = (int8_t) m.regs [addr + v_voll];</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :         int r = (int8_t) m.regs [addr + v_volr];</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :         if ( l * r &lt; m.surround_threshold )</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :                 // signs differ, so negate those that are negative</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :                 l ^= l &gt;&gt; 7;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 r ^= r &gt;&gt; 7;</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :         voice_t&amp; v = m.voices [addr &gt;&gt; 4];</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :         int enabled = v.enabled;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :         v.volume [0] = l &amp; enabled;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :         v.volume [1] = r &amp; enabled;</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="182"><span class="lineNum">     182 </span>            : </a>
+<a name="183"><span class="lineNum">     183 </span>            : inline void Spc_Dsp::write( int addr, int data )</a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :         assert( (unsigned) addr &lt; register_count );</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :         </span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :         m.regs [addr] = (uint8_t) data;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :         int low = addr &amp; 0x0F;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :         if ( low &lt; 0x2 ) // voice volumes</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 update_voice_vol( low ^ addr );</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         else if ( low == 0xC )</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                 if ( addr == r_kon )</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                         m.new_kon = (uint8_t) data;</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 </span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 if ( addr == r_endx ) // always cleared, regardless of data written</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                         m.regs [r_endx] = 0;</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<a name="203"><span class="lineNum">     203 </span>            : inline void Spc_Dsp::disable_surround( bool disable )</a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         m.surround_threshold = disable ? 0 : -0x4000;</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="207"><span class="lineNum">     207 </span>            : </a>
+<a name="208"><span class="lineNum">     208 </span>            : #define SPC_NO_COPY_STATE_FUNCS 1</a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span>            : #define SPC_LESS_ACCURATE 1</a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span>            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

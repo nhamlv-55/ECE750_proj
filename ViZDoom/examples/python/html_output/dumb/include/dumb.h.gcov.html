@@ -1,0 +1,887 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - dumb/include/dumb.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">dumb/include</a> - dumb.h<span style="font-size: 80%;"> (source / <a href="dumb.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*  _______         ____    __         ___    ___</a>
+<a name="2"><span class="lineNum">       2 </span>            :  * \    _  \       \    /  \  /       \   \  /   /       '   '  '</a>
+<a name="3"><span class="lineNum">       3 </span>            :  *  |  | \  \       |  |    ||         |   \/   |         .      .</a>
+<a name="4"><span class="lineNum">       4 </span>            :  *  |  |  |  |      |  |    ||         ||\  /|  |</a>
+<a name="5"><span class="lineNum">       5 </span>            :  *  |  |  |  |      |  |    ||         || \/ |  |         '  '  '</a>
+<a name="6"><span class="lineNum">       6 </span>            :  *  |  |  |  |      |  |    ||         ||    |  |         .      .</a>
+<a name="7"><span class="lineNum">       7 </span>            :  *  |  |_/  /        \  \__//          ||    |  |</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * /_______/ynamic    \____/niversal  /__\  /____\usic   /|  .  . ibliotheque</a>
+<a name="9"><span class="lineNum">       9 </span>            :  *                                                      /  \</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *                                                     / .  \</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * dumb.h - The user header file for DUMB.            / / \  \</a>
+<a name="12"><span class="lineNum">      12 </span>            :  *                                                   | &lt;  /   \_</a>
+<a name="13"><span class="lineNum">      13 </span>            :  * Include this file in any of your files in         |  \/ /\   /</a>
+<a name="14"><span class="lineNum">      14 </span>            :  * which you wish to use the DUMB functions           \_  /  &gt; /</a>
+<a name="15"><span class="lineNum">      15 </span>            :  * and variables.                                       | \ / /</a>
+<a name="16"><span class="lineNum">      16 </span>            :  *                                                      |  ' /</a>
+<a name="17"><span class="lineNum">      17 </span>            :  * Allegro users, you will probably want aldumb.h.       \__/</a>
+<a name="18"><span class="lineNum">      18 </span>            :  */</a>
+<a name="19"><span class="lineNum">      19 </span>            : </a>
+<a name="20"><span class="lineNum">      20 </span>            : #ifndef DUMB_H</a>
+<a name="21"><span class="lineNum">      21 </span>            : #define DUMB_H</a>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<a name="23"><span class="lineNum">      23 </span>            : </a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;stdlib.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;stdio.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : </a>
+<a name="27"><span class="lineNum">      27 </span>            : #if defined(_DEBUG) &amp;&amp; defined(_MSC_VER)</a>
+<a name="28"><span class="lineNum">      28 </span>            : #ifndef _CRTDBG_MAP_ALLOC</a>
+<a name="29"><span class="lineNum">      29 </span>            : //#define _CRTDBG_MAP_ALLOC</a>
+<a name="30"><span class="lineNum">      30 </span>            : #endif</a>
+<a name="31"><span class="lineNum">      31 </span>            : #include &lt;crtdbg.h&gt;</a>
+<a name="32"><span class="lineNum">      32 </span>            : #endif</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : #ifdef __cplusplus</a>
+<a name="35"><span class="lineNum">      35 </span>            :         extern &quot;C&quot; {</a>
+<a name="36"><span class="lineNum">      36 </span>            : #endif</a>
+<a name="37"><span class="lineNum">      37 </span>            : </a>
+<a name="38"><span class="lineNum">      38 </span>            : </a>
+<a name="39"><span class="lineNum">      39 </span>            : #define DUMB_MAJOR_VERSION    1</a>
+<a name="40"><span class="lineNum">      40 </span>            : #define DUMB_MINOR_VERSION    0</a>
+<a name="41"><span class="lineNum">      41 </span>            : #define DUMB_REVISION_VERSION 0</a>
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<a name="43"><span class="lineNum">      43 </span>            : #define DUMB_VERSION (DUMB_MAJOR_VERSION*10000 + DUMB_MINOR_VERSION*100 + DUMB_REVISION_VERSION)</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span>            : #define DUMB_VERSION_STR &quot;1.0.0&quot;</a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<a name="47"><span class="lineNum">      47 </span>            : #define DUMB_NAME &quot;DUMB v&quot; DUMB_VERSION_STR</a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span>            : #define DUMB_YEAR  2015</a>
+<a name="50"><span class="lineNum">      50 </span>            : #define DUMB_MONTH 1</a>
+<a name="51"><span class="lineNum">      51 </span>            : #define DUMB_DAY   17</a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span>            : #define DUMB_YEAR_STR2  &quot;15&quot;</a>
+<a name="54"><span class="lineNum">      54 </span>            : #define DUMB_YEAR_STR4  &quot;2015&quot;</a>
+<a name="55"><span class="lineNum">      55 </span>            : #define DUMB_MONTH_STR1 &quot;1&quot;</a>
+<a name="56"><span class="lineNum">      56 </span>            : #define DUMB_DAY_STR1   &quot;17&quot;</a>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<a name="58"><span class="lineNum">      58 </span>            : #if DUMB_MONTH &lt; 10</a>
+<a name="59"><span class="lineNum">      59 </span>            : #define DUMB_MONTH_STR2 &quot;0&quot; DUMB_MONTH_STR1</a>
+<a name="60"><span class="lineNum">      60 </span>            : #else</a>
+<a name="61"><span class="lineNum">      61 </span>            : #define DUMB_MONTH_STR2 DUMB_MONTH_STR1</a>
+<a name="62"><span class="lineNum">      62 </span>            : #endif</a>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<a name="64"><span class="lineNum">      64 </span>            : #if DUMB_DAY &lt; 10</a>
+<a name="65"><span class="lineNum">      65 </span>            : #define DUMB_DAY_STR2 &quot;0&quot; DUMB_DAY_STR1</a>
+<a name="66"><span class="lineNum">      66 </span>            : #else</a>
+<a name="67"><span class="lineNum">      67 </span>            : #define DUMB_DAY_STR2 DUMB_DAY_STR1</a>
+<a name="68"><span class="lineNum">      68 </span>            : #endif</a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            : </a>
+<a name="71"><span class="lineNum">      71 </span>            : /* WARNING: The month and day were inadvertently swapped in the v0.8 release.</a>
+<a name="72"><span class="lineNum">      72 </span>            :  *          Please do not compare this constant against any date in 2002. In</a>
+<a name="73"><span class="lineNum">      73 </span>            :  *          any case, DUMB_VERSION is probably more useful for this purpose.</a>
+<a name="74"><span class="lineNum">      74 </span>            :  */</a>
+<a name="75"><span class="lineNum">      75 </span>            : #define DUMB_DATE (DUMB_YEAR*10000 + DUMB_MONTH*100 + DUMB_DAY)</a>
+<a name="76"><span class="lineNum">      76 </span>            : </a>
+<a name="77"><span class="lineNum">      77 </span>            : #define DUMB_DATE_STR DUMB_DAY_STR1 &quot;.&quot; DUMB_MONTH_STR1 &quot;.&quot; DUMB_YEAR_STR4</a>
+<a name="78"><span class="lineNum">      78 </span>            : </a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span>            : #undef MIN</a>
+<a name="81"><span class="lineNum">      81 </span>            : #undef MAX</a>
+<a name="82"><span class="lineNum">      82 </span>            : #undef MID</a>
+<a name="83"><span class="lineNum">      83 </span>            : </a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 : #define MIN(x,y)   (((x) &lt; (y)) ? (x) : (y))</span></a>
+<a name="85"><span class="lineNum">      85 </span>            : #define MAX(x,y)   (((x) &gt; (y)) ? (x) : (y))</a>
+<a name="86"><span class="lineNum">      86 </span>            : #define MID(x,y,z) MAX((x), MIN((y), (z)))</a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span>            : #undef ABS</a>
+<a name="89"><span class="lineNum">      89 </span>            : #define ABS(x) (((x) &gt;= 0) ? (x) : (-(x)))</a>
+<a name="90"><span class="lineNum">      90 </span>            : </a>
+<a name="91"><span class="lineNum">      91 </span>            : </a>
+<a name="92"><span class="lineNum">      92 </span>            : #ifdef DEBUGMODE</a>
+<a name="93"><span class="lineNum">      93 </span>            : </a>
+<a name="94"><span class="lineNum">      94 </span>            : #ifndef ASSERT</a>
+<a name="95"><span class="lineNum">      95 </span>            : #include &lt;assert.h&gt;</a>
+<a name="96"><span class="lineNum">      96 </span>            : #define ASSERT(n) assert(n)</a>
+<a name="97"><span class="lineNum">      97 </span>            : #endif</a>
+<a name="98"><span class="lineNum">      98 </span>            : #ifndef TRACE</a>
+<a name="99"><span class="lineNum">      99 </span>            : // it would be nice if this did actually trace ...</a>
+<a name="100"><span class="lineNum">     100 </span>            : #define TRACE 1 ? (void)0 : (void)printf</a>
+<a name="101"><span class="lineNum">     101 </span>            : #endif</a>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<a name="103"><span class="lineNum">     103 </span>            : #else</a>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<a name="105"><span class="lineNum">     105 </span>            : #ifndef ASSERT</a>
+<a name="106"><span class="lineNum">     106 </span>            : #define ASSERT(n)</a>
+<a name="107"><span class="lineNum">     107 </span>            : #endif</a>
+<a name="108"><span class="lineNum">     108 </span>            : #ifndef TRACE</a>
+<a name="109"><span class="lineNum">     109 </span>            : #define TRACE 1 ? (void)0 : (void)printf</a>
+<a name="110"><span class="lineNum">     110 </span>            : #endif</a>
+<a name="111"><span class="lineNum">     111 </span>            : </a>
+<a name="112"><span class="lineNum">     112 </span>            : #endif</a>
+<a name="113"><span class="lineNum">     113 </span>            : </a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span>            : #define DUMB_ID(a,b,c,d) (((unsigned int)(a) &lt;&lt; 24) | \</a>
+<a name="116"><span class="lineNum">     116 </span>            :                           ((unsigned int)(b) &lt;&lt; 16) | \</a>
+<a name="117"><span class="lineNum">     117 </span>            :                           ((unsigned int)(c) &lt;&lt;  8) | \</a>
+<a name="118"><span class="lineNum">     118 </span>            :                           ((unsigned int)(d)      ))</a>
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<a name="120"><span class="lineNum">     120 </span>            : </a>
+<a name="121"><span class="lineNum">     121 </span>            : #ifdef __DOS__</a>
+<a name="122"><span class="lineNum">     122 </span>            : typedef long int32;</a>
+<a name="123"><span class="lineNum">     123 </span>            : typedef unsigned long uint32;</a>
+<a name="124"><span class="lineNum">     124 </span>            : typedef signed long sint32;</a>
+<a name="125"><span class="lineNum">     125 </span>            : #else</a>
+<a name="126"><span class="lineNum">     126 </span>            : typedef int int32;</a>
+<a name="127"><span class="lineNum">     127 </span>            : typedef unsigned int uint32;</a>
+<a name="128"><span class="lineNum">     128 </span>            : typedef signed int sint32;</a>
+<a name="129"><span class="lineNum">     129 </span>            : #endif</a>
+<a name="130"><span class="lineNum">     130 </span>            : </a>
+<a name="131"><span class="lineNum">     131 </span>            : #define CDECL</a>
+<a name="132"><span class="lineNum">     132 </span>            : #ifndef LONG_LONG</a>
+<a name="133"><span class="lineNum">     133 </span>            : #if defined __GNUC__ || defined __INTEL_COMPILER || defined __MWERKS__</a>
+<a name="134"><span class="lineNum">     134 </span>            : #define LONG_LONG long long</a>
+<a name="135"><span class="lineNum">     135 </span>            : #elif defined _MSC_VER || defined __WATCOMC__</a>
+<a name="136"><span class="lineNum">     136 </span>            : #define LONG_LONG __int64</a>
+<a name="137"><span class="lineNum">     137 </span>            : #undef CDECL</a>
+<a name="138"><span class="lineNum">     138 </span>            : #define CDECL __cdecl</a>
+<a name="139"><span class="lineNum">     139 </span>            : #elif defined __sgi</a>
+<a name="140"><span class="lineNum">     140 </span>            : #define LONG_LONG long long</a>
+<a name="141"><span class="lineNum">     141 </span>            : #else</a>
+<a name="142"><span class="lineNum">     142 </span>            : #error 64-bit integer type unknown</a>
+<a name="143"><span class="lineNum">     143 </span>            : #endif</a>
+<a name="144"><span class="lineNum">     144 </span>            : #endif</a>
+<a name="145"><span class="lineNum">     145 </span>            : </a>
+<a name="146"><span class="lineNum">     146 </span>            : #if __GNUC__ * 100 + __GNUC_MINOR__ &gt;= 301 /* GCC 3.1+ */</a>
+<a name="147"><span class="lineNum">     147 </span>            : #ifndef DUMB_DECLARE_DEPRECATED</a>
+<a name="148"><span class="lineNum">     148 </span>            : #define DUMB_DECLARE_DEPRECATED</a>
+<a name="149"><span class="lineNum">     149 </span>            : #endif</a>
+<a name="150"><span class="lineNum">     150 </span>            : #define DUMB_DEPRECATED __attribute__((__deprecated__))</a>
+<a name="151"><span class="lineNum">     151 </span>            : #else</a>
+<a name="152"><span class="lineNum">     152 </span>            : #define DUMB_DEPRECATED</a>
+<a name="153"><span class="lineNum">     153 </span>            : #endif</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span>            : #define DUMBEXPORT CDECL</a>
+<a name="156"><span class="lineNum">     156 </span>            : #define DUMBCALLBACK CDECL</a>
+<a name="157"><span class="lineNum">     157 </span>            : </a>
+<a name="158"><span class="lineNum">     158 </span>            : /* Basic Sample Type. Normal range is -0x800000 to 0x7FFFFF. */</a>
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<a name="160"><span class="lineNum">     160 </span>            : typedef int sample_t;</a>
+<a name="161"><span class="lineNum">     161 </span>            : </a>
+<a name="162"><span class="lineNum">     162 </span>            : </a>
+<a name="163"><span class="lineNum">     163 </span>            : /* Library Clean-up Management */</a>
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<a name="165"><span class="lineNum">     165 </span>            : int dumb_atexit(void (*proc)(void));</a>
+<a name="166"><span class="lineNum">     166 </span>            : </a>
+<a name="167"><span class="lineNum">     167 </span>            : void dumb_exit(void);</a>
+<a name="168"><span class="lineNum">     168 </span>            : </a>
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<a name="170"><span class="lineNum">     170 </span>            : /* File Input Functions */</a>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<a name="172"><span class="lineNum">     172 </span>            : typedef struct DUMBFILE_SYSTEM</a>
+<a name="173"><span class="lineNum">     173 </span>            : {</a>
+<a name="174"><span class="lineNum">     174 </span>            :         void *(DUMBCALLBACK *open)(const char *filename);</a>
+<a name="175"><span class="lineNum">     175 </span>            :         int (DUMBCALLBACK *skip)(void *f, long n);</a>
+<a name="176"><span class="lineNum">     176 </span>            :         int (DUMBCALLBACK *getc)(void *f);</a>
+<a name="177"><span class="lineNum">     177 </span>            :         int32 (DUMBCALLBACK *getnc)(char *ptr, int32 n, void *f);</a>
+<a name="178"><span class="lineNum">     178 </span>            :         void (DUMBCALLBACK *close)(void *f);</a>
+<a name="179"><span class="lineNum">     179 </span>            :     int (DUMBCALLBACK *seek)(void *f, long n);</a>
+<a name="180"><span class="lineNum">     180 </span>            :     long (DUMBCALLBACK *get_size)(void *f);</a>
+<a name="181"><span class="lineNum">     181 </span>            : }</a>
+<a name="182"><span class="lineNum">     182 </span>            : DUMBFILE_SYSTEM;</a>
+<a name="183"><span class="lineNum">     183 </span>            : </a>
+<a name="184"><span class="lineNum">     184 </span>            : typedef struct DUMBFILE DUMBFILE;</a>
+<a name="185"><span class="lineNum">     185 </span>            : </a>
+<a name="186"><span class="lineNum">     186 </span>            : void DUMBEXPORT register_dumbfile_system(const DUMBFILE_SYSTEM *dfs);</a>
+<a name="187"><span class="lineNum">     187 </span>            : </a>
+<a name="188"><span class="lineNum">     188 </span>            : DUMBFILE *DUMBEXPORT dumbfile_open(const char *filename);</a>
+<a name="189"><span class="lineNum">     189 </span>            : DUMBFILE *DUMBEXPORT dumbfile_open_ex(void *file, const DUMBFILE_SYSTEM *dfs);</a>
+<a name="190"><span class="lineNum">     190 </span>            : </a>
+<a name="191"><span class="lineNum">     191 </span>            : int32 DUMBEXPORT dumbfile_pos(DUMBFILE *f);</a>
+<a name="192"><span class="lineNum">     192 </span>            : int DUMBEXPORT dumbfile_skip(DUMBFILE *f, long n);</a>
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<a name="194"><span class="lineNum">     194 </span>            : #define DFS_SEEK_SET 0</a>
+<a name="195"><span class="lineNum">     195 </span>            : #define DFS_SEEK_CUR 1</a>
+<a name="196"><span class="lineNum">     196 </span>            : #define DFS_SEEK_END 2</a>
+<a name="197"><span class="lineNum">     197 </span>            : </a>
+<a name="198"><span class="lineNum">     198 </span>            : int DUMBEXPORT dumbfile_seek(DUMBFILE *f, long n, int origin);</a>
+<a name="199"><span class="lineNum">     199 </span>            : </a>
+<a name="200"><span class="lineNum">     200 </span>            : int32 DUMBEXPORT dumbfile_get_size(DUMBFILE *f);</a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span>            : int DUMBEXPORT dumbfile_getc(DUMBFILE *f);</a>
+<a name="203"><span class="lineNum">     203 </span>            : </a>
+<a name="204"><span class="lineNum">     204 </span>            : int DUMBEXPORT dumbfile_igetw(DUMBFILE *f);</a>
+<a name="205"><span class="lineNum">     205 </span>            : int DUMBEXPORT dumbfile_mgetw(DUMBFILE *f);</a>
+<a name="206"><span class="lineNum">     206 </span>            : </a>
+<a name="207"><span class="lineNum">     207 </span>            : int32 DUMBEXPORT dumbfile_igetl(DUMBFILE *f);</a>
+<a name="208"><span class="lineNum">     208 </span>            : int32 DUMBEXPORT dumbfile_mgetl(DUMBFILE *f);</a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span>            : uint32 DUMBEXPORT dumbfile_cgetul(DUMBFILE *f);</a>
+<a name="211"><span class="lineNum">     211 </span>            : sint32 DUMBEXPORT dumbfile_cgetsl(DUMBFILE *f);</a>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<a name="213"><span class="lineNum">     213 </span>            : int32 DUMBEXPORT dumbfile_getnc(char *ptr, int32 n, DUMBFILE *f);</a>
+<a name="214"><span class="lineNum">     214 </span>            : </a>
+<a name="215"><span class="lineNum">     215 </span>            : int DUMBEXPORT dumbfile_error(DUMBFILE *f);</a>
+<a name="216"><span class="lineNum">     216 </span>            : int DUMBEXPORT dumbfile_close(DUMBFILE *f);</a>
+<a name="217"><span class="lineNum">     217 </span>            : </a>
+<a name="218"><span class="lineNum">     218 </span>            : </a>
+<a name="219"><span class="lineNum">     219 </span>            : /* stdio File Input Module */</a>
+<a name="220"><span class="lineNum">     220 </span>            : </a>
+<a name="221"><span class="lineNum">     221 </span>            : void DUMBEXPORT dumb_register_stdfiles(void);</a>
+<a name="222"><span class="lineNum">     222 </span>            : </a>
+<a name="223"><span class="lineNum">     223 </span>            : DUMBFILE *DUMBEXPORT dumbfile_open_stdfile(FILE *p);</a>
+<a name="224"><span class="lineNum">     224 </span>            : </a>
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<a name="226"><span class="lineNum">     226 </span>            : /* Memory File Input Module */</a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span>            : DUMBFILE *DUMBEXPORT dumbfile_open_memory(const char *data, int32 size);</a>
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<a name="231"><span class="lineNum">     231 </span>            : /* DUH Management */</a>
+<a name="232"><span class="lineNum">     232 </span>            : </a>
+<a name="233"><span class="lineNum">     233 </span>            : typedef struct DUH DUH;</a>
+<a name="234"><span class="lineNum">     234 </span>            : </a>
+<a name="235"><span class="lineNum">     235 </span>            : #define DUH_SIGNATURE DUMB_ID('D','U','H','!')</a>
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<a name="237"><span class="lineNum">     237 </span>            : void DUMBEXPORT unload_duh(DUH *duh);</a>
+<a name="238"><span class="lineNum">     238 </span>            : </a>
+<a name="239"><span class="lineNum">     239 </span>            : DUH *DUMBEXPORT load_duh(const char *filename);</a>
+<a name="240"><span class="lineNum">     240 </span>            : DUH *DUMBEXPORT read_duh(DUMBFILE *f);</a>
+<a name="241"><span class="lineNum">     241 </span>            : </a>
+<a name="242"><span class="lineNum">     242 </span>            : int32 DUMBEXPORT duh_get_length(DUH *duh);</a>
+<a name="243"><span class="lineNum">     243 </span>            : </a>
+<a name="244"><span class="lineNum">     244 </span>            : const char *DUMBEXPORT duh_get_tag(DUH *duh, const char *key);</a>
+<a name="245"><span class="lineNum">     245 </span>            : </a>
+<a name="246"><span class="lineNum">     246 </span>            : /* Signal Rendering Functions */</a>
+<a name="247"><span class="lineNum">     247 </span>            : </a>
+<a name="248"><span class="lineNum">     248 </span>            : typedef struct DUH_SIGRENDERER DUH_SIGRENDERER;</a>
+<a name="249"><span class="lineNum">     249 </span>            : </a>
+<a name="250"><span class="lineNum">     250 </span>            : DUH_SIGRENDERER *DUMBEXPORT duh_start_sigrenderer(DUH *duh, int sig, int n_channels, int32 pos);</a>
+<a name="251"><span class="lineNum">     251 </span>            : </a>
+<a name="252"><span class="lineNum">     252 </span>            : #ifdef DUMB_DECLARE_DEPRECATED</a>
+<a name="253"><span class="lineNum">     253 </span>            : typedef void (*DUH_SIGRENDERER_CALLBACK)(void *data, sample_t **samples, int n_channels, int32 length);</a>
+<a name="254"><span class="lineNum">     254 </span>            : /* This is deprecated, but is not marked as such because GCC tends to</a>
+<a name="255"><span class="lineNum">     255 </span>            :  * complain spuriously when the typedef is used later. See comments below.</a>
+<a name="256"><span class="lineNum">     256 </span>            :  */</a>
+<a name="257"><span class="lineNum">     257 </span>            : </a>
+<a name="258"><span class="lineNum">     258 </span>            : void duh_sigrenderer_set_callback(</a>
+<a name="259"><span class="lineNum">     259 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="260"><span class="lineNum">     260 </span>            :         DUH_SIGRENDERER_CALLBACK callback, void *data</a>
+<a name="261"><span class="lineNum">     261 </span>            : ) DUMB_DEPRECATED;</a>
+<a name="262"><span class="lineNum">     262 </span>            : /* The 'callback' argument's type has changed for const-correctness. See the</a>
+<a name="263"><span class="lineNum">     263 </span>            :  * DUH_SIGRENDERER_CALLBACK definition just above. Also note that the samples</a>
+<a name="264"><span class="lineNum">     264 </span>            :  * in the buffer are now 256 times as large; the normal range is -0x800000 to</a>
+<a name="265"><span class="lineNum">     265 </span>            :  * 0x7FFFFF. The function has been renamed partly because its functionality</a>
+<a name="266"><span class="lineNum">     266 </span>            :  * has changed slightly and partly so that its name is more meaningful. The</a>
+<a name="267"><span class="lineNum">     267 </span>            :  * new one is duh_sigrenderer_set_analyser_callback(), and the typedef for</a>
+<a name="268"><span class="lineNum">     268 </span>            :  * the function pointer has also changed, from DUH_SIGRENDERER_CALLBACK to</a>
+<a name="269"><span class="lineNum">     269 </span>            :  * DUH_SIGRENDERER_ANALYSER_CALLBACK. (If you wanted to use this callback to</a>
+<a name="270"><span class="lineNum">     270 </span>            :  * apply a DSP effect, don't worry; there is a better way of doing this. It</a>
+<a name="271"><span class="lineNum">     271 </span>            :  * is undocumented, so contact me and I shall try to help. Contact details</a>
+<a name="272"><span class="lineNum">     272 </span>            :  * are in readme.txt.)</a>
+<a name="273"><span class="lineNum">     273 </span>            :  */</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            : typedef void (*DUH_SIGRENDERER_ANALYSER_CALLBACK)(void *data, const sample_t *const *samples, int n_channels, int32 length);</a>
+<a name="276"><span class="lineNum">     276 </span>            : /* This is deprecated, but is not marked as such because GCC tends to</a>
+<a name="277"><span class="lineNum">     277 </span>            :  * complain spuriously when the typedef is used later. See comments below.</a>
+<a name="278"><span class="lineNum">     278 </span>            :  */</a>
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<a name="280"><span class="lineNum">     280 </span>            : void duh_sigrenderer_set_analyser_callback(</a>
+<a name="281"><span class="lineNum">     281 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="282"><span class="lineNum">     282 </span>            :         DUH_SIGRENDERER_ANALYSER_CALLBACK callback, void *data</a>
+<a name="283"><span class="lineNum">     283 </span>            : ) DUMB_DEPRECATED;</a>
+<a name="284"><span class="lineNum">     284 </span>            : /* This is deprecated because the meaning of the 'samples' parameter in the</a>
+<a name="285"><span class="lineNum">     285 </span>            :  * callback needed to change. For stereo applications, the array used to be</a>
+<a name="286"><span class="lineNum">     286 </span>            :  * indexed with samples[channel][pos]. It is now indexed with</a>
+<a name="287"><span class="lineNum">     287 </span>            :  * samples[0][pos*2+channel]. Mono sample data are still indexed with</a>
+<a name="288"><span class="lineNum">     288 </span>            :  * samples[0][pos]. The array is still 2D because samples will probably only</a>
+<a name="289"><span class="lineNum">     289 </span>            :  * ever be interleaved in twos. In order to fix your code, adapt it to the</a>
+<a name="290"><span class="lineNum">     290 </span>            :  * new sample layout and then call</a>
+<a name="291"><span class="lineNum">     291 </span>            :  * duh_sigrenderer_set_sample_analyser_callback below instead of this</a>
+<a name="292"><span class="lineNum">     292 </span>            :  * function.</a>
+<a name="293"><span class="lineNum">     293 </span>            :  */</a>
+<a name="294"><span class="lineNum">     294 </span>            : #endif</a>
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span>            : typedef void (*DUH_SIGRENDERER_SAMPLE_ANALYSER_CALLBACK)(void *data, const sample_t *const *samples, int n_channels, int32 length);</a>
+<a name="297"><span class="lineNum">     297 </span>            : </a>
+<a name="298"><span class="lineNum">     298 </span>            : void duh_sigrenderer_set_sample_analyser_callback(</a>
+<a name="299"><span class="lineNum">     299 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="300"><span class="lineNum">     300 </span>            :         DUH_SIGRENDERER_SAMPLE_ANALYSER_CALLBACK callback, void *data</a>
+<a name="301"><span class="lineNum">     301 </span>            : );</a>
+<a name="302"><span class="lineNum">     302 </span>            : </a>
+<a name="303"><span class="lineNum">     303 </span>            : int DUMBEXPORT duh_sigrenderer_get_n_channels(DUH_SIGRENDERER *sigrenderer);</a>
+<a name="304"><span class="lineNum">     304 </span>            : int32 DUMBEXPORT duh_sigrenderer_get_position(DUH_SIGRENDERER *sigrenderer);</a>
+<a name="305"><span class="lineNum">     305 </span>            : </a>
+<a name="306"><span class="lineNum">     306 </span>            : void DUMBEXPORT duh_sigrenderer_set_sigparam(DUH_SIGRENDERER *sigrenderer, unsigned char id, int32 value);</a>
+<a name="307"><span class="lineNum">     307 </span>            : </a>
+<a name="308"><span class="lineNum">     308 </span>            : #ifdef DUMB_DECLARE_DEPRECATED</a>
+<a name="309"><span class="lineNum">     309 </span>            : int32 duh_sigrenderer_get_samples(</a>
+<a name="310"><span class="lineNum">     310 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="311"><span class="lineNum">     311 </span>            :         float volume, float delta,</a>
+<a name="312"><span class="lineNum">     312 </span>            :         int32 size, sample_t **samples</a>
+<a name="313"><span class="lineNum">     313 </span>            : ) DUMB_DEPRECATED;</a>
+<a name="314"><span class="lineNum">     314 </span>            : /* The sample format has changed, so if you were using this function,</a>
+<a name="315"><span class="lineNum">     315 </span>            :  * you should switch to duh_sigrenderer_generate_samples() and change</a>
+<a name="316"><span class="lineNum">     316 </span>            :  * how you interpret the samples array. See the comments for</a>
+<a name="317"><span class="lineNum">     317 </span>            :  * duh_sigrenderer_set_analyser_callback().</a>
+<a name="318"><span class="lineNum">     318 </span>            :  */</a>
+<a name="319"><span class="lineNum">     319 </span>            : #endif</a>
+<a name="320"><span class="lineNum">     320 </span>            : </a>
+<a name="321"><span class="lineNum">     321 </span>            : int32 DUMBEXPORT duh_sigrenderer_generate_samples(</a>
+<a name="322"><span class="lineNum">     322 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="323"><span class="lineNum">     323 </span>            :         double volume, double delta,</a>
+<a name="324"><span class="lineNum">     324 </span>            :         int32 size, sample_t **samples</a>
+<a name="325"><span class="lineNum">     325 </span>            : );</a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span>            : void DUMBEXPORT duh_sigrenderer_get_current_sample(DUH_SIGRENDERER *sigrenderer, float volume, sample_t *samples);</a>
+<a name="328"><span class="lineNum">     328 </span>            : </a>
+<a name="329"><span class="lineNum">     329 </span>            : void DUMBEXPORT duh_end_sigrenderer(DUH_SIGRENDERER *sigrenderer);</a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span>            : </a>
+<a name="332"><span class="lineNum">     332 </span>            : /* DUH Rendering Functions */</a>
+<a name="333"><span class="lineNum">     333 </span>            : </a>
+<a name="334"><span class="lineNum">     334 </span>            : int32 DUMBEXPORT duh_render(</a>
+<a name="335"><span class="lineNum">     335 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="336"><span class="lineNum">     336 </span>            :         int bits, int unsign,</a>
+<a name="337"><span class="lineNum">     337 </span>            :         float volume, float delta,</a>
+<a name="338"><span class="lineNum">     338 </span>            :         int32 size, void *sptr</a>
+<a name="339"><span class="lineNum">     339 </span>            : );</a>
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<a name="341"><span class="lineNum">     341 </span>            : #ifdef DUMB_DECLARE_DEPRECATED</a>
+<a name="342"><span class="lineNum">     342 </span>            : </a>
+<a name="343"><span class="lineNum">     343 </span>            : int32 duh_render_signal(</a>
+<a name="344"><span class="lineNum">     344 </span>            :         DUH_SIGRENDERER *sigrenderer,</a>
+<a name="345"><span class="lineNum">     345 </span>            :         float volume, float delta,</a>
+<a name="346"><span class="lineNum">     346 </span>            :         int32 size, sample_t **samples</a>
+<a name="347"><span class="lineNum">     347 </span>            : ) DUMB_DEPRECATED;</a>
+<a name="348"><span class="lineNum">     348 </span>            : /* Please use duh_sigrenderer_generate_samples(), and see the</a>
+<a name="349"><span class="lineNum">     349 </span>            :  * comments for the deprecated duh_sigrenderer_get_samples() too.</a>
+<a name="350"><span class="lineNum">     350 </span>            :  */</a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span>            : typedef DUH_SIGRENDERER DUH_RENDERER DUMB_DEPRECATED;</a>
+<a name="353"><span class="lineNum">     353 </span>            : /* Please use DUH_SIGRENDERER instead of DUH_RENDERER. */</a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span>            : DUH_SIGRENDERER *duh_start_renderer(DUH *duh, int n_channels, int32 pos) DUMB_DEPRECATED;</a>
+<a name="356"><span class="lineNum">     356 </span>            : /* Please use duh_start_sigrenderer() instead. Pass 0 for 'sig'. */</a>
+<a name="357"><span class="lineNum">     357 </span>            : </a>
+<a name="358"><span class="lineNum">     358 </span>            : int duh_renderer_get_n_channels(DUH_SIGRENDERER *dr) DUMB_DEPRECATED;</a>
+<a name="359"><span class="lineNum">     359 </span>            : int32 duh_renderer_get_position(DUH_SIGRENDERER *dr) DUMB_DEPRECATED;</a>
+<a name="360"><span class="lineNum">     360 </span>            : /* Please use the duh_sigrenderer_*() equivalents of these two functions. */</a>
+<a name="361"><span class="lineNum">     361 </span>            : </a>
+<a name="362"><span class="lineNum">     362 </span>            : void duh_end_renderer(DUH_SIGRENDERER *dr) DUMB_DEPRECATED;</a>
+<a name="363"><span class="lineNum">     363 </span>            : /* Please use duh_end_sigrenderer() instead. */</a>
+<a name="364"><span class="lineNum">     364 </span>            : </a>
+<a name="365"><span class="lineNum">     365 </span>            : DUH_SIGRENDERER *duh_renderer_encapsulate_sigrenderer(DUH_SIGRENDERER *sigrenderer) DUMB_DEPRECATED;</a>
+<a name="366"><span class="lineNum">     366 </span>            : DUH_SIGRENDERER *duh_renderer_get_sigrenderer(DUH_SIGRENDERER *dr) DUMB_DEPRECATED;</a>
+<a name="367"><span class="lineNum">     367 </span>            : DUH_SIGRENDERER *duh_renderer_decompose_to_sigrenderer(DUH_SIGRENDERER *dr) DUMB_DEPRECATED;</a>
+<a name="368"><span class="lineNum">     368 </span>            : /* These functions have become no-ops that just return the parameter.</a>
+<a name="369"><span class="lineNum">     369 </span>            :  * So, for instance, replace</a>
+<a name="370"><span class="lineNum">     370 </span>            :  *   duh_renderer_encapsulate_sigrenderer(my_sigrenderer)</a>
+<a name="371"><span class="lineNum">     371 </span>            :  * with</a>
+<a name="372"><span class="lineNum">     372 </span>            :  *   my_sigrenderer</a>
+<a name="373"><span class="lineNum">     373 </span>            :  */</a>
+<a name="374"><span class="lineNum">     374 </span>            : </a>
+<a name="375"><span class="lineNum">     375 </span>            : #endif</a>
+<a name="376"><span class="lineNum">     376 </span>            : </a>
+<a name="377"><span class="lineNum">     377 </span>            : </a>
+<a name="378"><span class="lineNum">     378 </span>            : /* Impulse Tracker Support */</a>
+<a name="379"><span class="lineNum">     379 </span>            : </a>
+<a name="380"><span class="lineNum">     380 </span>            : extern int dumb_it_max_to_mix;</a>
+<a name="381"><span class="lineNum">     381 </span>            : </a>
+<a name="382"><span class="lineNum">     382 </span>            : typedef struct DUMB_IT_SIGDATA DUMB_IT_SIGDATA;</a>
+<a name="383"><span class="lineNum">     383 </span>            : typedef struct DUMB_IT_SIGRENDERER DUMB_IT_SIGRENDERER;</a>
+<a name="384"><span class="lineNum">     384 </span>            : </a>
+<a name="385"><span class="lineNum">     385 </span>            : DUMB_IT_SIGDATA *DUMBEXPORT duh_get_it_sigdata(DUH *duh);</a>
+<a name="386"><span class="lineNum">     386 </span>            : DUH_SIGRENDERER *DUMBEXPORT duh_encapsulate_it_sigrenderer(DUMB_IT_SIGRENDERER *it_sigrenderer, int n_channels, int32 pos);</a>
+<a name="387"><span class="lineNum">     387 </span>            : DUMB_IT_SIGRENDERER *DUMBEXPORT duh_get_it_sigrenderer(DUH_SIGRENDERER *sigrenderer);</a>
+<a name="388"><span class="lineNum">     388 </span>            : </a>
+<a name="389"><span class="lineNum">     389 </span>            : int DUMBEXPORT dumb_it_trim_silent_patterns(DUH * duh);</a>
+<a name="390"><span class="lineNum">     390 </span>            : </a>
+<a name="391"><span class="lineNum">     391 </span>            : typedef int (*dumb_scan_callback)(void *, int, int32);</a>
+<a name="392"><span class="lineNum">     392 </span>            : int DUMBEXPORT dumb_it_scan_for_playable_orders(DUMB_IT_SIGDATA *sigdata, dumb_scan_callback callback, void * callback_data);</a>
+<a name="393"><span class="lineNum">     393 </span>            : </a>
+<a name="394"><span class="lineNum">     394 </span>            : DUH_SIGRENDERER *DUMBEXPORT dumb_it_start_at_order(DUH *duh, int n_channels, int startorder);</a>
+<a name="395"><span class="lineNum">     395 </span>            : </a>
+<a name="396"><span class="lineNum">     396 </span>            : enum</a>
+<a name="397"><span class="lineNum">     397 </span>            : {</a>
+<a name="398"><span class="lineNum">     398 </span>            :     DUMB_IT_RAMP_NONE = 0,</a>
+<a name="399"><span class="lineNum">     399 </span>            :     DUMB_IT_RAMP_ONOFF_ONLY = 1,</a>
+<a name="400"><span class="lineNum">     400 </span>            :     DUMB_IT_RAMP_FULL = 2</a>
+<a name="401"><span class="lineNum">     401 </span>            : };</a>
+<a name="402"><span class="lineNum">     402 </span>            :         </a>
+<a name="403"><span class="lineNum">     403 </span>            : void DUMBEXPORT dumb_it_set_ramp_style(DUMB_IT_SIGRENDERER * sigrenderer, int ramp_style);</a>
+<a name="404"><span class="lineNum">     404 </span>            :         </a>
+<a name="405"><span class="lineNum">     405 </span>            : void DUMBEXPORT dumb_it_set_loop_callback(DUMB_IT_SIGRENDERER *sigrenderer, int (DUMBCALLBACK *callback)(void *data), void *data);</a>
+<a name="406"><span class="lineNum">     406 </span>            : void DUMBEXPORT dumb_it_set_xm_speed_zero_callback(DUMB_IT_SIGRENDERER *sigrenderer, int (DUMBCALLBACK *callback)(void *data), void *data);</a>
+<a name="407"><span class="lineNum">     407 </span>            : void DUMBEXPORT dumb_it_set_midi_callback(DUMB_IT_SIGRENDERER *sigrenderer, int (DUMBCALLBACK *callback)(void *data, int channel, unsigned char midi_byte), void *data);</a>
+<a name="408"><span class="lineNum">     408 </span>            : void DUMBEXPORT dumb_it_set_global_volume_zero_callback(DUMB_IT_SIGRENDERER *sigrenderer, int (DUMBCALLBACK *callback)(void *data), void *data);</a>
+<a name="409"><span class="lineNum">     409 </span>            : </a>
+<a name="410"><span class="lineNum">     410 </span>            : int DUMBCALLBACK dumb_it_callback_terminate(void *data);</a>
+<a name="411"><span class="lineNum">     411 </span>            : int DUMBCALLBACK dumb_it_callback_midi_block(void *data, int channel, unsigned char midi_byte);</a>
+<a name="412"><span class="lineNum">     412 </span>            : </a>
+<a name="413"><span class="lineNum">     413 </span>            : /* dumb_*_mod*: restrict_ |= 1-Don't read 15 sample files / 2-Use old pattern counting method */</a>
+<a name="414"><span class="lineNum">     414 </span>            : </a>
+<a name="415"><span class="lineNum">     415 </span>            : DUH *DUMBEXPORT dumb_load_it(const char *filename);</a>
+<a name="416"><span class="lineNum">     416 </span>            : DUH *DUMBEXPORT dumb_load_xm(const char *filename);</a>
+<a name="417"><span class="lineNum">     417 </span>            : DUH *DUMBEXPORT dumb_load_s3m(const char *filename);</a>
+<a name="418"><span class="lineNum">     418 </span>            : DUH *DUMBEXPORT dumb_load_stm(const char *filename);</a>
+<a name="419"><span class="lineNum">     419 </span>            : DUH *DUMBEXPORT dumb_load_mod(const char *filename, int restrict_);</a>
+<a name="420"><span class="lineNum">     420 </span>            : DUH *DUMBEXPORT dumb_load_ptm(const char *filename);</a>
+<a name="421"><span class="lineNum">     421 </span>            : DUH *DUMBEXPORT dumb_load_669(const char *filename);</a>
+<a name="422"><span class="lineNum">     422 </span>            : DUH *DUMBEXPORT dumb_load_psm(const char *filename, int subsong);</a>
+<a name="423"><span class="lineNum">     423 </span>            : DUH *DUMBEXPORT dumb_load_old_psm(const char * filename);</a>
+<a name="424"><span class="lineNum">     424 </span>            : DUH *DUMBEXPORT dumb_load_mtm(const char *filename);</a>
+<a name="425"><span class="lineNum">     425 </span>            : DUH *DUMBEXPORT dumb_load_riff(const char *filename);</a>
+<a name="426"><span class="lineNum">     426 </span>            : DUH *DUMBEXPORT dumb_load_asy(const char *filename);</a>
+<a name="427"><span class="lineNum">     427 </span>            : DUH *DUMBEXPORT dumb_load_amf(const char *filename);</a>
+<a name="428"><span class="lineNum">     428 </span>            : DUH *DUMBEXPORT dumb_load_okt(const char *filename);</a>
+<a name="429"><span class="lineNum">     429 </span>            : </a>
+<a name="430"><span class="lineNum">     430 </span>            : DUH *DUMBEXPORT dumb_read_it(DUMBFILE *f);</a>
+<a name="431"><span class="lineNum">     431 </span>            : DUH *DUMBEXPORT dumb_read_xm(DUMBFILE *f);</a>
+<a name="432"><span class="lineNum">     432 </span>            : DUH *DUMBEXPORT dumb_read_s3m(DUMBFILE *f);</a>
+<a name="433"><span class="lineNum">     433 </span>            : DUH *DUMBEXPORT dumb_read_stm(DUMBFILE *f);</a>
+<a name="434"><span class="lineNum">     434 </span>            : DUH *DUMBEXPORT dumb_read_mod(DUMBFILE *f, int restrict_);</a>
+<a name="435"><span class="lineNum">     435 </span>            : DUH *DUMBEXPORT dumb_read_ptm(DUMBFILE *f);</a>
+<a name="436"><span class="lineNum">     436 </span>            : DUH *DUMBEXPORT dumb_read_669(DUMBFILE *f);</a>
+<a name="437"><span class="lineNum">     437 </span>            : DUH *DUMBEXPORT dumb_read_psm(DUMBFILE *f, int subsong);</a>
+<a name="438"><span class="lineNum">     438 </span>            : DUH *DUMBEXPORT dumb_read_old_psm(DUMBFILE *f);</a>
+<a name="439"><span class="lineNum">     439 </span>            : DUH *DUMBEXPORT dumb_read_mtm(DUMBFILE *f);</a>
+<a name="440"><span class="lineNum">     440 </span>            : DUH *DUMBEXPORT dumb_read_riff(DUMBFILE *f);</a>
+<a name="441"><span class="lineNum">     441 </span>            : DUH *DUMBEXPORT dumb_read_asy(DUMBFILE *f);</a>
+<a name="442"><span class="lineNum">     442 </span>            : DUH *DUMBEXPORT dumb_read_amf(DUMBFILE *f);</a>
+<a name="443"><span class="lineNum">     443 </span>            : DUH *DUMBEXPORT dumb_read_okt(DUMBFILE *f);</a>
+<a name="444"><span class="lineNum">     444 </span>            : </a>
+<a name="445"><span class="lineNum">     445 </span>            : DUH *DUMBEXPORT dumb_load_it_quick(const char *filename);</a>
+<a name="446"><span class="lineNum">     446 </span>            : DUH *DUMBEXPORT dumb_load_xm_quick(const char *filename);</a>
+<a name="447"><span class="lineNum">     447 </span>            : DUH *DUMBEXPORT dumb_load_s3m_quick(const char *filename);</a>
+<a name="448"><span class="lineNum">     448 </span>            : DUH *DUMBEXPORT dumb_load_stm_quick(const char *filename);</a>
+<a name="449"><span class="lineNum">     449 </span>            : DUH *DUMBEXPORT dumb_load_mod_quick(const char *filename, int restrict_);</a>
+<a name="450"><span class="lineNum">     450 </span>            : DUH *DUMBEXPORT dumb_load_ptm_quick(const char *filename);</a>
+<a name="451"><span class="lineNum">     451 </span>            : DUH *DUMBEXPORT dumb_load_669_quick(const char *filename);</a>
+<a name="452"><span class="lineNum">     452 </span>            : DUH *DUMBEXPORT dumb_load_psm_quick(const char *filename, int subsong);</a>
+<a name="453"><span class="lineNum">     453 </span>            : DUH *DUMBEXPORT dumb_load_old_psm_quick(const char * filename);</a>
+<a name="454"><span class="lineNum">     454 </span>            : DUH *DUMBEXPORT dumb_load_mtm_quick(const char *filename);</a>
+<a name="455"><span class="lineNum">     455 </span>            : DUH *DUMBEXPORT dumb_load_riff_quick(const char *filename);</a>
+<a name="456"><span class="lineNum">     456 </span>            : DUH *DUMBEXPORT dumb_load_asy_quick(const char *filename);</a>
+<a name="457"><span class="lineNum">     457 </span>            : DUH *DUMBEXPORT dumb_load_amf_quick(const char *filename);</a>
+<a name="458"><span class="lineNum">     458 </span>            : DUH *DUMBEXPORT dumb_load_okt_quick(const char *filename);</a>
+<a name="459"><span class="lineNum">     459 </span>            : </a>
+<a name="460"><span class="lineNum">     460 </span>            : DUH *DUMBEXPORT dumb_read_it_quick(DUMBFILE *f);</a>
+<a name="461"><span class="lineNum">     461 </span>            : DUH *DUMBEXPORT dumb_read_xm_quick(DUMBFILE *f);</a>
+<a name="462"><span class="lineNum">     462 </span>            : DUH *DUMBEXPORT dumb_read_s3m_quick(DUMBFILE *f);</a>
+<a name="463"><span class="lineNum">     463 </span>            : DUH *DUMBEXPORT dumb_read_stm_quick(DUMBFILE *f);</a>
+<a name="464"><span class="lineNum">     464 </span>            : DUH *DUMBEXPORT dumb_read_mod_quick(DUMBFILE *f, int restrict_);</a>
+<a name="465"><span class="lineNum">     465 </span>            : DUH *DUMBEXPORT dumb_read_ptm_quick(DUMBFILE *f);</a>
+<a name="466"><span class="lineNum">     466 </span>            : DUH *DUMBEXPORT dumb_read_669_quick(DUMBFILE *f);</a>
+<a name="467"><span class="lineNum">     467 </span>            : DUH *DUMBEXPORT dumb_read_psm_quick(DUMBFILE *f, int subsong);</a>
+<a name="468"><span class="lineNum">     468 </span>            : DUH *DUMBEXPORT dumb_read_old_psm_quick(DUMBFILE *f);</a>
+<a name="469"><span class="lineNum">     469 </span>            : DUH *DUMBEXPORT dumb_read_mtm_quick(DUMBFILE *f);</a>
+<a name="470"><span class="lineNum">     470 </span>            : DUH *DUMBEXPORT dumb_read_riff_quick(DUMBFILE *f);</a>
+<a name="471"><span class="lineNum">     471 </span>            : DUH *DUMBEXPORT dumb_read_asy_quick(DUMBFILE *f);</a>
+<a name="472"><span class="lineNum">     472 </span>            : DUH *DUMBEXPORT dumb_read_amf_quick(DUMBFILE *f);</a>
+<a name="473"><span class="lineNum">     473 </span>            : DUH *DUMBEXPORT dumb_read_okt_quick(DUMBFILE *f);</a>
+<a name="474"><span class="lineNum">     474 </span>            : </a>
+<a name="475"><span class="lineNum">     475 </span>            : DUH *DUMBEXPORT dumb_read_any_quick(DUMBFILE *f, int restrict_, int subsong);</a>
+<a name="476"><span class="lineNum">     476 </span>            : DUH *DUMBEXPORT dumb_read_any(DUMBFILE *f, int restrict_, int subsong);</a>
+<a name="477"><span class="lineNum">     477 </span>            : </a>
+<a name="478"><span class="lineNum">     478 </span>            : DUH *DUMBEXPORT dumb_load_any_quick(const char *filename, int restrict_, int subsong);</a>
+<a name="479"><span class="lineNum">     479 </span>            : DUH *DUMBEXPORT dumb_load_any(const char *filename, int restrict_, int subsong);</a>
+<a name="480"><span class="lineNum">     480 </span>            : </a>
+<a name="481"><span class="lineNum">     481 </span>            : int32 DUMBEXPORT dumb_it_build_checkpoints(DUMB_IT_SIGDATA *sigdata, int startorder);</a>
+<a name="482"><span class="lineNum">     482 </span>            : void DUMBEXPORT dumb_it_do_initial_runthrough(DUH *duh);</a>
+<a name="483"><span class="lineNum">     483 </span>            : </a>
+<a name="484"><span class="lineNum">     484 </span>            : int DUMBEXPORT dumb_get_psm_subsong_count(DUMBFILE *f);</a>
+<a name="485"><span class="lineNum">     485 </span>            : </a>
+<a name="486"><span class="lineNum">     486 </span>            : const unsigned char *DUMBEXPORT dumb_it_sd_get_song_message(DUMB_IT_SIGDATA *sd);</a>
+<a name="487"><span class="lineNum">     487 </span>            : </a>
+<a name="488"><span class="lineNum">     488 </span>            : int DUMBEXPORT dumb_it_sd_get_n_orders(DUMB_IT_SIGDATA *sd);</a>
+<a name="489"><span class="lineNum">     489 </span>            : int DUMBEXPORT dumb_it_sd_get_n_samples(DUMB_IT_SIGDATA *sd);</a>
+<a name="490"><span class="lineNum">     490 </span>            : int DUMBEXPORT dumb_it_sd_get_n_instruments(DUMB_IT_SIGDATA *sd);</a>
+<a name="491"><span class="lineNum">     491 </span>            : </a>
+<a name="492"><span class="lineNum">     492 </span>            : const unsigned char *DUMBEXPORT dumb_it_sd_get_sample_name(DUMB_IT_SIGDATA *sd, int i);</a>
+<a name="493"><span class="lineNum">     493 </span>            : const unsigned char *DUMBEXPORT dumb_it_sd_get_sample_filename(DUMB_IT_SIGDATA *sd, int i);</a>
+<a name="494"><span class="lineNum">     494 </span>            : const unsigned char *DUMBEXPORT dumb_it_sd_get_instrument_name(DUMB_IT_SIGDATA *sd, int i);</a>
+<a name="495"><span class="lineNum">     495 </span>            : const unsigned char *DUMBEXPORT dumb_it_sd_get_instrument_filename(DUMB_IT_SIGDATA *sd, int i);</a>
+<a name="496"><span class="lineNum">     496 </span>            : </a>
+<a name="497"><span class="lineNum">     497 </span>            : int DUMBEXPORT dumb_it_sd_get_initial_global_volume(DUMB_IT_SIGDATA *sd);</a>
+<a name="498"><span class="lineNum">     498 </span>            : void DUMBEXPORT dumb_it_sd_set_initial_global_volume(DUMB_IT_SIGDATA *sd, int gv);</a>
+<a name="499"><span class="lineNum">     499 </span>            : </a>
+<a name="500"><span class="lineNum">     500 </span>            : int DUMBEXPORT dumb_it_sd_get_mixing_volume(DUMB_IT_SIGDATA *sd);</a>
+<a name="501"><span class="lineNum">     501 </span>            : void DUMBEXPORT dumb_it_sd_set_mixing_volume(DUMB_IT_SIGDATA *sd, int mv);</a>
+<a name="502"><span class="lineNum">     502 </span>            : </a>
+<a name="503"><span class="lineNum">     503 </span>            : int DUMBEXPORT dumb_it_sd_get_initial_speed(DUMB_IT_SIGDATA *sd);</a>
+<a name="504"><span class="lineNum">     504 </span>            : void DUMBEXPORT dumb_it_sd_set_initial_speed(DUMB_IT_SIGDATA *sd, int speed);</a>
+<a name="505"><span class="lineNum">     505 </span>            : </a>
+<a name="506"><span class="lineNum">     506 </span>            : int DUMBEXPORT dumb_it_sd_get_initial_tempo(DUMB_IT_SIGDATA *sd);</a>
+<a name="507"><span class="lineNum">     507 </span>            : void DUMBEXPORT dumb_it_sd_set_initial_tempo(DUMB_IT_SIGDATA *sd, int tempo);</a>
+<a name="508"><span class="lineNum">     508 </span>            : </a>
+<a name="509"><span class="lineNum">     509 </span>            : int DUMBEXPORT dumb_it_sd_get_initial_channel_volume(DUMB_IT_SIGDATA *sd, int channel);</a>
+<a name="510"><span class="lineNum">     510 </span>            : void DUMBEXPORT dumb_it_sd_set_initial_channel_volume(DUMB_IT_SIGDATA *sd, int channel, int volume);</a>
+<a name="511"><span class="lineNum">     511 </span>            : </a>
+<a name="512"><span class="lineNum">     512 </span>            : int DUMBEXPORT dumb_it_sr_get_current_order(DUMB_IT_SIGRENDERER *sr);</a>
+<a name="513"><span class="lineNum">     513 </span>            : int DUMBEXPORT dumb_it_sr_get_current_row(DUMB_IT_SIGRENDERER *sr);</a>
+<a name="514"><span class="lineNum">     514 </span>            : </a>
+<a name="515"><span class="lineNum">     515 </span>            : int DUMBEXPORT dumb_it_sr_get_global_volume(DUMB_IT_SIGRENDERER *sr);</a>
+<a name="516"><span class="lineNum">     516 </span>            : void DUMBEXPORT dumb_it_sr_set_global_volume(DUMB_IT_SIGRENDERER *sr, int gv);</a>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<a name="518"><span class="lineNum">     518 </span>            : int DUMBEXPORT dumb_it_sr_get_tempo(DUMB_IT_SIGRENDERER *sr);</a>
+<a name="519"><span class="lineNum">     519 </span>            : void DUMBEXPORT dumb_it_sr_set_tempo(DUMB_IT_SIGRENDERER *sr, int tempo);</a>
+<a name="520"><span class="lineNum">     520 </span>            : </a>
+<a name="521"><span class="lineNum">     521 </span>            : int DUMBEXPORT dumb_it_sr_get_speed(DUMB_IT_SIGRENDERER *sr);</a>
+<a name="522"><span class="lineNum">     522 </span>            : void DUMBEXPORT dumb_it_sr_set_speed(DUMB_IT_SIGRENDERER *sr, int speed);</a>
+<a name="523"><span class="lineNum">     523 </span>            : </a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 : #define DUMB_IT_N_CHANNELS 64</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 : #define DUMB_IT_N_NNA_CHANNELS 192</span></a>
+<a name="526"><span class="lineNum">     526 </span>            : #define DUMB_IT_TOTAL_CHANNELS (DUMB_IT_N_CHANNELS + DUMB_IT_N_NNA_CHANNELS)</a>
+<a name="527"><span class="lineNum">     527 </span>            : </a>
+<a name="528"><span class="lineNum">     528 </span>            : /* Channels passed to any of these functions are 0-based */</a>
+<a name="529"><span class="lineNum">     529 </span>            : int DUMBEXPORT dumb_it_sr_get_channel_volume(DUMB_IT_SIGRENDERER *sr, int channel);</a>
+<a name="530"><span class="lineNum">     530 </span>            : void DUMBEXPORT dumb_it_sr_set_channel_volume(DUMB_IT_SIGRENDERER *sr, int channel, int volume);</a>
+<a name="531"><span class="lineNum">     531 </span>            : </a>
+<a name="532"><span class="lineNum">     532 </span>            : int DUMBEXPORT dumb_it_sr_get_channel_muted(DUMB_IT_SIGRENDERER *sr, int channel);</a>
+<a name="533"><span class="lineNum">     533 </span>            : void DUMBEXPORT dumb_it_sr_set_channel_muted(DUMB_IT_SIGRENDERER *sr, int channel, int muted);</a>
+<a name="534"><span class="lineNum">     534 </span>            : </a>
+<a name="535"><span class="lineNum">     535 </span>            : typedef struct DUMB_IT_CHANNEL_STATE DUMB_IT_CHANNEL_STATE;</a>
+<a name="536"><span class="lineNum">     536 </span>            : </a>
+<a name="537"><span class="lineNum">     537 </span>            : struct DUMB_IT_CHANNEL_STATE</a>
+<a name="538"><span class="lineNum">     538 </span>            : {</a>
+<a name="539"><span class="lineNum">     539 </span>            :         int channel; /* 0-based; meaningful for NNA channels */</a>
+<a name="540"><span class="lineNum">     540 </span>            :         int sample; /* 1-based; 0 if nothing playing, then other fields undef */</a>
+<a name="541"><span class="lineNum">     541 </span>            :         int freq; /* in Hz */</a>
+<a name="542"><span class="lineNum">     542 </span>            :         float volume; /* 1.0 maximum; affected by ALL factors, inc. mixing vol */</a>
+<a name="543"><span class="lineNum">     543 </span>            :         unsigned char pan; /* 0-64, 100 for surround */</a>
+<a name="544"><span class="lineNum">     544 </span>            :         signed char subpan; /* use (pan + subpan/256.0f) or ((pan&lt;&lt;8)+subpan) */</a>
+<a name="545"><span class="lineNum">     545 </span>            :         unsigned char filter_cutoff;    /* 0-127    cutoff=127 AND resonance=0 */</a>
+<a name="546"><span class="lineNum">     546 </span>            :         unsigned char filter_subcutoff; /* 0-255      -&gt; no filters (subcutoff */</a>
+<a name="547"><span class="lineNum">     547 </span>            :         unsigned char filter_resonance; /* 0-127        always 0 in this case) */</a>
+<a name="548"><span class="lineNum">     548 </span>            :         /* subcutoff only changes from zero if filter envelopes are in use. The</a>
+<a name="549"><span class="lineNum">     549 </span>            :          * calculation (filter_cutoff + filter_subcutoff/256.0f) gives a more</a>
+<a name="550"><span class="lineNum">     550 </span>            :          * accurate filter cutoff measurement as a float. It would often be more</a>
+<a name="551"><span class="lineNum">     551 </span>            :          * useful to use a scaled int such as ((cutoff&lt;&lt;8) + subcutoff).</a>
+<a name="552"><span class="lineNum">     552 </span>            :          */</a>
+<a name="553"><span class="lineNum">     553 </span>            : };</a>
+<a name="554"><span class="lineNum">     554 </span>            : </a>
+<a name="555"><span class="lineNum">     555 </span>            : /* Values of 64 or more will access NNA channels here. */</a>
+<a name="556"><span class="lineNum">     556 </span>            : void DUMBEXPORT dumb_it_sr_get_channel_state(DUMB_IT_SIGRENDERER *sr, int channel, DUMB_IT_CHANNEL_STATE *state);</a>
+<a name="557"><span class="lineNum">     557 </span>            : </a>
+<a name="558"><span class="lineNum">     558 </span>            : </a>
+<a name="559"><span class="lineNum">     559 </span>            : /* Signal Design Helper Values */</a>
+<a name="560"><span class="lineNum">     560 </span>            : </a>
+<a name="561"><span class="lineNum">     561 </span>            : /* Use pow(DUMB_SEMITONE_BASE, n) to get the 'delta' value to transpose up by</a>
+<a name="562"><span class="lineNum">     562 </span>            :  * n semitones. To transpose down, use negative n.</a>
+<a name="563"><span class="lineNum">     563 </span>            :  */</a>
+<a name="564"><span class="lineNum">     564 </span>            : #define DUMB_SEMITONE_BASE 1.059463094359295309843105314939748495817</a>
+<a name="565"><span class="lineNum">     565 </span>            : </a>
+<a name="566"><span class="lineNum">     566 </span>            : /* Use pow(DUMB_QUARTERTONE_BASE, n) to get the 'delta' value to transpose up</a>
+<a name="567"><span class="lineNum">     567 </span>            :  * by n quartertones. To transpose down, use negative n.</a>
+<a name="568"><span class="lineNum">     568 </span>            :  */</a>
+<a name="569"><span class="lineNum">     569 </span>            : #define DUMB_QUARTERTONE_BASE 1.029302236643492074463779317738953977823</a>
+<a name="570"><span class="lineNum">     570 </span>            : </a>
+<a name="571"><span class="lineNum">     571 </span>            : /* Use pow(DUMB_PITCH_BASE, n) to get the 'delta' value to transpose up by n</a>
+<a name="572"><span class="lineNum">     572 </span>            :  * units. In this case, 256 units represent one semitone; 3072 units</a>
+<a name="573"><span class="lineNum">     573 </span>            :  * represent one octave. These units are used by the sequence signal (SEQU).</a>
+<a name="574"><span class="lineNum">     574 </span>            :  */</a>
+<a name="575"><span class="lineNum">     575 </span>            : #define DUMB_PITCH_BASE 1.000225659305069791926712241547647863626</a>
+<a name="576"><span class="lineNum">     576 </span>            : </a>
+<a name="577"><span class="lineNum">     577 </span>            : </a>
+<a name="578"><span class="lineNum">     578 </span>            : /* Signal Design Function Types */</a>
+<a name="579"><span class="lineNum">     579 </span>            : </a>
+<a name="580"><span class="lineNum">     580 </span>            : typedef void sigdata_t;</a>
+<a name="581"><span class="lineNum">     581 </span>            : typedef void sigrenderer_t;</a>
+<a name="582"><span class="lineNum">     582 </span>            : </a>
+<a name="583"><span class="lineNum">     583 </span>            : typedef sigdata_t *(*DUH_LOAD_SIGDATA)(DUH *duh, DUMBFILE *file);</a>
+<a name="584"><span class="lineNum">     584 </span>            : </a>
+<a name="585"><span class="lineNum">     585 </span>            : typedef sigrenderer_t *(*DUH_START_SIGRENDERER)(</a>
+<a name="586"><span class="lineNum">     586 </span>            :         DUH *duh,</a>
+<a name="587"><span class="lineNum">     587 </span>            :         sigdata_t *sigdata,</a>
+<a name="588"><span class="lineNum">     588 </span>            :         int n_channels,</a>
+<a name="589"><span class="lineNum">     589 </span>            :         int32 pos</a>
+<a name="590"><span class="lineNum">     590 </span>            : );</a>
+<a name="591"><span class="lineNum">     591 </span>            : </a>
+<a name="592"><span class="lineNum">     592 </span>            : typedef void (*DUH_SIGRENDERER_SET_SIGPARAM)(</a>
+<a name="593"><span class="lineNum">     593 </span>            :         sigrenderer_t *sigrenderer,</a>
+<a name="594"><span class="lineNum">     594 </span>            :         unsigned char id, int32 value</a>
+<a name="595"><span class="lineNum">     595 </span>            : );</a>
+<a name="596"><span class="lineNum">     596 </span>            : </a>
+<a name="597"><span class="lineNum">     597 </span>            : typedef int32 (*DUH_SIGRENDERER_GENERATE_SAMPLES)(</a>
+<a name="598"><span class="lineNum">     598 </span>            :         sigrenderer_t *sigrenderer,</a>
+<a name="599"><span class="lineNum">     599 </span>            :         double volume, double delta,</a>
+<a name="600"><span class="lineNum">     600 </span>            :         int32 size, sample_t **samples</a>
+<a name="601"><span class="lineNum">     601 </span>            : );</a>
+<a name="602"><span class="lineNum">     602 </span>            : </a>
+<a name="603"><span class="lineNum">     603 </span>            : typedef void (*DUH_SIGRENDERER_GET_CURRENT_SAMPLE)(</a>
+<a name="604"><span class="lineNum">     604 </span>            :         sigrenderer_t *sigrenderer,</a>
+<a name="605"><span class="lineNum">     605 </span>            :         double volume,</a>
+<a name="606"><span class="lineNum">     606 </span>            :         sample_t *samples</a>
+<a name="607"><span class="lineNum">     607 </span>            : );</a>
+<a name="608"><span class="lineNum">     608 </span>            : </a>
+<a name="609"><span class="lineNum">     609 </span>            : typedef void (*DUH_END_SIGRENDERER)(sigrenderer_t *sigrenderer);</a>
+<a name="610"><span class="lineNum">     610 </span>            : </a>
+<a name="611"><span class="lineNum">     611 </span>            : typedef void (*DUH_UNLOAD_SIGDATA)(sigdata_t *sigdata);</a>
+<a name="612"><span class="lineNum">     612 </span>            : </a>
+<a name="613"><span class="lineNum">     613 </span>            : </a>
+<a name="614"><span class="lineNum">     614 </span>            : /* Signal Design Function Registration */</a>
+<a name="615"><span class="lineNum">     615 </span>            : </a>
+<a name="616"><span class="lineNum">     616 </span>            : typedef struct DUH_SIGTYPE_DESC</a>
+<a name="617"><span class="lineNum">     617 </span>            : {</a>
+<a name="618"><span class="lineNum">     618 </span>            :         int32 type;</a>
+<a name="619"><span class="lineNum">     619 </span>            :         DUH_LOAD_SIGDATA                   load_sigdata;</a>
+<a name="620"><span class="lineNum">     620 </span>            :         DUH_START_SIGRENDERER              start_sigrenderer;</a>
+<a name="621"><span class="lineNum">     621 </span>            :         DUH_SIGRENDERER_SET_SIGPARAM       sigrenderer_set_sigparam;</a>
+<a name="622"><span class="lineNum">     622 </span>            :         DUH_SIGRENDERER_GENERATE_SAMPLES   sigrenderer_generate_samples;</a>
+<a name="623"><span class="lineNum">     623 </span>            :         DUH_SIGRENDERER_GET_CURRENT_SAMPLE sigrenderer_get_current_sample;</a>
+<a name="624"><span class="lineNum">     624 </span>            :         DUH_END_SIGRENDERER                end_sigrenderer;</a>
+<a name="625"><span class="lineNum">     625 </span>            :         DUH_UNLOAD_SIGDATA                 unload_sigdata;</a>
+<a name="626"><span class="lineNum">     626 </span>            : }</a>
+<a name="627"><span class="lineNum">     627 </span>            : DUH_SIGTYPE_DESC;</a>
+<a name="628"><span class="lineNum">     628 </span>            : </a>
+<a name="629"><span class="lineNum">     629 </span>            : void DUMBEXPORT dumb_register_sigtype(DUH_SIGTYPE_DESC *desc);</a>
+<a name="630"><span class="lineNum">     630 </span>            : </a>
+<a name="631"><span class="lineNum">     631 </span>            : </a>
+<a name="632"><span class="lineNum">     632 </span>            : // Decide where to put these functions; new heading?</a>
+<a name="633"><span class="lineNum">     633 </span>            : </a>
+<a name="634"><span class="lineNum">     634 </span>            : sigdata_t *DUMBEXPORT duh_get_raw_sigdata(DUH *duh, int sig, int32 type);</a>
+<a name="635"><span class="lineNum">     635 </span>            : </a>
+<a name="636"><span class="lineNum">     636 </span>            : DUH_SIGRENDERER *DUMBEXPORT duh_encapsulate_raw_sigrenderer(sigrenderer_t *vsigrenderer, DUH_SIGTYPE_DESC *desc, int n_channels, int32 pos);</a>
+<a name="637"><span class="lineNum">     637 </span>            : sigrenderer_t *DUMBEXPORT duh_get_raw_sigrenderer(DUH_SIGRENDERER *sigrenderer, int32 type);</a>
+<a name="638"><span class="lineNum">     638 </span>            : </a>
+<a name="639"><span class="lineNum">     639 </span>            : int DUMBEXPORT duh_add_signal(DUH *duh, DUH_SIGTYPE_DESC *desc, sigdata_t *sigdata);</a>
+<a name="640"><span class="lineNum">     640 </span>            : </a>
+<a name="641"><span class="lineNum">     641 </span>            : </a>
+<a name="642"><span class="lineNum">     642 </span>            : /* Standard Signal Types */</a>
+<a name="643"><span class="lineNum">     643 </span>            : </a>
+<a name="644"><span class="lineNum">     644 </span>            : //void dumb_register_sigtype_sample(void);</a>
+<a name="645"><span class="lineNum">     645 </span>            : </a>
+<a name="646"><span class="lineNum">     646 </span>            : </a>
+<a name="647"><span class="lineNum">     647 </span>            : /* Sample Buffer Allocation Helpers */</a>
+<a name="648"><span class="lineNum">     648 </span>            : </a>
+<a name="649"><span class="lineNum">     649 </span>            : #ifdef DUMB_DECLARE_DEPRECATED</a>
+<a name="650"><span class="lineNum">     650 </span>            : sample_t **create_sample_buffer(int n_channels, int32 length) DUMB_DEPRECATED;</a>
+<a name="651"><span class="lineNum">     651 </span>            : /* DUMB has been changed to interleave stereo samples. Use</a>
+<a name="652"><span class="lineNum">     652 </span>            :  * allocate_sample_buffer() instead, and see the comments for</a>
+<a name="653"><span class="lineNum">     653 </span>            :  * duh_sigrenderer_set_analyser_callback().</a>
+<a name="654"><span class="lineNum">     654 </span>            :  */</a>
+<a name="655"><span class="lineNum">     655 </span>            : #endif</a>
+<a name="656"><span class="lineNum">     656 </span>            : sample_t **DUMBEXPORT allocate_sample_buffer(int n_channels, int32 length);</a>
+<a name="657"><span class="lineNum">     657 </span>            : void DUMBEXPORT destroy_sample_buffer(sample_t **samples);</a>
+<a name="658"><span class="lineNum">     658 </span>            : </a>
+<a name="659"><span class="lineNum">     659 </span>            : </a>
+<a name="660"><span class="lineNum">     660 </span>            : /* Silencing Helper */</a>
+<a name="661"><span class="lineNum">     661 </span>            : </a>
+<a name="662"><span class="lineNum">     662 </span>            : void DUMBEXPORT dumb_silence(sample_t *samples, int32 length);</a>
+<a name="663"><span class="lineNum">     663 </span>            : </a>
+<a name="664"><span class="lineNum">     664 </span>            : </a>
+<a name="665"><span class="lineNum">     665 </span>            : /* Click Removal Helpers */</a>
+<a name="666"><span class="lineNum">     666 </span>            : </a>
+<a name="667"><span class="lineNum">     667 </span>            : typedef struct DUMB_CLICK_REMOVER DUMB_CLICK_REMOVER;</a>
+<a name="668"><span class="lineNum">     668 </span>            : </a>
+<a name="669"><span class="lineNum">     669 </span>            : DUMB_CLICK_REMOVER *DUMBEXPORT dumb_create_click_remover(void);</a>
+<a name="670"><span class="lineNum">     670 </span>            : void DUMBEXPORT dumb_record_click(DUMB_CLICK_REMOVER *cr, int32 pos, sample_t step);</a>
+<a name="671"><span class="lineNum">     671 </span>            : void DUMBEXPORT dumb_remove_clicks(DUMB_CLICK_REMOVER *cr, sample_t *samples, int32 length, int step, double halflife);</a>
+<a name="672"><span class="lineNum">     672 </span>            : sample_t DUMBEXPORT dumb_click_remover_get_offset(DUMB_CLICK_REMOVER *cr);</a>
+<a name="673"><span class="lineNum">     673 </span>            : void DUMBEXPORT dumb_destroy_click_remover(DUMB_CLICK_REMOVER *cr);</a>
+<a name="674"><span class="lineNum">     674 </span>            : </a>
+<a name="675"><span class="lineNum">     675 </span>            : DUMB_CLICK_REMOVER **DUMBEXPORT dumb_create_click_remover_array(int n);</a>
+<a name="676"><span class="lineNum">     676 </span>            : void DUMBEXPORT dumb_record_click_array(int n, DUMB_CLICK_REMOVER **cr, int32 pos, sample_t *step);</a>
+<a name="677"><span class="lineNum">     677 </span>            : void DUMBEXPORT dumb_record_click_negative_array(int n, DUMB_CLICK_REMOVER **cr, int32 pos, sample_t *step);</a>
+<a name="678"><span class="lineNum">     678 </span>            : void DUMBEXPORT dumb_remove_clicks_array(int n, DUMB_CLICK_REMOVER **cr, sample_t **samples, int32 length, double halflife);</a>
+<a name="679"><span class="lineNum">     679 </span>            : void DUMBEXPORT dumb_click_remover_get_offset_array(int n, DUMB_CLICK_REMOVER **cr, sample_t *offset);</a>
+<a name="680"><span class="lineNum">     680 </span>            : void DUMBEXPORT dumb_destroy_click_remover_array(int n, DUMB_CLICK_REMOVER **cr);</a>
+<a name="681"><span class="lineNum">     681 </span>            : </a>
+<a name="682"><span class="lineNum">     682 </span>            : </a>
+<a name="683"><span class="lineNum">     683 </span>            : /* Resampling Helpers */</a>
+<a name="684"><span class="lineNum">     684 </span>            : </a>
+<a name="685"><span class="lineNum">     685 </span>            : #define DUMB_RQ_ALIASING 0</a>
+<a name="686"><span class="lineNum">     686 </span>            : #define DUMB_LQ_LINEAR   1</a>
+<a name="687"><span class="lineNum">     687 </span>            : #define DUMB_LQ_CUBIC    2</a>
+<a name="688"><span class="lineNum">     688 </span>            : </a>
+<a name="689"><span class="lineNum">     689 </span>            : #define DUMB_RQ_BLEP     3</a>
+<a name="690"><span class="lineNum">     690 </span>            : #define DUMB_RQ_LINEAR   4</a>
+<a name="691"><span class="lineNum">     691 </span>            : #define DUMB_RQ_BLAM     5</a>
+<a name="692"><span class="lineNum">     692 </span>            : #define DUMB_RQ_CUBIC    6</a>
+<a name="693"><span class="lineNum">     693 </span>            : #define DUMB_RQ_FIR      7</a>
+<a name="694"><span class="lineNum">     694 </span>            : #define DUMB_RQ_N_LEVELS 8</a>
+<a name="695"><span class="lineNum">     695 </span>            : </a>
+<a name="696"><span class="lineNum">     696 </span>            : /* Subtract quality above by this to convert to resampler.c's quality */</a>
+<a name="697"><span class="lineNum">     697 </span>            : #define DUMB_RESAMPLER_BASE     2</a>
+<a name="698"><span class="lineNum">     698 </span>            : </a>
+<a name="699"><span class="lineNum">     699 </span>            : extern int dumb_resampling_quality; /* This specifies the default */</a>
+<a name="700"><span class="lineNum">     700 </span>            : void DUMBEXPORT dumb_it_set_resampling_quality(DUMB_IT_SIGRENDERER * sigrenderer, int quality); /* This overrides it */</a>
+<a name="701"><span class="lineNum">     701 </span>            : </a>
+<a name="702"><span class="lineNum">     702 </span>            : typedef struct DUMB_RESAMPLER DUMB_RESAMPLER;</a>
+<a name="703"><span class="lineNum">     703 </span>            : </a>
+<a name="704"><span class="lineNum">     704 </span>            : typedef struct DUMB_VOLUME_RAMP_INFO DUMB_VOLUME_RAMP_INFO;</a>
+<a name="705"><span class="lineNum">     705 </span>            : </a>
+<a name="706"><span class="lineNum">     706 </span>            : typedef void (*DUMB_RESAMPLE_PICKUP)(DUMB_RESAMPLER *resampler, void *data);</a>
+<a name="707"><span class="lineNum">     707 </span>            : </a>
+<a name="708"><span class="lineNum">     708 </span>            : struct DUMB_RESAMPLER</a>
+<a name="709"><span class="lineNum">     709 </span>            : {</a>
+<a name="710"><span class="lineNum">     710 </span>            :         void *src;</a>
+<a name="711"><span class="lineNum">     711 </span>            :         int32 pos;</a>
+<a name="712"><span class="lineNum">     712 </span>            :         int subpos;</a>
+<a name="713"><span class="lineNum">     713 </span>            :         int32 start, end;</a>
+<a name="714"><span class="lineNum">     714 </span>            :         int dir;</a>
+<a name="715"><span class="lineNum">     715 </span>            :         DUMB_RESAMPLE_PICKUP pickup;</a>
+<a name="716"><span class="lineNum">     716 </span>            :         void *pickup_data;</a>
+<a name="717"><span class="lineNum">     717 </span>            :         int quality;</a>
+<a name="718"><span class="lineNum">     718 </span>            :         /* Everything below this point is internal: do not use. */</a>
+<a name="719"><span class="lineNum">     719 </span>            :         union {</a>
+<a name="720"><span class="lineNum">     720 </span>            :                 sample_t x24[3*2];</a>
+<a name="721"><span class="lineNum">     721 </span>            :                 short x16[3*2];</a>
+<a name="722"><span class="lineNum">     722 </span>            :                 signed char x8[3*2];</a>
+<a name="723"><span class="lineNum">     723 </span>            :         } x;</a>
+<a name="724"><span class="lineNum">     724 </span>            :         int overshot;</a>
+<a name="725"><span class="lineNum">     725 </span>            :     double fir_resampler_ratio;</a>
+<a name="726"><span class="lineNum">     726 </span>            :     void* fir_resampler[2];</a>
+<a name="727"><span class="lineNum">     727 </span>            : };</a>
+<a name="728"><span class="lineNum">     728 </span>            : </a>
+<a name="729"><span class="lineNum">     729 </span>            : struct DUMB_VOLUME_RAMP_INFO</a>
+<a name="730"><span class="lineNum">     730 </span>            : {</a>
+<a name="731"><span class="lineNum">     731 </span>            :         float volume;</a>
+<a name="732"><span class="lineNum">     732 </span>            :         float delta;</a>
+<a name="733"><span class="lineNum">     733 </span>            :         float target;</a>
+<a name="734"><span class="lineNum">     734 </span>            :         float mix;</a>
+<a name="735"><span class="lineNum">     735 </span>            :     unsigned char declick_stage;</a>
+<a name="736"><span class="lineNum">     736 </span>            : };</a>
+<a name="737"><span class="lineNum">     737 </span>            : </a>
+<a name="738"><span class="lineNum">     738 </span>            : void dumb_reset_resampler(DUMB_RESAMPLER *resampler, sample_t *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="739"><span class="lineNum">     739 </span>            : DUMB_RESAMPLER *dumb_start_resampler(sample_t *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="740"><span class="lineNum">     740 </span>            : //int32 dumb_resample_1_1(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume, double delta);</a>
+<a name="741"><span class="lineNum">     741 </span>            : int32 dumb_resample_1_2(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="742"><span class="lineNum">     742 </span>            : //int32 dumb_resample_2_1(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="743"><span class="lineNum">     743 </span>            : int32 dumb_resample_2_2(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="744"><span class="lineNum">     744 </span>            : //void dumb_resample_get_current_sample_1_1(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume, sample_t *dst);</a>
+<a name="745"><span class="lineNum">     745 </span>            : void dumb_resample_get_current_sample_1_2(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="746"><span class="lineNum">     746 </span>            : //void dumb_resample_get_current_sample_2_1(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="747"><span class="lineNum">     747 </span>            : void dumb_resample_get_current_sample_2_2(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="748"><span class="lineNum">     748 </span>            : void dumb_end_resampler(DUMB_RESAMPLER *resampler);</a>
+<a name="749"><span class="lineNum">     749 </span>            : </a>
+<a name="750"><span class="lineNum">     750 </span>            : void dumb_reset_resampler_16(DUMB_RESAMPLER *resampler, short *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="751"><span class="lineNum">     751 </span>            : DUMB_RESAMPLER *dumb_start_resampler_16(short *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="752"><span class="lineNum">     752 </span>            : //int32 dumb_resample_16_1_1(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume, double delta);</a>
+<a name="753"><span class="lineNum">     753 </span>            : int32 dumb_resample_16_1_2(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="754"><span class="lineNum">     754 </span>            : //int32 dumb_resample_16_2_1(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="755"><span class="lineNum">     755 </span>            : int32 dumb_resample_16_2_2(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="756"><span class="lineNum">     756 </span>            : //void dumb_resample_get_current_sample_16_1_1(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume, sample_t *dst);</a>
+<a name="757"><span class="lineNum">     757 </span>            : void dumb_resample_get_current_sample_16_1_2(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="758"><span class="lineNum">     758 </span>            : //void dumb_resample_get_current_sample_16_2_1(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="759"><span class="lineNum">     759 </span>            : void dumb_resample_get_current_sample_16_2_2(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="760"><span class="lineNum">     760 </span>            : void dumb_end_resampler_16(DUMB_RESAMPLER *resampler);</a>
+<a name="761"><span class="lineNum">     761 </span>            : </a>
+<a name="762"><span class="lineNum">     762 </span>            : void dumb_reset_resampler_8(DUMB_RESAMPLER *resampler, signed char *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="763"><span class="lineNum">     763 </span>            : DUMB_RESAMPLER *dumb_start_resampler_8(signed char *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="764"><span class="lineNum">     764 </span>            : //int32 dumb_resample_8_1_1(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume, double delta);</a>
+<a name="765"><span class="lineNum">     765 </span>            : int32 dumb_resample_8_1_2(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="766"><span class="lineNum">     766 </span>            : //int32 dumb_resample_8_2_1(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="767"><span class="lineNum">     767 </span>            : int32 dumb_resample_8_2_2(DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="768"><span class="lineNum">     768 </span>            : //void dumb_resample_get_current_sample_8_1_1(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume, sample_t *dst);</a>
+<a name="769"><span class="lineNum">     769 </span>            : void dumb_resample_get_current_sample_8_1_2(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="770"><span class="lineNum">     770 </span>            : //void dumb_resample_get_current_sample_8_2_1(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="771"><span class="lineNum">     771 </span>            : void dumb_resample_get_current_sample_8_2_2(DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="772"><span class="lineNum">     772 </span>            : void dumb_end_resampler_8(DUMB_RESAMPLER *resampler);</a>
+<a name="773"><span class="lineNum">     773 </span>            : </a>
+<a name="774"><span class="lineNum">     774 </span>            : void dumb_reset_resampler_n(int n, DUMB_RESAMPLER *resampler, void *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="775"><span class="lineNum">     775 </span>            : DUMB_RESAMPLER *dumb_start_resampler_n(int n, void *src, int src_channels, int32 pos, int32 start, int32 end, int quality);</a>
+<a name="776"><span class="lineNum">     776 </span>            : //int32 dumb_resample_n_1_1(int n, DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume, double delta);</a>
+<a name="777"><span class="lineNum">     777 </span>            : int32 dumb_resample_n_1_2(int n, DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="778"><span class="lineNum">     778 </span>            : //int32 dumb_resample_n_2_1(int n, DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="779"><span class="lineNum">     779 </span>            : int32 dumb_resample_n_2_2(int n, DUMB_RESAMPLER *resampler, sample_t *dst, int32 dst_size, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, double delta);</a>
+<a name="780"><span class="lineNum">     780 </span>            : //void dumb_resample_get_current_sample_n_1_1(int n, DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume, sample_t *dst);</a>
+<a name="781"><span class="lineNum">     781 </span>            : void dumb_resample_get_current_sample_n_1_2(int n, DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="782"><span class="lineNum">     782 </span>            : //void dumb_resample_get_current_sample_n_2_1(int n, DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="783"><span class="lineNum">     783 </span>            : void dumb_resample_get_current_sample_n_2_2(int n, DUMB_RESAMPLER *resampler, DUMB_VOLUME_RAMP_INFO * volume_left, DUMB_VOLUME_RAMP_INFO * volume_right, sample_t *dst);</a>
+<a name="784"><span class="lineNum">     784 </span>            : void dumb_end_resampler_n(int n, DUMB_RESAMPLER *resampler);</a>
+<a name="785"><span class="lineNum">     785 </span>            : </a>
+<a name="786"><span class="lineNum">     786 </span>            : /* This sets the default panning separation for hard panned formats,</a>
+<a name="787"><span class="lineNum">     787 </span>            :    or for formats with default panning information. This must be set</a>
+<a name="788"><span class="lineNum">     788 </span>            :    before using any readers or loaders, and is not really thread safe. */</a>
+<a name="789"><span class="lineNum">     789 </span>            : </a>
+<a name="790"><span class="lineNum">     790 </span>            : extern int dumb_it_default_panning_separation; /* in percent, default 25 */</a>
+<a name="791"><span class="lineNum">     791 </span>            : </a>
+<a name="792"><span class="lineNum">     792 </span>            : /* DUH Construction */</a>
+<a name="793"><span class="lineNum">     793 </span>            : </a>
+<a name="794"><span class="lineNum">     794 </span>            : DUH *make_duh(</a>
+<a name="795"><span class="lineNum">     795 </span>            :         int32 length,</a>
+<a name="796"><span class="lineNum">     796 </span>            :         int n_tags,</a>
+<a name="797"><span class="lineNum">     797 </span>            :         const char *const tag[][2],</a>
+<a name="798"><span class="lineNum">     798 </span>            :         int n_signals,</a>
+<a name="799"><span class="lineNum">     799 </span>            :         DUH_SIGTYPE_DESC *desc[],</a>
+<a name="800"><span class="lineNum">     800 </span>            :         sigdata_t *sigdata[]</a>
+<a name="801"><span class="lineNum">     801 </span>            : );</a>
+<a name="802"><span class="lineNum">     802 </span>            : </a>
+<a name="803"><span class="lineNum">     803 </span>            : void DUMBEXPORT duh_set_length(DUH *duh, int32 length);</a>
+<a name="804"><span class="lineNum">     804 </span>            : </a>
+<a name="805"><span class="lineNum">     805 </span>            : </a>
+<a name="806"><span class="lineNum">     806 </span>            : #ifdef __cplusplus</a>
+<a name="807"><span class="lineNum">     807 </span>            :         }</a>
+<a name="808"><span class="lineNum">     808 </span>            : #endif</a>
+<a name="809"><span class="lineNum">     809 </span>            : </a>
+<a name="810"><span class="lineNum">     810 </span>            : </a>
+<a name="811"><span class="lineNum">     811 </span>            : #endif /* DUMB_H */</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

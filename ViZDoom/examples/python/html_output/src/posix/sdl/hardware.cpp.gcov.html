@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - src/posix/sdl/hardware.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">src/posix/sdl</a> - hardware.cpp<span style="font-size: 80%;"> (source / <a href="hardware.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">131</td>
+            <td class="headerCovTableEntry">227</td>
+            <td class="headerCovTableEntryLo">57.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryMed">78.6 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            : ** hardware.cpp</a>
+<a name="3"><span class="lineNum">       3 </span>            : ** Somewhat OS-independant interface to the screen, mouse, keyboard, and stick</a>
+<a name="4"><span class="lineNum">       4 </span>            : **</a>
+<a name="5"><span class="lineNum">       5 </span>            : **---------------------------------------------------------------------------</a>
+<a name="6"><span class="lineNum">       6 </span>            : ** Copyright 1998-2006 Randy Heit</a>
+<a name="7"><span class="lineNum">       7 </span>            : ** All rights reserved.</a>
+<a name="8"><span class="lineNum">       8 </span>            : **</a>
+<a name="9"><span class="lineNum">       9 </span>            : ** Redistribution and use in source and binary forms, with or without</a>
+<a name="10"><span class="lineNum">      10 </span>            : ** modification, are permitted provided that the following conditions</a>
+<a name="11"><span class="lineNum">      11 </span>            : ** are met:</a>
+<a name="12"><span class="lineNum">      12 </span>            : **</a>
+<a name="13"><span class="lineNum">      13 </span>            : ** 1. Redistributions of source code must retain the above copyright</a>
+<a name="14"><span class="lineNum">      14 </span>            : **    notice, this list of conditions and the following disclaimer.</a>
+<a name="15"><span class="lineNum">      15 </span>            : ** 2. Redistributions in binary form must reproduce the above copyright</a>
+<a name="16"><span class="lineNum">      16 </span>            : **    notice, this list of conditions and the following disclaimer in the</a>
+<a name="17"><span class="lineNum">      17 </span>            : **    documentation and/or other materials provided with the distribution.</a>
+<a name="18"><span class="lineNum">      18 </span>            : ** 3. The name of the author may not be used to endorse or promote products</a>
+<a name="19"><span class="lineNum">      19 </span>            : **    derived from this software without specific prior written permission.</a>
+<a name="20"><span class="lineNum">      20 </span>            : **</a>
+<a name="21"><span class="lineNum">      21 </span>            : ** THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR</a>
+<a name="22"><span class="lineNum">      22 </span>            : ** IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES</a>
+<a name="23"><span class="lineNum">      23 </span>            : ** OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</a>
+<a name="24"><span class="lineNum">      24 </span>            : ** IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,</a>
+<a name="25"><span class="lineNum">      25 </span>            : ** INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT</a>
+<a name="26"><span class="lineNum">      26 </span>            : ** NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,</a>
+<a name="27"><span class="lineNum">      27 </span>            : ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY</a>
+<a name="28"><span class="lineNum">      28 </span>            : ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</a>
+<a name="29"><span class="lineNum">      29 </span>            : ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF</a>
+<a name="30"><span class="lineNum">      30 </span>            : ** THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</a>
+<a name="31"><span class="lineNum">      31 </span>            : **---------------------------------------------------------------------------</a>
+<a name="32"><span class="lineNum">      32 </span>            : **</a>
+<a name="33"><span class="lineNum">      33 </span>            : */</a>
+<a name="34"><span class="lineNum">      34 </span>            : </a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &lt;SDL2/SDL.h&gt;</a>
+<a name="36"><span class="lineNum">      36 </span>            : #include &lt;signal.h&gt;</a>
+<a name="37"><span class="lineNum">      37 </span>            : #include &lt;time.h&gt;</a>
+<a name="38"><span class="lineNum">      38 </span>            : </a>
+<a name="39"><span class="lineNum">      39 </span>            : #include &quot;hardware.h&quot;</a>
+<a name="40"><span class="lineNum">      40 </span>            : #include &quot;i_video.h&quot;</a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &quot;i_system.h&quot;</a>
+<a name="42"><span class="lineNum">      42 </span>            : #include &quot;c_console.h&quot;</a>
+<a name="43"><span class="lineNum">      43 </span>            : #include &quot;c_cvars.h&quot;</a>
+<a name="44"><span class="lineNum">      44 </span>            : #include &quot;c_dispatch.h&quot;</a>
+<a name="45"><span class="lineNum">      45 </span>            : #include &quot;sdlvideo.h&quot;</a>
+<a name="46"><span class="lineNum">      46 </span>            : #include &quot;v_text.h&quot;</a>
+<a name="47"><span class="lineNum">      47 </span>            : #include &quot;doomstat.h&quot;</a>
+<a name="48"><span class="lineNum">      48 </span>            : #include &quot;m_argv.h&quot;</a>
+<a name="49"><span class="lineNum">      49 </span>            : #include &quot;r_renderer.h&quot;</a>
+<a name="50"><span class="lineNum">      50 </span>            : #include &quot;r_swrenderer.h&quot;</a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span>            : EXTERN_CVAR (Bool, ticker)</a>
+<a name="53"><span class="lineNum">      53 </span>            : EXTERN_CVAR (Bool, fullscreen)</a>
+<a name="54"><span class="lineNum">      54 </span>            : EXTERN_CVAR (Float, vid_winscale)</a>
+<a name="55"><span class="lineNum">      55 </span>            : EXTERN_CVAR (Bool, viz_noxserver)</a>
+<a name="56"><span class="lineNum">      56 </span>            : </a>
+<a name="57"><span class="lineNum">      57 </span>            : IVideo *Video;</a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span>            : void I_ShutdownGraphics ()</a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 : {</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          1 :         if (screen)</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 :         {</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          1 :                 DFrameBuffer *s = screen;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          1 :                 screen = NULL;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 :                 s-&gt;ObjectFlags |= OF_YesReallyDelete;</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 :                 delete s;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :         }</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          1 :         if (Video)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 :                 delete Video, Video = NULL;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 : </span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          1 :         SDL_QuitSubSystem (SDL_INIT_VIDEO);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          1 : }</span></a>
+<a name="73"><span class="lineNum">      73 </span>            : //VIZDOOM_CODE</a>
+<a name="74"><span class="lineNum">      74 </span>            : void I_InitGraphics ()</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 : {</span></a>
+<a name="76"><span class="lineNum">      76 </span>            : #ifdef __APPLE__</a>
+<a name="77"><span class="lineNum">      77 </span>            :     SDL_SetHint(SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES, &quot;0&quot;);</a>
+<a name="78"><span class="lineNum">      78 </span>            : #endif // __APPLE__</a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          1 :         if(!(*viz_noxserver))</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          1 :         {</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          1 :                 if (SDL_InitSubSystem(SDL_INIT_VIDEO) &lt; 0) {</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :                         I_FatalError(&quot;Could not initialize SDL video:\n%s\n&quot;, SDL_GetError());</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :                         return;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          1 : </span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">          1 :                 Printf(&quot;Using video driver %s\n&quot;, SDL_GetCurrentVideoDriver());</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          1 :         }</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :         else</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 Printf(&quot;Not using any video driver. Check-mate GUI believers!\n&quot;);</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          1 :         UCVarValue val;</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          1 : </span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          1 :         val.Bool = !!Args-&gt;CheckParm (&quot;-devparm&quot;);</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          1 :         ticker.SetGenericRepDefault (val, CVAR_Bool);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 : </span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          1 :         Video = new SDLVideo (0);</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          1 :         if (Video == NULL)</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          1 :                 I_FatalError (&quot;Failed to initialize display&quot;);</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          1 : </span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          1 :         atterm (I_ShutdownGraphics);</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          1 : </span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          1 :         Video-&gt;SetWindowedScale (vid_winscale);</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          1 : }</span></a>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<a name="105"><span class="lineNum">     105 </span>            : static void I_DeleteRenderer()</a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          1 : {</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          1 :         if (Renderer != NULL) delete Renderer;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">          1 : }</span></a>
+<a name="109"><span class="lineNum">     109 </span>            : </a>
+<a name="110"><span class="lineNum">     110 </span>            : void I_CreateRenderer()</a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          1 : {</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">          1 :         if (Renderer == NULL)</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          1 :         {</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          1 :                 Renderer = new FSoftwareRenderer;</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          1 :                 atterm(I_DeleteRenderer);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          1 :         }</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          1 : }</span></a>
+<a name="118"><span class="lineNum">     118 </span>            : </a>
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<a name="120"><span class="lineNum">     120 </span>            : /** Remaining code is common to Win32 and Linux **/</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span>            : // VIDEO WRAPPERS ---------------------------------------------------------</a>
+<a name="123"><span class="lineNum">     123 </span>            : </a>
+<a name="124"><span class="lineNum">     124 </span>            : DFrameBuffer *I_SetMode (int &amp;width, int &amp;height, DFrameBuffer *old)</a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">          2 : {</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">          2 :         bool fs = false;</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">          2 :         switch (Video-&gt;GetDisplayType ())</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">          2 :         {</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :         case DISPLAY_WindowOnly:</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 fs = false;</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         case DISPLAY_FullscreenOnly:</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 fs = true;</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          2 :         case DISPLAY_Both:</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          2 :                 fs = fullscreen;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          2 :                 break;</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          2 :         }</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          2 :         DFrameBuffer *res = Video-&gt;CreateFrameBuffer (width, height, fs, old);</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">          2 : </span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          2 :         /* Right now, CreateFrameBuffer cannot return NULL</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          2 :         if (res == NULL)</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          2 :         {</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">          2 :                 I_FatalError (&quot;Mode %dx%d is unavailable\n&quot;, width, height);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          2 :         }</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          2 :         */</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          2 :         return res;</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          2 : }</span></a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span>            : bool I_CheckResolution (int width, int height, int bits)</a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          3 : {</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          3 :         int twidth, theight;</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          3 : </span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          3 :         Video-&gt;StartModeIterator (bits, screen ? screen-&gt;IsFullscreen() : fullscreen);</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         39 :         while (Video-&gt;NextMode (&amp;twidth, &amp;theight, NULL))</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         38 :         {</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">         38 :                 if (width == twidth &amp;&amp; height == theight)</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          2 :                         return true;</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">         38 :         }</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          3 :         return false;</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          3 : }</span></a>
+<a name="162"><span class="lineNum">     162 </span>            : </a>
+<a name="163"><span class="lineNum">     163 </span>            : void I_ClosestResolution (int *width, int *height, int bits)</a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          3 : {</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          3 :         int twidth, theight;</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">          3 :         int cwidth = 0, cheight = 0;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          3 :         int iteration;</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">          3 :         DWORD closest = 4294967295u;</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          3 : </span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          5 :         for (iteration = 0; iteration &lt; 2; iteration++)</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          4 :         {</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          4 :                 Video-&gt;StartModeIterator (bits, screen ? screen-&gt;IsFullscreen() : fullscreen);</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">         40 :                 while (Video-&gt;NextMode (&amp;twidth, &amp;theight, NULL))</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         38 :                 {</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         38 :                         if (twidth == *width &amp;&amp; theight == *height)</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          2 :                                 return;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         36 : </span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">         36 :                         if (iteration == 0 &amp;&amp; (twidth &lt; *width || theight &lt; *height))</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         36 :                                 continue;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 : </span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                         DWORD dist = (twidth - *width) * (twidth - *width)</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                                 + (theight - *height) * (theight - *height);</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 : </span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                         if (dist &lt; closest)</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                         {</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                                 closest = dist;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                                 cwidth = twidth;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :                                 cheight = theight;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :                         }</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          4 :                 if (closest != 4294967295u)</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :                         *width = cwidth;</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :                         *height = cheight;</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                         return;</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          2 :         }</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          3 : }</span></a>
+<a name="199"><span class="lineNum">     199 </span>            : </a>
+<a name="200"><span class="lineNum">     200 </span>            : //==========================================================================</a>
+<a name="201"><span class="lineNum">     201 </span>            : //</a>
+<a name="202"><span class="lineNum">     202 </span>            : // SetFPSLimit</a>
+<a name="203"><span class="lineNum">     203 </span>            : //</a>
+<a name="204"><span class="lineNum">     204 </span>            : // Initializes an event timer to fire at a rate of &lt;limit&gt;/sec. The video</a>
+<a name="205"><span class="lineNum">     205 </span>            : // update will wait for this timer to trigger before updating.</a>
+<a name="206"><span class="lineNum">     206 </span>            : //</a>
+<a name="207"><span class="lineNum">     207 </span>            : // Pass 0 as the limit for unlimited.</a>
+<a name="208"><span class="lineNum">     208 </span>            : // Pass a negative value for the limit to use the value of vid_maxfps.</a>
+<a name="209"><span class="lineNum">     209 </span>            : //</a>
+<a name="210"><span class="lineNum">     210 </span>            : //==========================================================================</a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span>            : EXTERN_CVAR(Int, vid_maxfps);</a>
+<a name="213"><span class="lineNum">     213 </span>            : EXTERN_CVAR(Bool, cl_capfps);</a>
+<a name="214"><span class="lineNum">     214 </span>            : </a>
+<a name="215"><span class="lineNum">     215 </span>            : #ifndef __APPLE__</a>
+<a name="216"><span class="lineNum">     216 </span>            : Semaphore FPSLimitSemaphore;</a>
+<a name="217"><span class="lineNum">     217 </span>            : </a>
+<a name="218"><span class="lineNum">     218 </span>            : static void FPSLimitNotify(sigval val)</a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :         SEMAPHORE_SIGNAL(FPSLimitSemaphore)</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="222"><span class="lineNum">     222 </span>            : </a>
+<a name="223"><span class="lineNum">     223 </span>            : void I_SetFPSLimit(int limit)</a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          5 : {</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">          5 :         static sigevent FPSLimitEvent;</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          5 :         static timer_t FPSLimitTimer;</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          5 :         static bool FPSLimitTimerEnabled = false;</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">          5 :         static bool EventSetup = false;</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          5 :         if(!EventSetup)</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">          1 :         {</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">          1 :                 EventSetup = true;</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">          1 :                 FPSLimitEvent.sigev_notify = SIGEV_THREAD;</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">          1 :                 FPSLimitEvent.sigev_signo = 0;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          1 :                 FPSLimitEvent.sigev_value.sival_int = 0;</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          1 :                 FPSLimitEvent.sigev_notify_function = FPSLimitNotify;</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          1 :                 FPSLimitEvent.sigev_notify_attributes = NULL;</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          1 : </span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          1 :                 SEMAPHORE_INIT(FPSLimitSemaphore, 0, 0)</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          1 :         }</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          5 : </span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          5 :         if (limit &lt; 0)</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 limit = vid_maxfps;</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          5 :         // Kill any leftover timer.</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          5 :         if (FPSLimitTimerEnabled)</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 timer_delete(FPSLimitTimer);</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 FPSLimitTimerEnabled = false;</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          5 :         if (limit == 0)</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          5 :         { // no limit</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">          5 :                 DPrintf(&quot;FPS timer disabled\n&quot;);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">          5 :         }</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :         else</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 FPSLimitTimerEnabled = true;</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 if(timer_create(CLOCK_REALTIME, &amp;FPSLimitEvent, &amp;FPSLimitTimer) == -1)</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                         Printf(&quot;Failed to create FPS limitter event\n&quot;);</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 itimerspec period = { {0, 0}, {0, 0} };</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :                 period.it_value.tv_nsec = period.it_interval.tv_nsec = 1000000000 / limit;</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 if(timer_settime(FPSLimitTimer, 0, &amp;period, NULL) == -1)</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :                         Printf(&quot;Failed to set FPS limitter timer\n&quot;);</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 DPrintf(&quot;FPS timer set to %u ms\n&quot;, (unsigned int) period.it_interval.tv_nsec / 1000000);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          5 : }</span></a>
+<a name="267"><span class="lineNum">     267 </span>            : #else</a>
+<a name="268"><span class="lineNum">     268 </span>            : // So Apple doesn't support POSIX timers and I can't find a good substitute short of</a>
+<a name="269"><span class="lineNum">     269 </span>            : // having Objective-C Cocoa events or something like that.</a>
+<a name="270"><span class="lineNum">     270 </span>            : void I_SetFPSLimit(int limit)</a>
+<a name="271"><span class="lineNum">     271 </span>            : {</a>
+<a name="272"><span class="lineNum">     272 </span>            : }</a>
+<a name="273"><span class="lineNum">     273 </span>            : #endif</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            : CUSTOM_CVAR (Int, vid_maxfps, 200, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)</a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          1 : {</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          1 :         if (vid_maxfps &lt; TICRATE &amp;&amp; vid_maxfps != 0)</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 vid_maxfps = TICRATE;</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          1 :         else if (vid_maxfps &gt; 1000)</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :                 vid_maxfps = 1000;</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          1 :         else if (cl_capfps == 0)</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 I_SetFPSLimit(vid_maxfps);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          1 : }</span></a>
+<a name="290"><span class="lineNum">     290 </span>            : </a>
+<a name="291"><span class="lineNum">     291 </span>            : extern int NewWidth, NewHeight, NewBits, DisplayBits;</a>
+<a name="292"><span class="lineNum">     292 </span>            : </a>
+<a name="293"><span class="lineNum">     293 </span>            : CUSTOM_CVAR (Bool, fullscreen, false, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)</a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          1 : {</span></a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineCov">          1 :         NewWidth = screen-&gt;GetWidth();</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">          1 :         NewHeight = screen-&gt;GetHeight();</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          1 :         NewBits = DisplayBits;</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          1 :         setmodeneeded = true;</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          1 : }</span></a>
+<a name="300"><span class="lineNum">     300 </span>            : </a>
+<a name="301"><span class="lineNum">     301 </span>            : CUSTOM_CVAR (Float, vid_winscale, 1.f, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)</a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          1 : {</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          1 :         if (self &lt; 1.f)</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :                 self = 1.f;</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">          1 :         else if (Video)</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :                 Video-&gt;SetWindowedScale (self);</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :                 NewWidth = screen-&gt;GetWidth();</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :                 NewHeight = screen-&gt;GetHeight();</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :                 NewBits = DisplayBits;</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 :                 setmodeneeded = true;</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">          1 : }</span></a>
+<a name="316"><span class="lineNum">     316 </span>            : </a>
+<a name="317"><span class="lineNum">     317 </span>            : CCMD (vid_listmodes)</a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         static const char *ratios[5] = { &quot;&quot;, &quot; - 16:9&quot;, &quot; - 16:10&quot;, &quot;&quot;, &quot; - 5:4&quot; };</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         int width, height, bits;</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         bool letterbox;</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 : </span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         if (Video == NULL)</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         for (bits = 1; bits &lt;= 32; bits++)</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 Video-&gt;StartModeIterator (bits, screen-&gt;IsFullscreen());</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :                 while (Video-&gt;NextMode (&amp;width, &amp;height, &amp;letterbox))</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :                         bool thisMode = (width == DisplayWidth &amp;&amp; height == DisplayHeight &amp;&amp; bits == DisplayBits);</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :                         int ratio = CheckRatio (width, height);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :                         Printf (thisMode ? PRINT_BOLD : PRINT_HIGH,</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :                                 &quot;%s%4d x%5d x%3d%s%s\n&quot;,</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :                                 thisMode || !(ratio &amp; 3) ? &quot;&quot; : TEXTCOLOR_GOLD,</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :                                 width, height, bits,</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :                                 ratios[ratio],</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :                                 thisMode || !letterbox ? &quot;&quot; : TEXTCOLOR_BROWN &quot; LB&quot;</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :                                 );</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="344"><span class="lineNum">     344 </span>            : </a>
+<a name="345"><span class="lineNum">     345 </span>            : CCMD (vid_currentmode)</a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :         Printf (&quot;%dx%dx%d\n&quot;, DisplayWidth, DisplayHeight, DisplayBits);</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 : }</span></a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

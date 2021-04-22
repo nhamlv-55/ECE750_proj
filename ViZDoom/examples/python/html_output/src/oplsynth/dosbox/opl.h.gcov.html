@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - src/oplsynth/dosbox/opl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">src/oplsynth/dosbox</a> - opl.h<span style="font-size: 80%;"> (source / <a href="opl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :  *  Copyright (C) 2002-2011  The DOSBox Team</a>
+<a name="3"><span class="lineNum">       3 </span>            :  *  OPL2/OPL3 emulation library</a>
+<a name="4"><span class="lineNum">       4 </span>            :  *</a>
+<a name="5"><span class="lineNum">       5 </span>            :  *  This library is free software; you can redistribute it and/or</a>
+<a name="6"><span class="lineNum">       6 </span>            :  *  modify it under the terms of the GNU Lesser General Public</a>
+<a name="7"><span class="lineNum">       7 </span>            :  *  License as published by the Free Software Foundation; either</a>
+<a name="8"><span class="lineNum">       8 </span>            :  *  version 2.1 of the License, or (at your option) any later version.</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * </a>
+<a name="10"><span class="lineNum">      10 </span>            :  *  This library is distributed in the hope that it will be useful,</a>
+<a name="11"><span class="lineNum">      11 </span>            :  *  but WITHOUT ANY WARRANTY; without even the implied warranty of</a>
+<a name="12"><span class="lineNum">      12 </span>            :  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</a>
+<a name="13"><span class="lineNum">      13 </span>            :  *  Lesser General Public License for more details.</a>
+<a name="14"><span class="lineNum">      14 </span>            :  * </a>
+<a name="15"><span class="lineNum">      15 </span>            :  *  You should have received a copy of the GNU Lesser General Public</a>
+<a name="16"><span class="lineNum">      16 </span>            :  *  License along with this library; if not, write to the Free Software</a>
+<a name="17"><span class="lineNum">      17 </span>            :  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA</a>
+<a name="18"><span class="lineNum">      18 </span>            :  */</a>
+<a name="19"><span class="lineNum">      19 </span>            : </a>
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<a name="21"><span class="lineNum">      21 </span>            : /*</a>
+<a name="22"><span class="lineNum">      22 </span>            :  * Originally based on ADLIBEMU.C, an AdLib/OPL2 emulation library by Ken Silverman</a>
+<a name="23"><span class="lineNum">      23 </span>            :  * Copyright (C) 1998-2001 Ken Silverman</a>
+<a name="24"><span class="lineNum">      24 </span>            :  * Ken Silverman's official web site: &quot;http://www.advsys.net/ken&quot;</a>
+<a name="25"><span class="lineNum">      25 </span>            :  */</a>
+<a name="26"><span class="lineNum">      26 </span>            : </a>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineNoCov">          0 : #define fltype double</span></a>
+<a name="29"><span class="lineNum">      29 </span>            : </a>
+<a name="30"><span class="lineNum">      30 </span>            : /*</a>
+<a name="31"><span class="lineNum">      31 </span>            :         define Bits, Bitu, Bit32s, Bit32u, Bit16s, Bit16u, Bit8s, Bit8u here</a>
+<a name="32"><span class="lineNum">      32 </span>            : */</a>
+<a name="33"><span class="lineNum">      33 </span>            : /*</a>
+<a name="34"><span class="lineNum">      34 </span>            : #include &lt;stdint.h&gt;</a>
+<a name="35"><span class="lineNum">      35 </span>            : typedef uintptr_t       Bitu;</a>
+<a name="36"><span class="lineNum">      36 </span>            : typedef intptr_t        Bits;</a>
+<a name="37"><span class="lineNum">      37 </span>            : typedef uint32_t        Bit32u;</a>
+<a name="38"><span class="lineNum">      38 </span>            : typedef int32_t         Bit32s;</a>
+<a name="39"><span class="lineNum">      39 </span>            : typedef uint16_t        Bit16u;</a>
+<a name="40"><span class="lineNum">      40 </span>            : typedef int16_t         Bit16s;</a>
+<a name="41"><span class="lineNum">      41 </span>            : typedef uint8_t         Bit8u;</a>
+<a name="42"><span class="lineNum">      42 </span>            : typedef int8_t          Bit8s;</a>
+<a name="43"><span class="lineNum">      43 </span>            : */</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span>            : /*</a>
+<a name="47"><span class="lineNum">      47 </span>            :         define attribution that inlines/forces inlining of a function (optional)</a>
+<a name="48"><span class="lineNum">      48 </span>            : */</a>
+<a name="49"><span class="lineNum">      49 </span>            : #define OPL_INLINE inline</a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span>            : #undef NUM_CHANNELS</a>
+<a name="53"><span class="lineNum">      53 </span>            : #if defined(OPLTYPE_IS_OPL3)</a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 : #define NUM_CHANNELS    18</span></a>
+<a name="55"><span class="lineNum">      55 </span>            : #else</a>
+<a name="56"><span class="lineNum">      56 </span>            : #define NUM_CHANNELS    9</a>
+<a name="57"><span class="lineNum">      57 </span>            : #endif</a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 : #define MAXOPERATORS    (NUM_CHANNELS*2)</span></a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span>            : </a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : #define FL05    ((fltype)0.5)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : #define FL2             ((fltype)2.0)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 : #define PI              ((fltype)3.1415926535897932384626433832795)</span></a>
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<a name="66"><span class="lineNum">      66 </span>            : </a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 : #define FIXEDPT                 0x10000         // fixed-point calculations using 16+16</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 : #define FIXEDPT_LFO             0x1000000       // fixed-point calculations using 8+24</span></a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 : #define WAVEPREC                1024            // waveform precision (10 bits)</span></a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 : #define INTFREQU                ((fltype)(14318180.0 / 288.0))          // clocking of the chip</span></a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span>            : </a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 : #define OF_TYPE_ATT                     0</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 : #define OF_TYPE_DEC                     1</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 : #define OF_TYPE_REL                     2</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 : #define OF_TYPE_SUS                     3</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 : #define OF_TYPE_SUS_NOKEEP      4</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 : #define OF_TYPE_OFF                     5</span></a>
+<a name="81"><span class="lineNum">      81 </span>            : </a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 : #define ARC_CONTROL                     0x00</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 : #define ARC_TVS_KSR_MUL         0x20</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 : #define ARC_KSL_OUTLEV          0x40</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 : #define ARC_ATTR_DECR           0x60</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 : #define ARC_SUSL_RELR           0x80</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 : #define ARC_FREQ_NUM            0xa0</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 : #define ARC_KON_BNUM            0xb0</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 : #define ARC_PERC_MODE           0xbd</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 : #define ARC_FEEDBACK            0xc0</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 : #define ARC_WAVE_SEL            0xe0</span></a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 : #define ARC_SECONDSET           0x100   // second operator set for OPL3</span></a>
+<a name="94"><span class="lineNum">      94 </span>            : </a>
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 : #define OP_ACT_OFF                      0x00</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : #define OP_ACT_NORMAL           0x01    // regular channel activated (bitmasked)</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 : #define OP_ACT_PERC                     0x02    // percussion channel activated (bitmasked)</span></a>
+<a name="99"><span class="lineNum">      99 </span>            : </a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 : #define BLOCKBUF_SIZE           512</span></a>
+<a name="101"><span class="lineNum">     101 </span>            : </a>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<a name="103"><span class="lineNum">     103 </span>            : // vibrato constants</a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 : #define VIBTAB_SIZE                     8</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 : #define VIBFAC                          70/50000                // no braces, integer mul/div</span></a>
+<a name="106"><span class="lineNum">     106 </span>            : </a>
+<a name="107"><span class="lineNum">     107 </span>            : // tremolo constants and table</a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 : #define TREMTAB_SIZE            53</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 : #define TREM_FREQ                       ((fltype)(3.7))                 // tremolo at 3.7hz</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span>            : </a>
+<a name="112"><span class="lineNum">     112 </span>            : /* operator struct definition</a>
+<a name="113"><span class="lineNum">     113 </span>            :      For OPL2 all 9 channels consist of two operators each, carrier and modulator.</a>
+<a name="114"><span class="lineNum">     114 </span>            :      Channel x has operators x as modulator and operators (9+x) as carrier.</a>
+<a name="115"><span class="lineNum">     115 </span>            :      For OPL3 all 18 channels consist either of two operators (2op mode) or four</a>
+<a name="116"><span class="lineNum">     116 </span>            :      operators (4op mode) which is determined through register4 of the second</a>
+<a name="117"><span class="lineNum">     117 </span>            :      adlib register set.</a>
+<a name="118"><span class="lineNum">     118 </span>            :      Only the channels 0,1,2 (first set) and 9,10,11 (second set) can act as</a>
+<a name="119"><span class="lineNum">     119 </span>            :      4op channels. The two additional operators for a channel y come from the</a>
+<a name="120"><span class="lineNum">     120 </span>            :      2op channel y+3 so the operatorss y, (9+y), y+3, (9+y)+3 make up a 4op</a>
+<a name="121"><span class="lineNum">     121 </span>            :      channel.</a>
+<a name="122"><span class="lineNum">     122 </span>            : */</a>
+<a name="123"><span class="lineNum">     123 </span>            : typedef struct operator_struct {</a>
+<a name="124"><span class="lineNum">     124 </span>            :         Bit32s cval, lastcval;                  // current output/last output (used for feedback)</a>
+<a name="125"><span class="lineNum">     125 </span>            :         Bit32u tcount, wfpos, tinc;             // time (position in waveform) and time increment</a>
+<a name="126"><span class="lineNum">     126 </span>            :         fltype amp, step_amp;                   // and amplification (envelope)</a>
+<a name="127"><span class="lineNum">     127 </span>            :         fltype vol;                                             // volume</a>
+<a name="128"><span class="lineNum">     128 </span>            :         fltype sustain_level;                   // sustain level</a>
+<a name="129"><span class="lineNum">     129 </span>            :         Bit32s mfbi;                                    // feedback amount</a>
+<a name="130"><span class="lineNum">     130 </span>            :         fltype a0, a1, a2, a3;                  // attack rate function coefficients</a>
+<a name="131"><span class="lineNum">     131 </span>            :         fltype decaymul, releasemul;    // decay/release rate functions</a>
+<a name="132"><span class="lineNum">     132 </span>            :         Bit32u op_state;                                // current state of operator (attack/decay/sustain/release/off)</a>
+<a name="133"><span class="lineNum">     133 </span>            :         Bit32u toff;</a>
+<a name="134"><span class="lineNum">     134 </span>            :         Bit32s freq_high;                               // highest three bits of the frequency, used for vibrato calculations</a>
+<a name="135"><span class="lineNum">     135 </span>            :         Bit16s* cur_wform;                              // start of selected waveform</a>
+<a name="136"><span class="lineNum">     136 </span>            :         Bit32u cur_wmask;                               // mask for selected waveform</a>
+<a name="137"><span class="lineNum">     137 </span>            :         Bit32u act_state;                               // activity state (regular, percussion)</a>
+<a name="138"><span class="lineNum">     138 </span>            :         bool sus_keep;                                  // keep sustain level when decay finished</a>
+<a name="139"><span class="lineNum">     139 </span>            :         bool vibrato,tremolo;                   // vibrato/tremolo enable bits</a>
+<a name="140"><span class="lineNum">     140 </span>            :         </a>
+<a name="141"><span class="lineNum">     141 </span>            :         // variables used to provide non-continuous envelopes</a>
+<a name="142"><span class="lineNum">     142 </span>            :         Bit32u generator_pos;                   // for non-standard sample rates we need to determine how many samples have passed</a>
+<a name="143"><span class="lineNum">     143 </span>            :         Bits cur_env_step;                              // current (standardized) sample position</a>
+<a name="144"><span class="lineNum">     144 </span>            :         Bits env_step_a,env_step_d,env_step_r;  // number of std samples of one step (for attack/decay/release mode)</a>
+<a name="145"><span class="lineNum">     145 </span>            :         Bit8u step_skip_pos_a;                  // position of 8-cyclic step skipping (always 2^x to check against mask)</a>
+<a name="146"><span class="lineNum">     146 </span>            :         Bits env_step_skip_a;                   // bitmask that determines if a step is skipped (respective bit is zero then)</a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span>            : #if defined(OPLTYPE_IS_OPL3)</a>
+<a name="149"><span class="lineNum">     149 </span>            :         bool is_4op,is_4op_attached;    // base of a 4op channel/part of a 4op channel</a>
+<a name="150"><span class="lineNum">     150 </span>            :         float left_pan,right_pan;               // opl3 stereo panning amount</a>
+<a name="151"><span class="lineNum">     151 </span>            : #endif</a>
+<a name="152"><span class="lineNum">     152 </span>            : } op_type;</a>
+<a name="153"><span class="lineNum">     153 </span>            : </a>
+<a name="154"><span class="lineNum">     154 </span>            : // per-chip variables</a>
+<a name="155"><span class="lineNum">     155 </span>            : class DBOPL : public OPLEmul</a>
+<a name="156"><span class="lineNum">     156 </span>            : {</a>
+<a name="157"><span class="lineNum">     157 </span>            : private:</a>
+<a name="158"><span class="lineNum">     158 </span>            :         Bitu chip_num;</a>
+<a name="159"><span class="lineNum">     159 </span>            :         op_type op[MAXOPERATORS];</a>
+<a name="160"><span class="lineNum">     160 </span>            : </a>
+<a name="161"><span class="lineNum">     161 </span>            :         Bits int_samplerate;</a>
+<a name="162"><span class="lineNum">     162 </span>            :                 </a>
+<a name="163"><span class="lineNum">     163 </span>            :         Bit8u status;</a>
+<a name="164"><span class="lineNum">     164 </span>            :         Bit32u opl_index;</a>
+<a name="165"><span class="lineNum">     165 </span>            : #if defined(OPLTYPE_IS_OPL3)</a>
+<a name="166"><span class="lineNum">     166 </span>            :         Bit8u adlibreg[512];    // adlib register set (including second set)</a>
+<a name="167"><span class="lineNum">     167 </span>            :         Bit8u wave_sel[44];             // waveform selection</a>
+<a name="168"><span class="lineNum">     168 </span>            : #else</a>
+<a name="169"><span class="lineNum">     169 </span>            :         Bit8u adlibreg[256];    // adlib register set</a>
+<a name="170"><span class="lineNum">     170 </span>            :         Bit8u wave_sel[22];             // waveform selection</a>
+<a name="171"><span class="lineNum">     171 </span>            : #endif</a>
+<a name="172"><span class="lineNum">     172 </span>            : </a>
+<a name="173"><span class="lineNum">     173 </span>            :         fltype recipsamp;       // inverse of sampling rate</a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span>            :         // vibrato/tremolo tables</a>
+<a name="176"><span class="lineNum">     176 </span>            :         Bit32s vib_table[VIBTAB_SIZE];</a>
+<a name="177"><span class="lineNum">     177 </span>            :         Bit32s trem_table[TREMTAB_SIZE*2];</a>
+<a name="178"><span class="lineNum">     178 </span>            : </a>
+<a name="179"><span class="lineNum">     179 </span>            :         Bit32s vibval_const[BLOCKBUF_SIZE];</a>
+<a name="180"><span class="lineNum">     180 </span>            :         Bit32s tremval_const[BLOCKBUF_SIZE];</a>
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<a name="182"><span class="lineNum">     182 </span>            :         // vibrato value tables (used per-operator)</a>
+<a name="183"><span class="lineNum">     183 </span>            :         Bit32s vibval_var1[BLOCKBUF_SIZE];</a>
+<a name="184"><span class="lineNum">     184 </span>            :         Bit32s vibval_var2[BLOCKBUF_SIZE];</a>
+<a name="185"><span class="lineNum">     185 </span>            : </a>
+<a name="186"><span class="lineNum">     186 </span>            :         // vibrato/trmolo value table pointers</a>
+<a name="187"><span class="lineNum">     187 </span>            :         Bit32s *vibval1, *vibval2, *vibval3, *vibval4;</a>
+<a name="188"><span class="lineNum">     188 </span>            :         Bit32s *tremval1, *tremval2, *tremval3, *tremval4;</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span>            :         // calculated frequency multiplication values (depend on sampling rate)</a>
+<a name="191"><span class="lineNum">     191 </span>            :         fltype frqmul[16];</a>
+<a name="192"><span class="lineNum">     192 </span>            : </a>
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<a name="194"><span class="lineNum">     194 </span>            :         // vibrato/tremolo increment/counter</a>
+<a name="195"><span class="lineNum">     195 </span>            :         Bit32u vibtab_pos;</a>
+<a name="196"><span class="lineNum">     196 </span>            :         Bit32u vibtab_add;</a>
+<a name="197"><span class="lineNum">     197 </span>            :         Bit32u tremtab_pos;</a>
+<a name="198"><span class="lineNum">     198 </span>            :         Bit32u tremtab_add;</a>
+<a name="199"><span class="lineNum">     199 </span>            : </a>
+<a name="200"><span class="lineNum">     200 </span>            :         // Enable full MIDI panning; disable OPL3 panning</a>
+<a name="201"><span class="lineNum">     201 </span>            :         bool FullPan;</a>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<a name="203"><span class="lineNum">     203 </span>            : </a>
+<a name="204"><span class="lineNum">     204 </span>            :         // enable an operator</a>
+<a name="205"><span class="lineNum">     205 </span>            :         void enable_operator(Bitu regbase, op_type* op_pt, Bit32u act_type);</a>
+<a name="206"><span class="lineNum">     206 </span>            : </a>
+<a name="207"><span class="lineNum">     207 </span>            :         void disable_operator(op_type* op_pt, Bit32u act_type);</a>
+<a name="208"><span class="lineNum">     208 </span>            : </a>
+<a name="209"><span class="lineNum">     209 </span>            :         // functions to change parameters of an operator</a>
+<a name="210"><span class="lineNum">     210 </span>            :         void change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt);</a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span>            :         void change_attackrate(Bitu regbase, op_type* op_pt);</a>
+<a name="213"><span class="lineNum">     213 </span>            :         void change_decayrate(Bitu regbase, op_type* op_pt);</a>
+<a name="214"><span class="lineNum">     214 </span>            :         void change_releaserate(Bitu regbase, op_type* op_pt);</a>
+<a name="215"><span class="lineNum">     215 </span>            :         void change_sustainlevel(Bitu regbase, op_type* op_pt);</a>
+<a name="216"><span class="lineNum">     216 </span>            :         void change_waveform(Bitu regbase, op_type* op_pt);</a>
+<a name="217"><span class="lineNum">     217 </span>            :         void change_keepsustain(Bitu regbase, op_type* op_pt);</a>
+<a name="218"><span class="lineNum">     218 </span>            :         void change_vibrato(Bitu regbase, op_type* op_pt);</a>
+<a name="219"><span class="lineNum">     219 </span>            :         void change_feedback(Bitu chanbase, op_type* op_pt);</a>
+<a name="220"><span class="lineNum">     220 </span>            : </a>
+<a name="221"><span class="lineNum">     221 </span>            :         // general functions</a>
+<a name="222"><span class="lineNum">     222 </span>            : public:</a>
+<a name="223"><span class="lineNum">     223 </span>            :         void Reset();</a>
+<a name="224"><span class="lineNum">     224 </span>            :         void Update(float* sndptr, int numsamples);</a>
+<a name="225"><span class="lineNum">     225 </span>            :         void WriteReg(int idx, int val);</a>
+<a name="226"><span class="lineNum">     226 </span>            :         void SetPanning(int c, float left, float right);</a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span>            :         DBOPL(bool stereo);</a>
+<a name="229"><span class="lineNum">     229 </span>            : };</a>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<a name="231"><span class="lineNum">     231 </span>            : static Bit32u generator_add;    // should be a chip parameter</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,1517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - test_report.info - src/actor.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - actor.h<span style="font-size: 80%;"> (source / <a href="actor.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">test_report.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">96</td>
+            <td class="headerCovTableEntry">282</td>
+            <td class="headerCovTableEntryLo">34.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-04-09 16:21:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">99</td>
+            <td class="headerCovTableEntryLo">28.3 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Emacs style mode select       -*- C++ -*- </a>
+<a name="2"><span class="lineNum">       2 </span>            : //-----------------------------------------------------------------------------</a>
+<a name="3"><span class="lineNum">       3 </span>            : //</a>
+<a name="4"><span class="lineNum">       4 </span>            : // $Id:$</a>
+<a name="5"><span class="lineNum">       5 </span>            : //</a>
+<a name="6"><span class="lineNum">       6 </span>            : // Copyright (C) 1993-1996 by id Software, Inc.</a>
+<a name="7"><span class="lineNum">       7 </span>            : //</a>
+<a name="8"><span class="lineNum">       8 </span>            : // This source is available for distribution and/or modification</a>
+<a name="9"><span class="lineNum">       9 </span>            : // only under the terms of the DOOM Source Code License as</a>
+<a name="10"><span class="lineNum">      10 </span>            : // published by id Software. All rights reserved.</a>
+<a name="11"><span class="lineNum">      11 </span>            : //</a>
+<a name="12"><span class="lineNum">      12 </span>            : // The source is distributed in the hope that it will be useful,</a>
+<a name="13"><span class="lineNum">      13 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of</a>
+<a name="14"><span class="lineNum">      14 </span>            : // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License</a>
+<a name="15"><span class="lineNum">      15 </span>            : // for more details.</a>
+<a name="16"><span class="lineNum">      16 </span>            : //</a>
+<a name="17"><span class="lineNum">      17 </span>            : // DESCRIPTION:</a>
+<a name="18"><span class="lineNum">      18 </span>            : //              Map Objects, MObj, definition and handling.</a>
+<a name="19"><span class="lineNum">      19 </span>            : //</a>
+<a name="20"><span class="lineNum">      20 </span>            : //-----------------------------------------------------------------------------</a>
+<a name="21"><span class="lineNum">      21 </span>            : </a>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<a name="23"><span class="lineNum">      23 </span>            : #ifndef __P_MOBJ_H__</a>
+<a name="24"><span class="lineNum">      24 </span>            : #define __P_MOBJ_H__</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : // Basics.</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &quot;tables.h&quot;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : // We need the thinker_t stuff.</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &quot;dthinker.h&quot;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            : </a>
+<a name="33"><span class="lineNum">      33 </span>            : // States are tied to finite states are tied to animation frames.</a>
+<a name="34"><span class="lineNum">      34 </span>            : #include &quot;info.h&quot;</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span>            : #include &quot;doomdef.h&quot;</a>
+<a name="37"><span class="lineNum">      37 </span>            : #include &quot;textures/textures.h&quot;</a>
+<a name="38"><span class="lineNum">      38 </span>            : #include &quot;r_data/renderstyle.h&quot;</a>
+<a name="39"><span class="lineNum">      39 </span>            : #include &quot;s_sound.h&quot;</a>
+<a name="40"><span class="lineNum">      40 </span>            : #include &quot;memarena.h&quot;</a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &quot;g_level.h&quot;</a>
+<a name="42"><span class="lineNum">      42 </span>            : #include &quot;tflags.h&quot;</a>
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<a name="44"><span class="lineNum">      44 </span>            : struct subsector_t;</a>
+<a name="45"><span class="lineNum">      45 </span>            : //</a>
+<a name="46"><span class="lineNum">      46 </span>            : // NOTES: AActor</a>
+<a name="47"><span class="lineNum">      47 </span>            : //</a>
+<a name="48"><span class="lineNum">      48 </span>            : // Actors are used to tell the refresh where to draw an image,</a>
+<a name="49"><span class="lineNum">      49 </span>            : // tell the world simulation when objects are contacted,</a>
+<a name="50"><span class="lineNum">      50 </span>            : // and tell the sound driver how to position a sound.</a>
+<a name="51"><span class="lineNum">      51 </span>            : //</a>
+<a name="52"><span class="lineNum">      52 </span>            : // The refresh uses the next and prev links to follow</a>
+<a name="53"><span class="lineNum">      53 </span>            : // lists of things in sectors as they are being drawn.</a>
+<a name="54"><span class="lineNum">      54 </span>            : // The sprite, frame, and angle elements determine which patch_t</a>
+<a name="55"><span class="lineNum">      55 </span>            : // is used to draw the sprite if it is visible.</a>
+<a name="56"><span class="lineNum">      56 </span>            : // The sprite and frame values are almost always set</a>
+<a name="57"><span class="lineNum">      57 </span>            : // from state_t structures.</a>
+<a name="58"><span class="lineNum">      58 </span>            : // The statescr.exe utility generates the states.h and states.c</a>
+<a name="59"><span class="lineNum">      59 </span>            : // files that contain the sprite/frame numbers from the</a>
+<a name="60"><span class="lineNum">      60 </span>            : // statescr.txt source file.</a>
+<a name="61"><span class="lineNum">      61 </span>            : // The xyz origin point represents a point at the bottom middle</a>
+<a name="62"><span class="lineNum">      62 </span>            : // of the sprite (between the feet of a biped).</a>
+<a name="63"><span class="lineNum">      63 </span>            : // This is the default origin position for patch_ts grabbed</a>
+<a name="64"><span class="lineNum">      64 </span>            : // with lumpy.exe.</a>
+<a name="65"><span class="lineNum">      65 </span>            : // A walking creature will have its z equal to the floor</a>
+<a name="66"><span class="lineNum">      66 </span>            : // it is standing on.</a>
+<a name="67"><span class="lineNum">      67 </span>            : //</a>
+<a name="68"><span class="lineNum">      68 </span>            : // The sound code uses the x,y, and sometimes z fields</a>
+<a name="69"><span class="lineNum">      69 </span>            : // to do stereo positioning of any sound emitted by the actor.</a>
+<a name="70"><span class="lineNum">      70 </span>            : //</a>
+<a name="71"><span class="lineNum">      71 </span>            : // The play simulation uses the blocklinks, x,y,z, radius, height</a>
+<a name="72"><span class="lineNum">      72 </span>            : // to determine when AActors are touching each other,</a>
+<a name="73"><span class="lineNum">      73 </span>            : // touching lines in the map, or hit by trace lines (gunshots,</a>
+<a name="74"><span class="lineNum">      74 </span>            : // lines of sight, etc).</a>
+<a name="75"><span class="lineNum">      75 </span>            : // The AActor-&gt;flags element has various bit flags</a>
+<a name="76"><span class="lineNum">      76 </span>            : // used by the simulation.</a>
+<a name="77"><span class="lineNum">      77 </span>            : //</a>
+<a name="78"><span class="lineNum">      78 </span>            : // Every actor is linked into a single sector</a>
+<a name="79"><span class="lineNum">      79 </span>            : // based on its origin coordinates.</a>
+<a name="80"><span class="lineNum">      80 </span>            : // The subsector_t is found with R_PointInSubsector(x,y),</a>
+<a name="81"><span class="lineNum">      81 </span>            : // and the sector_t can be found with subsector-&gt;sector.</a>
+<a name="82"><span class="lineNum">      82 </span>            : // The sector links are only used by the rendering code,</a>
+<a name="83"><span class="lineNum">      83 </span>            : // the play simulation does not care about them at all.</a>
+<a name="84"><span class="lineNum">      84 </span>            : //</a>
+<a name="85"><span class="lineNum">      85 </span>            : // Any actor that needs to be acted upon by something else</a>
+<a name="86"><span class="lineNum">      86 </span>            : // in the play world (block movement, be shot, etc) will also</a>
+<a name="87"><span class="lineNum">      87 </span>            : // need to be linked into the blockmap.</a>
+<a name="88"><span class="lineNum">      88 </span>            : // If the thing has the MF_NOBLOCK flag set, it will not use</a>
+<a name="89"><span class="lineNum">      89 </span>            : // the block links. It can still interact with other things,</a>
+<a name="90"><span class="lineNum">      90 </span>            : // but only as the instigator (missiles will run into other</a>
+<a name="91"><span class="lineNum">      91 </span>            : // things, but nothing can run into a missile).</a>
+<a name="92"><span class="lineNum">      92 </span>            : // Each block in the grid is 128*128 units, and knows about</a>
+<a name="93"><span class="lineNum">      93 </span>            : // every line_t that it contains a piece of, and every</a>
+<a name="94"><span class="lineNum">      94 </span>            : // interactable actor that has its origin contained.  </a>
+<a name="95"><span class="lineNum">      95 </span>            : //</a>
+<a name="96"><span class="lineNum">      96 </span>            : // A valid actor is an actor that has the proper subsector_t</a>
+<a name="97"><span class="lineNum">      97 </span>            : // filled in for its xy coordinates and is linked into the</a>
+<a name="98"><span class="lineNum">      98 </span>            : // sector from which the subsector was made, or has the</a>
+<a name="99"><span class="lineNum">      99 </span>            : // MF_NOSECTOR flag set (the subsector_t needs to be valid</a>
+<a name="100"><span class="lineNum">     100 </span>            : // even if MF_NOSECTOR is set), and is linked into a blockmap</a>
+<a name="101"><span class="lineNum">     101 </span>            : // block or has the MF_NOBLOCKMAP flag set.</a>
+<a name="102"><span class="lineNum">     102 </span>            : // Links should only be modified by the P_[Un]SetThingPosition()</a>
+<a name="103"><span class="lineNum">     103 </span>            : // functions.</a>
+<a name="104"><span class="lineNum">     104 </span>            : // Do not change the MF_NO* flags while a thing is valid.</a>
+<a name="105"><span class="lineNum">     105 </span>            : //</a>
+<a name="106"><span class="lineNum">     106 </span>            : // Any questions?</a>
+<a name="107"><span class="lineNum">     107 </span>            : //</a>
+<a name="108"><span class="lineNum">     108 </span>            : </a>
+<a name="109"><span class="lineNum">     109 </span>            : // --- mobj.flags ---</a>
+<a name="110"><span class="lineNum">     110 </span>            : enum ActorFlag</a>
+<a name="111"><span class="lineNum">     111 </span>            : {</a>
+<a name="112"><span class="lineNum">     112 </span>            :         MF_SPECIAL                      = 0x00000001,   // call P_SpecialThing when touched</a>
+<a name="113"><span class="lineNum">     113 </span>            :         MF_SOLID                        = 0x00000002,</a>
+<a name="114"><span class="lineNum">     114 </span>            :         MF_SHOOTABLE            = 0x00000004,</a>
+<a name="115"><span class="lineNum">     115 </span>            :         MF_NOSECTOR                     = 0x00000008,   // don't use the sector links</a>
+<a name="116"><span class="lineNum">     116 </span>            :                                                                                 // (invisible but touchable)</a>
+<a name="117"><span class="lineNum">     117 </span>            :         MF_NOBLOCKMAP           = 0x00000010,   // don't use the blocklinks</a>
+<a name="118"><span class="lineNum">     118 </span>            :                                                                                 // (inert but displayable)</a>
+<a name="119"><span class="lineNum">     119 </span>            :         MF_AMBUSH                       = 0x00000020,   // not activated by sound; deaf monster</a>
+<a name="120"><span class="lineNum">     120 </span>            :         MF_JUSTHIT                      = 0x00000040,   // try to attack right back</a>
+<a name="121"><span class="lineNum">     121 </span>            :         MF_JUSTATTACKED         = 0x00000080,   // take at least one step before attacking</a>
+<a name="122"><span class="lineNum">     122 </span>            :         MF_SPAWNCEILING         = 0x00000100,   // hang from ceiling instead of floor</a>
+<a name="123"><span class="lineNum">     123 </span>            :         MF_NOGRAVITY            = 0x00000200,   // don't apply gravity every tic</a>
+<a name="124"><span class="lineNum">     124 </span>            : </a>
+<a name="125"><span class="lineNum">     125 </span>            : // movement flags</a>
+<a name="126"><span class="lineNum">     126 </span>            :         MF_DROPOFF                      = 0x00000400,   // allow jumps from high places</a>
+<a name="127"><span class="lineNum">     127 </span>            :         MF_PICKUP                       = 0x00000800,   // for players to pick up items</a>
+<a name="128"><span class="lineNum">     128 </span>            :         MF_NOCLIP                       = 0x00001000,   // player cheat</a>
+<a name="129"><span class="lineNum">     129 </span>            :         MF_INCHASE                      = 0x00002000,   // [RH] used by A_Chase and A_Look to avoid recursion</a>
+<a name="130"><span class="lineNum">     130 </span>            :         MF_FLOAT                        = 0x00004000,   // allow moves to any height, no gravity</a>
+<a name="131"><span class="lineNum">     131 </span>            :         MF_TELEPORT                     = 0x00008000,   // don't cross lines or look at heights</a>
+<a name="132"><span class="lineNum">     132 </span>            :         MF_MISSILE                      = 0x00010000,   // don't hit same species, explode on block</a>
+<a name="133"><span class="lineNum">     133 </span>            : </a>
+<a name="134"><span class="lineNum">     134 </span>            :         MF_DROPPED                      = 0x00020000,   // dropped by a demon, not level spawned</a>
+<a name="135"><span class="lineNum">     135 </span>            :         MF_SHADOW                       = 0x00040000,   // actor is hard for monsters to see</a>
+<a name="136"><span class="lineNum">     136 </span>            :         MF_NOBLOOD                      = 0x00080000,   // don't bleed when shot (use puff)</a>
+<a name="137"><span class="lineNum">     137 </span>            :         MF_CORPSE                       = 0x00100000,   // don't stop moving halfway off a step</a>
+<a name="138"><span class="lineNum">     138 </span>            :         MF_INFLOAT                      = 0x00200000,   // floating to a height for a move, don't</a>
+<a name="139"><span class="lineNum">     139 </span>            :                                                                                 // auto float to target's height</a>
+<a name="140"><span class="lineNum">     140 </span>            :         MF_INBOUNCE                     = 0x00200000,   // used by Heretic bouncing missiles </a>
+<a name="141"><span class="lineNum">     141 </span>            : </a>
+<a name="142"><span class="lineNum">     142 </span>            :         MF_COUNTKILL            = 0x00400000,   // count towards intermission kill total</a>
+<a name="143"><span class="lineNum">     143 </span>            :         MF_COUNTITEM            = 0x00800000,   // count towards intermission item total</a>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<a name="145"><span class="lineNum">     145 </span>            :         MF_SKULLFLY                     = 0x01000000,   // skull in flight</a>
+<a name="146"><span class="lineNum">     146 </span>            :         MF_NOTDMATCH            = 0x02000000,   // don't spawn in death match (key cards)</a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span>            :         MF_SPAWNSOUNDSOURCE     = 0x04000000,   // Plays missile's see sound at spawning object.</a>
+<a name="149"><span class="lineNum">     149 </span>            :         MF_FRIENDLY                     = 0x08000000,   // [RH] Friendly monsters for Strife (and MBF)</a>
+<a name="150"><span class="lineNum">     150 </span>            :         MF_UNMORPHED            = 0x10000000,   // [RH] Actor is the unmorphed version of something else</a>
+<a name="151"><span class="lineNum">     151 </span>            :         MF_NOLIFTDROP           = 0x20000000,   // [RH] Used with MF_NOGRAVITY to avoid dropping with lifts</a>
+<a name="152"><span class="lineNum">     152 </span>            :         MF_STEALTH                      = 0x40000000,   // [RH] Andy Baker's stealth monsters</a>
+<a name="153"><span class="lineNum">     153 </span>            :         MF_ICECORPSE            = 0x80000000,   // a frozen corpse (for blasting) [RH] was 0x800000</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span>            :         // --- dummies for unknown/unimplemented Strife flags ---</a>
+<a name="156"><span class="lineNum">     156 </span>            :         MF_STRIFEx8000000 = 0,          // seems related to MF_SHADOW</a>
+<a name="157"><span class="lineNum">     157 </span>            : };</a>
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<a name="159"><span class="lineNum">     159 </span>            : // --- mobj.flags2 ---</a>
+<a name="160"><span class="lineNum">     160 </span>            : enum ActorFlag2</a>
+<a name="161"><span class="lineNum">     161 </span>            : {</a>
+<a name="162"><span class="lineNum">     162 </span>            :         MF2_DONTREFLECT         = 0x00000001,   // this projectile cannot be reflected</a>
+<a name="163"><span class="lineNum">     163 </span>            :         MF2_WINDTHRUST          = 0x00000002,   // gets pushed around by the wind specials</a>
+<a name="164"><span class="lineNum">     164 </span>            :         MF2_DONTSEEKINVISIBLE=0x00000004,       // For seeker missiles: Don't home in on invisible/shadow targets</a>
+<a name="165"><span class="lineNum">     165 </span>            :         MF2_BLASTED                     = 0x00000008,   // actor will temporarily take damage from impact</a>
+<a name="166"><span class="lineNum">     166 </span>            :         MF2_FLY                         = 0x00000010,   // fly mode is active</a>
+<a name="167"><span class="lineNum">     167 </span>            :         MF2_FLOORCLIP           = 0x00000020,   // if feet are allowed to be clipped</a>
+<a name="168"><span class="lineNum">     168 </span>            :         MF2_SPAWNFLOAT          = 0x00000040,   // spawn random float z</a>
+<a name="169"><span class="lineNum">     169 </span>            :         MF2_NOTELEPORT          = 0x00000080,   // does not teleport</a>
+<a name="170"><span class="lineNum">     170 </span>            :         MF2_RIP                         = 0x00000100,   // missile rips through solid targets</a>
+<a name="171"><span class="lineNum">     171 </span>            :         MF2_PUSHABLE            = 0x00000200,   // can be pushed by other moving actors</a>
+<a name="172"><span class="lineNum">     172 </span>            :         MF2_SLIDE                       = 0x00000400,   // slides against walls</a>
+<a name="173"><span class="lineNum">     173 </span>            :         MF2_ONMOBJ                      = 0x00000800,   // actor is resting on top of another actor</a>
+<a name="174"><span class="lineNum">     174 </span>            :         MF2_PASSMOBJ            = 0x00001000,   // Enable z block checking. If on,</a>
+<a name="175"><span class="lineNum">     175 </span>            :                                                                                 // this flag will allow the actor to</a>
+<a name="176"><span class="lineNum">     176 </span>            :                                                                                 // pass over/under other actors.</a>
+<a name="177"><span class="lineNum">     177 </span>            :         MF2_CANNOTPUSH          = 0x00002000,   // cannot push other pushable mobjs</a>
+<a name="178"><span class="lineNum">     178 </span>            :         MF2_THRUGHOST           = 0x00004000,   // missile will pass through ghosts [RH] was 8</a>
+<a name="179"><span class="lineNum">     179 </span>            :         MF2_BOSS                        = 0x00008000,   // mobj is a major boss</a>
+<a name="180"><span class="lineNum">     180 </span>            : </a>
+<a name="181"><span class="lineNum">     181 </span>            :         MF2_DONTTRANSLATE       = 0x00010000,   // Don't apply palette translations</a>
+<a name="182"><span class="lineNum">     182 </span>            :         MF2_NODMGTHRUST         = 0x00020000,   // does not thrust target when damaging</a>
+<a name="183"><span class="lineNum">     183 </span>            :         MF2_TELESTOMP           = 0x00040000,   // mobj can stomp another</a>
+<a name="184"><span class="lineNum">     184 </span>            :         MF2_FLOATBOB            = 0x00080000,   // use float bobbing z movement</a>
+<a name="185"><span class="lineNum">     185 </span>            :         MF2_THRUACTORS          = 0x00100000,   // performs no actor&lt;-&gt;actor collision checks</a>
+<a name="186"><span class="lineNum">     186 </span>            :         MF2_IMPACT                      = 0x00200000,   // an MF_MISSILE mobj can activate SPAC_IMPACT</a>
+<a name="187"><span class="lineNum">     187 </span>            :         MF2_PUSHWALL            = 0x00400000,   // mobj can push walls</a>
+<a name="188"><span class="lineNum">     188 </span>            :         MF2_MCROSS                      = 0x00800000,   // can activate monster cross lines</a>
+<a name="189"><span class="lineNum">     189 </span>            :         MF2_PCROSS                      = 0x01000000,   // can activate projectile cross lines</a>
+<a name="190"><span class="lineNum">     190 </span>            :         MF2_CANTLEAVEFLOORPIC=0x02000000,       // stay within a certain floor type</a>
+<a name="191"><span class="lineNum">     191 </span>            :         MF2_NONSHOOTABLE        = 0x04000000,   // mobj is totally non-shootable, </a>
+<a name="192"><span class="lineNum">     192 </span>            :                                                                                 // but still considered solid</a>
+<a name="193"><span class="lineNum">     193 </span>            :         MF2_INVULNERABLE        = 0x08000000,   // mobj is invulnerable</a>
+<a name="194"><span class="lineNum">     194 </span>            :         MF2_DORMANT                     = 0x10000000,   // thing is dormant</a>
+<a name="195"><span class="lineNum">     195 </span>            :         MF2_ARGSDEFINED         = 0x20000000,   // Internal flag used by DECORATE to signal that the </a>
+<a name="196"><span class="lineNum">     196 </span>            :                                                                                 // args should not be taken from the mapthing definition</a>
+<a name="197"><span class="lineNum">     197 </span>            :         MF2_SEEKERMISSILE       = 0x40000000,   // is a seeker (for reflection)</a>
+<a name="198"><span class="lineNum">     198 </span>            :         MF2_REFLECTIVE          = 0x80000000,   // reflects missiles</a>
+<a name="199"><span class="lineNum">     199 </span>            : };</a>
+<a name="200"><span class="lineNum">     200 </span>            : </a>
+<a name="201"><span class="lineNum">     201 </span>            : // --- mobj.flags3 ---</a>
+<a name="202"><span class="lineNum">     202 </span>            : enum ActorFlag3</a>
+<a name="203"><span class="lineNum">     203 </span>            : {</a>
+<a name="204"><span class="lineNum">     204 </span>            :         MF3_FLOORHUGGER         = 0x00000001,   // Missile stays on floor</a>
+<a name="205"><span class="lineNum">     205 </span>            :         MF3_CEILINGHUGGER       = 0x00000002,   // Missile stays on ceiling</a>
+<a name="206"><span class="lineNum">     206 </span>            :         MF3_NORADIUSDMG         = 0x00000004,   // Actor does not take radius damage</a>
+<a name="207"><span class="lineNum">     207 </span>            :         MF3_GHOST                       = 0x00000008,   // Actor is a ghost</a>
+<a name="208"><span class="lineNum">     208 </span>            :         MF3_ALWAYSPUFF          = 0x00000010,   // Puff always appears, even when hit nothing</a>
+<a name="209"><span class="lineNum">     209 </span>            :         MF3_SPECIALFLOORCLIP= 0x00000020,       // Actor uses floorclip for special effect (e.g. Wraith)</a>
+<a name="210"><span class="lineNum">     210 </span>            :         MF3_DONTSPLASH          = 0x00000040,   // Thing doesn't make a splash</a>
+<a name="211"><span class="lineNum">     211 </span>            :         MF3_NOSIGHTCHECK        = 0x00000080,   // Go after first acceptable target without checking sight</a>
+<a name="212"><span class="lineNum">     212 </span>            :         MF3_DONTOVERLAP         = 0x00000100,   // Don't pass over/under other things with this bit set</a>
+<a name="213"><span class="lineNum">     213 </span>            :         MF3_DONTMORPH           = 0x00000200,   // Immune to arti_egg</a>
+<a name="214"><span class="lineNum">     214 </span>            :         MF3_DONTSQUASH          = 0x00000400,   // Death ball can't squash this actor</a>
+<a name="215"><span class="lineNum">     215 </span>            :         MF3_EXPLOCOUNT          = 0x00000800,   // Don't explode until special2 counts to special1</a>
+<a name="216"><span class="lineNum">     216 </span>            :         MF3_FULLVOLACTIVE       = 0x00001000,   // Active sound is played at full volume</a>
+<a name="217"><span class="lineNum">     217 </span>            :         MF3_ISMONSTER           = 0x00002000,   // Actor is a monster</a>
+<a name="218"><span class="lineNum">     218 </span>            :         MF3_SKYEXPLODE          = 0x00004000,   // Explode missile when hitting sky</a>
+<a name="219"><span class="lineNum">     219 </span>            :         MF3_STAYMORPHED         = 0x00008000,   // Monster cannot unmorph</a>
+<a name="220"><span class="lineNum">     220 </span>            :         MF3_DONTBLAST           = 0x00010000,   // Actor cannot be pushed by blasting</a>
+<a name="221"><span class="lineNum">     221 </span>            :         MF3_CANBLAST            = 0x00020000,   // Actor is not a monster but can be blasted</a>
+<a name="222"><span class="lineNum">     222 </span>            :         MF3_NOTARGET            = 0x00040000,   // This actor not targetted when it hurts something else</a>
+<a name="223"><span class="lineNum">     223 </span>            :         MF3_DONTGIB                     = 0x00080000,   // Don't gib this corpse</a>
+<a name="224"><span class="lineNum">     224 </span>            :         MF3_NOBLOCKMONST        = 0x00100000,   // Can cross ML_BLOCKMONSTERS lines</a>
+<a name="225"><span class="lineNum">     225 </span>            :         MF3_CRASHED                     = 0x00200000,   // Actor entered its crash state</a>
+<a name="226"><span class="lineNum">     226 </span>            :         MF3_FULLVOLDEATH        = 0x00400000,   // DeathSound is played full volume (for missiles)</a>
+<a name="227"><span class="lineNum">     227 </span>            :         MF3_AVOIDMELEE          = 0x00800000,   // Avoids melee attacks (same as MBF's monster_backing but must be explicitly set)</a>
+<a name="228"><span class="lineNum">     228 </span>            :         MF3_SCREENSEEKER    = 0x01000000,       // Fails the IsOkayToAttack test if potential target is outside player FOV</a>
+<a name="229"><span class="lineNum">     229 </span>            :         MF3_FOILINVUL           = 0x02000000,   // Actor can hurt MF2_INVULNERABLE things</a>
+<a name="230"><span class="lineNum">     230 </span>            :         MF3_NOTELEOTHER         = 0x04000000,   // Monster is unaffected by teleport other artifact</a>
+<a name="231"><span class="lineNum">     231 </span>            :         MF3_BLOODLESSIMPACT     = 0x08000000,   // Projectile does not leave blood</a>
+<a name="232"><span class="lineNum">     232 </span>            :         MF3_NOEXPLODEFLOOR      = 0x10000000,   // Missile stops at floor instead of exploding</a>
+<a name="233"><span class="lineNum">     233 </span>            :         MF3_WARNBOT                     = 0x20000000,   // Missile warns bot</a>
+<a name="234"><span class="lineNum">     234 </span>            :         MF3_PUFFONACTORS        = 0x40000000,   // Puff appears even when hit bleeding actors</a>
+<a name="235"><span class="lineNum">     235 </span>            :         MF3_HUNTPLAYERS         = 0x80000000,   // Used with TIDtoHate, means to hate players too</a>
+<a name="236"><span class="lineNum">     236 </span>            : };</a>
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<a name="238"><span class="lineNum">     238 </span>            : // --- mobj.flags4 ---</a>
+<a name="239"><span class="lineNum">     239 </span>            : enum ActorFlag4</a>
+<a name="240"><span class="lineNum">     240 </span>            : {</a>
+<a name="241"><span class="lineNum">     241 </span>            :         MF4_NOHATEPLAYERS       = 0x00000001,   // Ignore player attacks</a>
+<a name="242"><span class="lineNum">     242 </span>            :         MF4_QUICKTORETALIATE= 0x00000002,       // Always switch targets when hurt</a>
+<a name="243"><span class="lineNum">     243 </span>            :         MF4_NOICEDEATH          = 0x00000004,   // Actor never enters an ice death, not even the generic one</a>
+<a name="244"><span class="lineNum">     244 </span>            :         MF4_BOSSDEATH           = 0x00000008,   // A_FreezeDeathChunks calls A_BossDeath</a>
+<a name="245"><span class="lineNum">     245 </span>            :         MF4_RANDOMIZE           = 0x00000010,   // Missile has random initial tic count</a>
+<a name="246"><span class="lineNum">     246 </span>            :         MF4_NOSKIN                      = 0x00000020,   // Player cannot use skins</a>
+<a name="247"><span class="lineNum">     247 </span>            :         MF4_FIXMAPTHINGPOS      = 0x00000040,   // Fix this actor's position when spawned as a map thing</a>
+<a name="248"><span class="lineNum">     248 </span>            :         MF4_ACTLIKEBRIDGE       = 0x00000080,   // Pickups can &quot;stand&quot; on this actor / cannot be moved by any sector action.</a>
+<a name="249"><span class="lineNum">     249 </span>            :         MF4_STRIFEDAMAGE        = 0x00000100,   // Strife projectiles only do up to 4x damage, not 8x</a>
+<a name="250"><span class="lineNum">     250 </span>            : </a>
+<a name="251"><span class="lineNum">     251 </span>            :         MF4_CANUSEWALLS         = 0x00000200,   // Can activate 'use' specials</a>
+<a name="252"><span class="lineNum">     252 </span>            :         MF4_MISSILEMORE         = 0x00000400,   // increases the chance of a missile attack</a>
+<a name="253"><span class="lineNum">     253 </span>            :         MF4_MISSILEEVENMORE     = 0x00000800,   // significantly increases the chance of a missile attack</a>
+<a name="254"><span class="lineNum">     254 </span>            :         MF4_FORCERADIUSDMG      = 0x00001000,   // if put on an object it will override MF3_NORADIUSDMG</a>
+<a name="255"><span class="lineNum">     255 </span>            :         MF4_DONTFALL            = 0x00002000,   // Doesn't have NOGRAVITY disabled when dying.</a>
+<a name="256"><span class="lineNum">     256 </span>            :         MF4_SEESDAGGERS         = 0x00004000,   // This actor can see you striking with a dagger</a>
+<a name="257"><span class="lineNum">     257 </span>            :         MF4_INCOMBAT            = 0x00008000,   // Don't alert others when attacked by a dagger</a>
+<a name="258"><span class="lineNum">     258 </span>            :         MF4_LOOKALLAROUND       = 0x00010000,   // Monster has eyes in the back of its head</a>
+<a name="259"><span class="lineNum">     259 </span>            :         MF4_STANDSTILL          = 0x00020000,   // Monster should not chase targets unless attacked?</a>
+<a name="260"><span class="lineNum">     260 </span>            :         MF4_SPECTRAL            = 0x00040000,</a>
+<a name="261"><span class="lineNum">     261 </span>            :         MF4_SCROLLMOVE          = 0x00080000,   // velocity has been applied by a scroller</a>
+<a name="262"><span class="lineNum">     262 </span>            :         MF4_NOSPLASHALERT       = 0x00100000,   // Splashes don't alert this monster</a>
+<a name="263"><span class="lineNum">     263 </span>            :         MF4_SYNCHRONIZED        = 0x00200000,   // For actors spawned at load-time only: Do not randomize tics</a>
+<a name="264"><span class="lineNum">     264 </span>            :         MF4_NOTARGETSWITCH      = 0x00400000,   // monster never switches target until current one is dead</a>
+<a name="265"><span class="lineNum">     265 </span>            :         MF4_VFRICTION           = 0x00800000,   // Internal flag used by A_PainAttack to push a monster down</a>
+<a name="266"><span class="lineNum">     266 </span>            :         MF4_DONTHARMCLASS       = 0x01000000,   // Don't hurt one's own kind with explosions (hitscans, too?)</a>
+<a name="267"><span class="lineNum">     267 </span>            :         MF4_SHIELDREFLECT       = 0x02000000,</a>
+<a name="268"><span class="lineNum">     268 </span>            :         MF4_DEFLECT                     = 0x04000000,   // different projectile reflection styles</a>
+<a name="269"><span class="lineNum">     269 </span>            :         MF4_ALLOWPARTICLES      = 0x08000000,   // this puff type can be replaced by particles</a>
+<a name="270"><span class="lineNum">     270 </span>            :         MF4_NOEXTREMEDEATH      = 0x10000000,   // this projectile or weapon never gibs its victim</a>
+<a name="271"><span class="lineNum">     271 </span>            :         MF4_EXTREMEDEATH        = 0x20000000,   // this projectile or weapon always gibs its victim</a>
+<a name="272"><span class="lineNum">     272 </span>            :         MF4_FRIGHTENED          = 0x40000000,   // Monster runs away from player</a>
+<a name="273"><span class="lineNum">     273 </span>            :         MF4_BOSSSPAWNED         = 0x80000000,   // Spawned by a boss spawn cube</a>
+<a name="274"><span class="lineNum">     274 </span>            : };</a>
+<a name="275"><span class="lineNum">     275 </span>            : </a>
+<a name="276"><span class="lineNum">     276 </span>            : // --- mobj.flags5 ---</a>
+<a name="277"><span class="lineNum">     277 </span>            : </a>
+<a name="278"><span class="lineNum">     278 </span>            : enum ActorFlag5</a>
+<a name="279"><span class="lineNum">     279 </span>            : {</a>
+<a name="280"><span class="lineNum">     280 </span>            :         MF5_DONTDRAIN           = 0x00000001,   // cannot be drained health from.</a>
+<a name="281"><span class="lineNum">     281 </span>            :         /*                                      = 0x00000002,      reserved for use by scripting branch */</a>
+<a name="282"><span class="lineNum">     282 </span>            :         MF5_NODROPOFF           = 0x00000004,   // cannot drop off under any circumstances.</a>
+<a name="283"><span class="lineNum">     283 </span>            :         MF5_NOFORWARDFALL       = 0x00000008,   // Does not make any actor fall forward by being damaged by this</a>
+<a name="284"><span class="lineNum">     284 </span>            :         MF5_COUNTSECRET         = 0x00000010,   // From Doom 64: actor acts like a secret</a>
+<a name="285"><span class="lineNum">     285 </span>            :         MF5_AVOIDINGDROPOFF = 0x00000020,       // Used to move monsters away from dropoffs</a>
+<a name="286"><span class="lineNum">     286 </span>            :         MF5_NODAMAGE            = 0x00000040,   // Actor can be shot and reacts to being shot but takes no damage</a>
+<a name="287"><span class="lineNum">     287 </span>            :         MF5_CHASEGOAL           = 0x00000080,   // Walks to goal instead of target if a valid goal is set.</a>
+<a name="288"><span class="lineNum">     288 </span>            :         MF5_BLOODSPLATTER       = 0x00000100,   // Blood splatter like in Raven's games.</a>
+<a name="289"><span class="lineNum">     289 </span>            :         MF5_OLDRADIUSDMG        = 0x00000200,   // Use old radius damage code (for barrels and boss brain)</a>
+<a name="290"><span class="lineNum">     290 </span>            :         MF5_DEHEXPLOSION        = 0x00000400,   // Use the DEHACKED explosion options when this projectile explodes</a>
+<a name="291"><span class="lineNum">     291 </span>            :         MF5_PIERCEARMOR         = 0x00000800,   // Armor doesn't protect against damage from this actor</a>
+<a name="292"><span class="lineNum">     292 </span>            :         MF5_NOBLOODDECALS       = 0x00001000,   // Actor bleeds but doesn't spawn blood decals</a>
+<a name="293"><span class="lineNum">     293 </span>            :         MF5_USESPECIAL          = 0x00002000,   // Actor executes its special when being 'used'.</a>
+<a name="294"><span class="lineNum">     294 </span>            :         MF5_NOPAIN                      = 0x00004000,   // If set the pain state won't be entered</a>
+<a name="295"><span class="lineNum">     295 </span>            :         MF5_ALWAYSFAST          = 0x00008000,   // always uses 'fast' attacking logic</a>
+<a name="296"><span class="lineNum">     296 </span>            :         MF5_NEVERFAST           = 0x00010000,   // never uses 'fast' attacking logic</a>
+<a name="297"><span class="lineNum">     297 </span>            :         MF5_ALWAYSRESPAWN       = 0x00020000,   // always respawns, regardless of skill setting</a>
+<a name="298"><span class="lineNum">     298 </span>            :         MF5_NEVERRESPAWN        = 0x00040000,   // never respawns, regardless of skill setting</a>
+<a name="299"><span class="lineNum">     299 </span>            :         MF5_DONTRIP                     = 0x00080000,   // Ripping projectiles explode when hitting this actor</a>
+<a name="300"><span class="lineNum">     300 </span>            :         MF5_NOINFIGHTING        = 0x00100000,   // This actor doesn't switch target when it's hurt </a>
+<a name="301"><span class="lineNum">     301 </span>            :         MF5_NOINTERACTION       = 0x00200000,   // Thing is completely excluded from any gameplay related checks</a>
+<a name="302"><span class="lineNum">     302 </span>            :         MF5_NOTIMEFREEZE        = 0x00400000,   // Actor is not affected by time freezer</a>
+<a name="303"><span class="lineNum">     303 </span>            :         MF5_PUFFGETSOWNER       = 0x00800000,   // [BB] Sets the owner of the puff to the player who fired it</a>
+<a name="304"><span class="lineNum">     304 </span>            :         MF5_SPECIALFIREDAMAGE=0x01000000,       // Special treatment of PhoenixFX1 turned into a flag to remove</a>
+<a name="305"><span class="lineNum">     305 </span>            :                                                                                 // dependence of main engine code of specific actor types.</a>
+<a name="306"><span class="lineNum">     306 </span>            :         MF5_SUMMONEDMONSTER     = 0x02000000,   // To mark the friendly Minotaur. Hopefully to be generalized later.</a>
+<a name="307"><span class="lineNum">     307 </span>            :         MF5_NOVERTICALMELEERANGE=0x04000000,// Does not check vertical distance for melee range</a>
+<a name="308"><span class="lineNum">     308 </span>            :         MF5_BRIGHT                      = 0x08000000,   // Actor is always rendered fullbright</a>
+<a name="309"><span class="lineNum">     309 </span>            :         MF5_CANTSEEK            = 0x10000000,   // seeker missiles cannot home in on this actor</a>
+<a name="310"><span class="lineNum">     310 </span>            :         MF5_INCONVERSATION      = 0x20000000,   // Actor is having a conversation</a>
+<a name="311"><span class="lineNum">     311 </span>            :         MF5_PAINLESS            = 0x40000000,   // Actor always inflicts painless damage.</a>
+<a name="312"><span class="lineNum">     312 </span>            :         MF5_MOVEWITHSECTOR      = 0x80000000,   // P_ChangeSector() will still process this actor if it has MF_NOBLOCKMAP</a>
+<a name="313"><span class="lineNum">     313 </span>            : };</a>
+<a name="314"><span class="lineNum">     314 </span>            : </a>
+<a name="315"><span class="lineNum">     315 </span>            : // --- mobj.flags6 ---</a>
+<a name="316"><span class="lineNum">     316 </span>            : enum ActorFlag6</a>
+<a name="317"><span class="lineNum">     317 </span>            : {</a>
+<a name="318"><span class="lineNum">     318 </span>            :         MF6_NOBOSSRIP           = 0x00000001,   // For rippermissiles: Don't rip through bosses.</a>
+<a name="319"><span class="lineNum">     319 </span>            :         MF6_THRUSPECIES         = 0x00000002,   // Actors passes through other of the same species.</a>
+<a name="320"><span class="lineNum">     320 </span>            :         MF6_MTHRUSPECIES        = 0x00000004,   // Missile passes through actors of its shooter's species.</a>
+<a name="321"><span class="lineNum">     321 </span>            :         MF6_FORCEPAIN           = 0x00000008,   // forces target into painstate (unless it has the NOPAIN flag)</a>
+<a name="322"><span class="lineNum">     322 </span>            :         MF6_NOFEAR                      = 0x00000010,   // Not scared of frightening players</a>
+<a name="323"><span class="lineNum">     323 </span>            :         MF6_BUMPSPECIAL         = 0x00000020,   // Actor executes its special when being collided (as the ST flag)</a>
+<a name="324"><span class="lineNum">     324 </span>            :         MF6_DONTHARMSPECIES = 0x00000040,       // Don't hurt one's own species with explosions (hitscans, too?)</a>
+<a name="325"><span class="lineNum">     325 </span>            :         MF6_STEPMISSILE         = 0x00000080,   // Missile can &quot;walk&quot; up steps</a>
+<a name="326"><span class="lineNum">     326 </span>            :         MF6_NOTELEFRAG          = 0x00000100,   // [HW] Actor can't be telefragged</a>
+<a name="327"><span class="lineNum">     327 </span>            :         MF6_TOUCHY                      = 0x00000200,   // From MBF: killough 11/98: dies when solids touch it</a>
+<a name="328"><span class="lineNum">     328 </span>            :         MF6_CANJUMP                     = 0x00000400,   // From MBF: a dedicated flag instead of the BOUNCES+FLOAT+sentient combo</a>
+<a name="329"><span class="lineNum">     329 </span>            :         MF6_JUMPDOWN            = 0x00000800,   // From MBF: generalization of dog behavior wrt. dropoffs.</a>
+<a name="330"><span class="lineNum">     330 </span>            :         MF6_VULNERABLE          = 0x00001000,   // Actor can be damaged (even if not shootable).</a>
+<a name="331"><span class="lineNum">     331 </span>            :         MF6_ARMED                       = 0x00002000,   // From MBF: Object is armed (for MF6_TOUCHY objects)</a>
+<a name="332"><span class="lineNum">     332 </span>            :         MF6_FALLING                     = 0x00004000,   // From MBF: Object is falling (for pseudotorque simulation)</a>
+<a name="333"><span class="lineNum">     333 </span>            :         MF6_LINEDONE            = 0x00008000,   // From MBF: Object has already run a line effect</a>
+<a name="334"><span class="lineNum">     334 </span>            :         MF6_NOTRIGGER           = 0x00010000,   // actor cannot trigger any line actions</a>
+<a name="335"><span class="lineNum">     335 </span>            :         MF6_SHATTERING          = 0x00020000,   // marks an ice corpse for forced shattering</a>
+<a name="336"><span class="lineNum">     336 </span>            :         MF6_KILLED                      = 0x00040000,   // Something that was killed (but not necessarily a corpse)</a>
+<a name="337"><span class="lineNum">     337 </span>            :         MF6_BLOCKEDBYSOLIDACTORS = 0x00080000, // Blocked by solid actors, even if not solid itself</a>
+<a name="338"><span class="lineNum">     338 </span>            :         MF6_ADDITIVEPOISONDAMAGE        = 0x00100000,</a>
+<a name="339"><span class="lineNum">     339 </span>            :         MF6_ADDITIVEPOISONDURATION      = 0x00200000,</a>
+<a name="340"><span class="lineNum">     340 </span>            :         MF6_NOMENU                      = 0x00400000,   // Player class should not appear in the class selection menu.</a>
+<a name="341"><span class="lineNum">     341 </span>            :         MF6_BOSSCUBE            = 0x00800000,   // Actor spawned by A_BrainSpit, flagged for timefreeze reasons.</a>
+<a name="342"><span class="lineNum">     342 </span>            :         MF6_SEEINVISIBLE        = 0x01000000,   // Monsters can see invisible player.</a>
+<a name="343"><span class="lineNum">     343 </span>            :         MF6_DONTCORPSE          = 0x02000000,   // [RC] Don't autoset MF_CORPSE upon death and don't force Crash state change.</a>
+<a name="344"><span class="lineNum">     344 </span>            :         MF6_POISONALWAYS        = 0x04000000,   // Always apply poison, even when target can't take the damage.</a>
+<a name="345"><span class="lineNum">     345 </span>            :         MF6_DOHARMSPECIES       = 0x08000000,   // Do hurt one's own species with projectiles.</a>
+<a name="346"><span class="lineNum">     346 </span>            :         MF6_INTRYMOVE           = 0x10000000,   // Executing P_TryMove</a>
+<a name="347"><span class="lineNum">     347 </span>            :         MF6_NOTAUTOAIMED        = 0x20000000,   // Do not subject actor to player autoaim.</a>
+<a name="348"><span class="lineNum">     348 </span>            :         MF6_NOTONAUTOMAP        = 0x40000000,   // will not be shown on automap with the 'scanner' powerup.</a>
+<a name="349"><span class="lineNum">     349 </span>            :         MF6_RELATIVETOFLOOR     = 0x80000000,   // [RC] Make flying actors be affected by lifts.</a>
+<a name="350"><span class="lineNum">     350 </span>            : };</a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span>            : // --- mobj.flags7 ---</a>
+<a name="353"><span class="lineNum">     353 </span>            : enum ActorFlag7</a>
+<a name="354"><span class="lineNum">     354 </span>            : {</a>
+<a name="355"><span class="lineNum">     355 </span>            :         MF7_NEVERTARGET         = 0x00000001,   // can not be targetted at all, even if monster friendliness is considered.</a>
+<a name="356"><span class="lineNum">     356 </span>            :         MF7_NOTELESTOMP         = 0x00000002,   // cannot telefrag under any circumstances (even when set by MAPINFO)</a>
+<a name="357"><span class="lineNum">     357 </span>            :         MF7_ALWAYSTELEFRAG      = 0x00000004,   // will unconditionally be telefragged when in the way. Overrides all other settings.</a>
+<a name="358"><span class="lineNum">     358 </span>            :         MF7_HANDLENODELAY       = 0x00000008,   // respect NoDelay state flag</a>
+<a name="359"><span class="lineNum">     359 </span>            :         MF7_WEAPONSPAWN         = 0x00000010,   // subject to DF_NO_COOP_WEAPON_SPAWN dmflag</a>
+<a name="360"><span class="lineNum">     360 </span>            :         MF7_HARMFRIENDS         = 0x00000020,   // is allowed to harm friendly monsters.</a>
+<a name="361"><span class="lineNum">     361 </span>            :         MF7_BUDDHA                      = 0x00000040,   // Behaves just like the buddha cheat. </a>
+<a name="362"><span class="lineNum">     362 </span>            :         MF7_FOILBUDDHA          = 0x00000080,   // Similar to FOILINVUL, foils buddha mode.</a>
+<a name="363"><span class="lineNum">     363 </span>            :         MF7_DONTTHRUST          = 0x00000100,   // Thrusting functions do not take, and do not give thrust (damage) to actors with this flag.</a>
+<a name="364"><span class="lineNum">     364 </span>            :         MF7_ALLOWPAIN           = 0x00000200,   // Invulnerable or immune (via damagefactors) actors can still react to taking damage even if they don't.</a>
+<a name="365"><span class="lineNum">     365 </span>            :         MF7_CAUSEPAIN           = 0x00000400,   // Damage sources with this flag can cause similar effects like ALLOWPAIN.</a>
+<a name="366"><span class="lineNum">     366 </span>            :         MF7_THRUREFLECT         = 0x00000800,   // Actors who are reflective cause the missiles to not slow down or change angles.</a>
+<a name="367"><span class="lineNum">     367 </span>            :         MF7_MIRRORREFLECT       = 0x00001000,   // Actor is turned directly 180 degrees around when reflected.</a>
+<a name="368"><span class="lineNum">     368 </span>            :         MF7_AIMREFLECT          = 0x00002000,   // Actor is directly reflected straight back at the one who fired the projectile.</a>
+<a name="369"><span class="lineNum">     369 </span>            :         MF7_HITTARGET           = 0x00004000,   // The actor the projectile dies on is set to target, provided it's targetable anyway.</a>
+<a name="370"><span class="lineNum">     370 </span>            :         MF7_HITMASTER           = 0x00008000,   // Same as HITTARGET, except it's master instead of target.</a>
+<a name="371"><span class="lineNum">     371 </span>            :         MF7_HITTRACER           = 0x00010000,   // Same as HITTARGET, but for tracer.</a>
+<a name="372"><span class="lineNum">     372 </span>            :         MF7_FLYCHEAT            = 0x00020000,   // must be part of the actor so that it can be tracked properly</a>
+<a name="373"><span class="lineNum">     373 </span>            :         MF7_NODECAL                     = 0x00040000,   // [ZK] Forces puff to have no impact decal</a>
+<a name="374"><span class="lineNum">     374 </span>            :         MF7_FORCEDECAL          = 0x00080000,   // [ZK] Forces puff's decal to override the weapon's.</a>
+<a name="375"><span class="lineNum">     375 </span>            :         MF7_LAXTELEFRAGDMG      = 0x00100000,   // [MC] Telefrag damage can be reduced.</a>
+<a name="376"><span class="lineNum">     376 </span>            :         MF7_ICESHATTER          = 0x00200000,   // [MC] Shatters ice corpses regardless of damagetype.</a>
+<a name="377"><span class="lineNum">     377 </span>            : };</a>
+<a name="378"><span class="lineNum">     378 </span>            : </a>
+<a name="379"><span class="lineNum">     379 </span>            : // --- mobj.renderflags ---</a>
+<a name="380"><span class="lineNum">     380 </span>            : enum ActorRenderFlag</a>
+<a name="381"><span class="lineNum">     381 </span>            : {</a>
+<a name="382"><span class="lineNum">     382 </span>            :         RF_XFLIP                        = 0x0001,       // Flip sprite horizontally</a>
+<a name="383"><span class="lineNum">     383 </span>            :         RF_YFLIP                        = 0x0002,       // Flip sprite vertically</a>
+<a name="384"><span class="lineNum">     384 </span>            :         RF_ONESIDED                     = 0x0004,       // Wall/floor sprite is visible from front only</a>
+<a name="385"><span class="lineNum">     385 </span>            :         RF_FULLBRIGHT           = 0x0010,       // Sprite is drawn at full brightness</a>
+<a name="386"><span class="lineNum">     386 </span>            : </a>
+<a name="387"><span class="lineNum">     387 </span>            :         RF_RELMASK                      = 0x0300,       // ---Relative z-coord for bound actors (these obey texture pegging)</a>
+<a name="388"><span class="lineNum">     388 </span>            :         RF_RELABSOLUTE          = 0x0000,       // Actor z is absolute</a>
+<a name="389"><span class="lineNum">     389 </span>            :         RF_RELUPPER                     = 0x0100,       // Actor z is relative to upper part of wall</a>
+<a name="390"><span class="lineNum">     390 </span>            :         RF_RELLOWER                     = 0x0200,       // Actor z is relative to lower part of wall</a>
+<a name="391"><span class="lineNum">     391 </span>            :         RF_RELMID                       = 0x0300,       // Actor z is relative to middle part of wall</a>
+<a name="392"><span class="lineNum">     392 </span>            : </a>
+<a name="393"><span class="lineNum">     393 </span>            :         RF_CLIPMASK                     = 0x0c00,       // ---Clipping for bound actors</a>
+<a name="394"><span class="lineNum">     394 </span>            :         RF_CLIPFULL                     = 0x0000,       // Clip sprite to full height of wall</a>
+<a name="395"><span class="lineNum">     395 </span>            :         RF_CLIPUPPER            = 0x0400,       // Clip sprite to upper part of wall</a>
+<a name="396"><span class="lineNum">     396 </span>            :         RF_CLIPMID                      = 0x0800,       // Clip sprite to mid part of wall</a>
+<a name="397"><span class="lineNum">     397 </span>            :         RF_CLIPLOWER            = 0x0c00,       // Clip sprite to lower part of wall</a>
+<a name="398"><span class="lineNum">     398 </span>            : </a>
+<a name="399"><span class="lineNum">     399 </span>            :         RF_DECALMASK            = RF_RELMASK|RF_CLIPMASK,</a>
+<a name="400"><span class="lineNum">     400 </span>            : </a>
+<a name="401"><span class="lineNum">     401 </span>            :         RF_SPRITETYPEMASK       = 0x7000,       // ---Different sprite types, not all implemented</a>
+<a name="402"><span class="lineNum">     402 </span>            :         RF_FACESPRITE           = 0x0000,       // Face sprite</a>
+<a name="403"><span class="lineNum">     403 </span>            :         RF_WALLSPRITE           = 0x1000,       // Wall sprite</a>
+<a name="404"><span class="lineNum">     404 </span>            :         RF_FLOORSPRITE          = 0x2000,       // Floor sprite</a>
+<a name="405"><span class="lineNum">     405 </span>            :         RF_VOXELSPRITE          = 0x3000,       // Voxel object</a>
+<a name="406"><span class="lineNum">     406 </span>            :         RF_INVISIBLE            = 0x8000,       // Don't bother drawing this actor</a>
+<a name="407"><span class="lineNum">     407 </span>            : </a>
+<a name="408"><span class="lineNum">     408 </span>            :         RF_FORCEYBILLBOARD              = 0x10000,      // [BB] OpenGL only: draw with y axis billboard, i.e. anchored to the floor (overrides gl_billboard_mode setting)</a>
+<a name="409"><span class="lineNum">     409 </span>            :         RF_FORCEXYBILLBOARD             = 0x20000,      // [BB] OpenGL only: draw with xy axis billboard, i.e. unanchored (overrides gl_billboard_mode setting)</a>
+<a name="410"><span class="lineNum">     410 </span>            : };</a>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 : #define TRANSLUC25                      (FRACUNIT/4)</span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 : #define TRANSLUC33                      (FRACUNIT/3)</span></a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 : #define TRANSLUC50                      (FRACUNIT/2)</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 : #define TRANSLUC66                      ((FRACUNIT*2)/3)</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 : #define TRANSLUC75                      ((FRACUNIT*3)/4)</span></a>
+<a name="417"><span class="lineNum">     417 </span>            : </a>
+<a name="418"><span class="lineNum">     418 </span>            : // &lt;wingdi.h&gt; also #defines OPAQUE</a>
+<a name="419"><span class="lineNum">     419 </span>            : #ifndef OPAQUE</a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">       1368 : #define OPAQUE                          (FRACUNIT)</span></a>
+<a name="421"><span class="lineNum">     421 </span>            : #endif</a>
+<a name="422"><span class="lineNum">     422 </span>            : </a>
+<a name="423"><span class="lineNum">     423 </span>            : // This translucency value produces the closest match to Heretic's TINTTAB.</a>
+<a name="424"><span class="lineNum">     424 </span>            : // ~40% of the value of the overlaid image shows through.</a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 : #define HR_SHADOW                       (0x6800)</span></a>
+<a name="426"><span class="lineNum">     426 </span>            : </a>
+<a name="427"><span class="lineNum">     427 </span>            : // Hexen's TINTTAB is the same as Heretic's, just reversed.</a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineCov">          2 : #define HX_SHADOW                       (0x9800)</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 : #define HX_ALTSHADOW            (0x6800)</span></a>
+<a name="430"><span class="lineNum">     430 </span>            : </a>
+<a name="431"><span class="lineNum">     431 </span>            : // This could easily be a bool but then it'd be much harder to find later. ;)</a>
+<a name="432"><span class="lineNum">     432 </span>            : enum replace_t</a>
+<a name="433"><span class="lineNum">     433 </span>            : {</a>
+<a name="434"><span class="lineNum">     434 </span>            :         NO_REPLACE = 0,</a>
+<a name="435"><span class="lineNum">     435 </span>            :         ALLOW_REPLACE = 1</a>
+<a name="436"><span class="lineNum">     436 </span>            : };</a>
+<a name="437"><span class="lineNum">     437 </span>            : </a>
+<a name="438"><span class="lineNum">     438 </span>            : enum ActorBounceFlag</a>
+<a name="439"><span class="lineNum">     439 </span>            : {</a>
+<a name="440"><span class="lineNum">     440 </span>            :         BOUNCE_Walls = 1&lt;&lt;0,              // bounces off of walls</a>
+<a name="441"><span class="lineNum">     441 </span>            :         BOUNCE_Floors = 1&lt;&lt;1,             // bounces off of floors</a>
+<a name="442"><span class="lineNum">     442 </span>            :         BOUNCE_Ceilings = 1&lt;&lt;2,           // bounces off of ceilings</a>
+<a name="443"><span class="lineNum">     443 </span>            :         BOUNCE_Actors = 1&lt;&lt;3,             // bounces off of some actors</a>
+<a name="444"><span class="lineNum">     444 </span>            :         BOUNCE_AllActors = 1&lt;&lt;4,  // bounces off of all actors (requires BOUNCE_Actors to be set, too)</a>
+<a name="445"><span class="lineNum">     445 </span>            :         BOUNCE_AutoOff = 1&lt;&lt;5,            // when bouncing off a sector plane, if the new Z velocity is below 3.0, disable further bouncing</a>
+<a name="446"><span class="lineNum">     446 </span>            :         BOUNCE_HereticType = 1&lt;&lt;6,        // goes into Death state when bouncing on floors or ceilings</a>
+<a name="447"><span class="lineNum">     447 </span>            : </a>
+<a name="448"><span class="lineNum">     448 </span>            :         BOUNCE_UseSeeSound = 1&lt;&lt;7,        // compatibility fallback. This will only be set by</a>
+<a name="449"><span class="lineNum">     449 </span>            :                                                                 // the compatibility handlers for the old bounce flags.</a>
+<a name="450"><span class="lineNum">     450 </span>            :         BOUNCE_NoWallSound = 1&lt;&lt;8,        // don't make noise when bouncing off a wall</a>
+<a name="451"><span class="lineNum">     451 </span>            :         BOUNCE_Quiet = 1&lt;&lt;9,              // Strife's grenades don't make a bouncing sound</a>
+<a name="452"><span class="lineNum">     452 </span>            :         BOUNCE_ExplodeOnWater = 1&lt;&lt;10,    // explodes when hitting a water surface</a>
+<a name="453"><span class="lineNum">     453 </span>            :         BOUNCE_CanBounceWater = 1&lt;&lt;11,    // can bounce on water</a>
+<a name="454"><span class="lineNum">     454 </span>            :         // MBF bouncing is a bit different from other modes as Killough coded many special behavioral cases</a>
+<a name="455"><span class="lineNum">     455 </span>            :         // for them that are not present in ZDoom, so it is necessary to identify it properly.</a>
+<a name="456"><span class="lineNum">     456 </span>            :         BOUNCE_MBF = 1&lt;&lt;12,                       // This in itself is not a valid mode, but replaces MBF's MF_BOUNCE flag.</a>
+<a name="457"><span class="lineNum">     457 </span>            :         BOUNCE_AutoOffFloorOnly = 1&lt;&lt;13,          // like BOUNCE_AutoOff, but only on floors</a>
+<a name="458"><span class="lineNum">     458 </span>            :         BOUNCE_UseBounceState = 1&lt;&lt;14,    // Use Bounce[.*] states</a>
+<a name="459"><span class="lineNum">     459 </span>            : </a>
+<a name="460"><span class="lineNum">     460 </span>            :         BOUNCE_TypeMask = BOUNCE_Walls | BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_Actors | BOUNCE_AutoOff | BOUNCE_HereticType | BOUNCE_MBF,</a>
+<a name="461"><span class="lineNum">     461 </span>            : </a>
+<a name="462"><span class="lineNum">     462 </span>            :         // The three &quot;standard&quot; types of bounciness are:</a>
+<a name="463"><span class="lineNum">     463 </span>            :         // HERETIC - Missile will only bounce off the floor once and then enter</a>
+<a name="464"><span class="lineNum">     464 </span>            :         //                       its death state. It does not bounce off walls at all.</a>
+<a name="465"><span class="lineNum">     465 </span>            :         // HEXEN -       Missile bounces off of walls and floors indefinitely.</a>
+<a name="466"><span class="lineNum">     466 </span>            :         // DOOM -        Like Hexen, but the bounce turns off if its vertical velocity</a>
+<a name="467"><span class="lineNum">     467 </span>            :         //                       is too low.</a>
+<a name="468"><span class="lineNum">     468 </span>            :         BOUNCE_None = 0,</a>
+<a name="469"><span class="lineNum">     469 </span>            :         BOUNCE_Heretic = BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_HereticType,</a>
+<a name="470"><span class="lineNum">     470 </span>            :         BOUNCE_Doom = BOUNCE_Walls | BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_Actors | BOUNCE_AutoOff,</a>
+<a name="471"><span class="lineNum">     471 </span>            :         BOUNCE_Hexen = BOUNCE_Walls | BOUNCE_Floors | BOUNCE_Ceilings | BOUNCE_Actors,</a>
+<a name="472"><span class="lineNum">     472 </span>            :         BOUNCE_Grenade = BOUNCE_MBF | BOUNCE_Doom,              // Bounces on walls and flats like ZDoom bounce.</a>
+<a name="473"><span class="lineNum">     473 </span>            :         BOUNCE_Classic = BOUNCE_MBF | BOUNCE_Floors | BOUNCE_Ceilings,  // Bounces on flats only, but </a>
+<a name="474"><span class="lineNum">     474 </span>            :                                                                                                                                         // does not die when bouncing.</a>
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<a name="476"><span class="lineNum">     476 </span>            :         // combined types</a>
+<a name="477"><span class="lineNum">     477 </span>            :         BOUNCE_DoomCompat = BOUNCE_Doom | BOUNCE_UseSeeSound,</a>
+<a name="478"><span class="lineNum">     478 </span>            :         BOUNCE_HereticCompat = BOUNCE_Heretic | BOUNCE_UseSeeSound,</a>
+<a name="479"><span class="lineNum">     479 </span>            :         BOUNCE_HexenCompat = BOUNCE_Hexen | BOUNCE_UseSeeSound</a>
+<a name="480"><span class="lineNum">     480 </span>            : </a>
+<a name="481"><span class="lineNum">     481 </span>            :         // The distinction between BOUNCE_Actors and BOUNCE_AllActors: A missile with</a>
+<a name="482"><span class="lineNum">     482 </span>            :         // BOUNCE_Actors set will bounce off of reflective and &quot;non-sentient&quot; actors.</a>
+<a name="483"><span class="lineNum">     483 </span>            :         // A missile that also has BOUNCE_AllActors set will bounce off of any actor.</a>
+<a name="484"><span class="lineNum">     484 </span>            :         // For compatibility reasons when BOUNCE_Actors was implied by the bounce type</a>
+<a name="485"><span class="lineNum">     485 </span>            :         // being &quot;Doom&quot; or &quot;Hexen&quot; and BOUNCE_AllActors was the separate</a>
+<a name="486"><span class="lineNum">     486 </span>            :         // MF5_BOUNCEONACTORS, you must set BOUNCE_Actors for BOUNCE_AllActors to have</a>
+<a name="487"><span class="lineNum">     487 </span>            :         // an effect.</a>
+<a name="488"><span class="lineNum">     488 </span>            : </a>
+<a name="489"><span class="lineNum">     489 </span>            : </a>
+<a name="490"><span class="lineNum">     490 </span>            : };</a>
+<a name="491"><span class="lineNum">     491 </span>            : </a>
+<a name="492"><span class="lineNum">     492 </span>            : // [TP] Flagset definitions</a>
+<a name="493"><span class="lineNum">     493 </span>            : typedef TFlags&lt;ActorFlag&gt; ActorFlags;</a>
+<a name="494"><span class="lineNum">     494 </span>            : typedef TFlags&lt;ActorFlag2&gt; ActorFlags2;</a>
+<a name="495"><span class="lineNum">     495 </span>            : typedef TFlags&lt;ActorFlag3&gt; ActorFlags3;</a>
+<a name="496"><span class="lineNum">     496 </span>            : typedef TFlags&lt;ActorFlag4&gt; ActorFlags4;</a>
+<a name="497"><span class="lineNum">     497 </span>            : typedef TFlags&lt;ActorFlag5&gt; ActorFlags5;</a>
+<a name="498"><span class="lineNum">     498 </span>            : typedef TFlags&lt;ActorFlag6&gt; ActorFlags6;</a>
+<a name="499"><span class="lineNum">     499 </span>            : typedef TFlags&lt;ActorFlag7&gt; ActorFlags7;</a>
+<a name="500"><span class="lineNum">     500 </span>            : typedef TFlags&lt;ActorRenderFlag&gt; ActorRenderFlags;</a>
+<a name="501"><span class="lineNum">     501 </span>            : typedef TFlags&lt;ActorBounceFlag, WORD&gt; ActorBounceFlags;</a>
+<a name="502"><span class="lineNum">     502 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags)</a>
+<a name="503"><span class="lineNum">     503 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags2)</a>
+<a name="504"><span class="lineNum">     504 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags3)</a>
+<a name="505"><span class="lineNum">     505 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags4)</a>
+<a name="506"><span class="lineNum">     506 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags5)</a>
+<a name="507"><span class="lineNum">     507 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags6)</a>
+<a name="508"><span class="lineNum">     508 </span>            : DEFINE_TFLAGS_OPERATORS (ActorFlags7)</a>
+<a name="509"><span class="lineNum">     509 </span>            : DEFINE_TFLAGS_OPERATORS (ActorRenderFlags)</a>
+<a name="510"><span class="lineNum">     510 </span>            : DEFINE_TFLAGS_OPERATORS (ActorBounceFlags)</a>
+<a name="511"><span class="lineNum">     511 </span>            : </a>
+<a name="512"><span class="lineNum">     512 </span>            : // Used to affect the logic for thing activation through death, USESPECIAL and BUMPSPECIAL</a>
+<a name="513"><span class="lineNum">     513 </span>            : // &quot;thing&quot; refers to what has the flag and the special, &quot;trigger&quot; refers to what used or bumped it</a>
+<a name="514"><span class="lineNum">     514 </span>            : enum EThingSpecialActivationType</a>
+<a name="515"><span class="lineNum">     515 </span>            : {</a>
+<a name="516"><span class="lineNum">     516 </span>            :         THINGSPEC_Default                       = 0,            // Normal behavior: a player must be the trigger, and is the activator</a>
+<a name="517"><span class="lineNum">     517 </span>            :         THINGSPEC_ThingActs                     = 1,            // The thing itself is the activator of the special</a>
+<a name="518"><span class="lineNum">     518 </span>            :         THINGSPEC_ThingTargets          = 1&lt;&lt;1,           // The thing changes its target to the trigger</a>
+<a name="519"><span class="lineNum">     519 </span>            :         THINGSPEC_TriggerTargets        = 1&lt;&lt;2,           // The trigger changes its target to the thing</a>
+<a name="520"><span class="lineNum">     520 </span>            :         THINGSPEC_MonsterTrigger        = 1&lt;&lt;3,           // The thing can be triggered by a monster</a>
+<a name="521"><span class="lineNum">     521 </span>            :         THINGSPEC_MissileTrigger        = 1&lt;&lt;4,           // The thing can be triggered by a projectile</a>
+<a name="522"><span class="lineNum">     522 </span>            :         THINGSPEC_ClearSpecial          = 1&lt;&lt;5,           // Clears special after successful activation</a>
+<a name="523"><span class="lineNum">     523 </span>            :         THINGSPEC_NoDeathSpecial        = 1&lt;&lt;6,           // Don't activate special on death</a>
+<a name="524"><span class="lineNum">     524 </span>            :         THINGSPEC_TriggerActs           = 1&lt;&lt;7,           // The trigger is the activator of the special</a>
+<a name="525"><span class="lineNum">     525 </span>            :                                                                                         // (overrides LEVEL_ACTOWNSPECIAL Hexen hack)</a>
+<a name="526"><span class="lineNum">     526 </span>            :         THINGSPEC_Activate                      = 1&lt;&lt;8,           // The thing is activated when triggered</a>
+<a name="527"><span class="lineNum">     527 </span>            :         THINGSPEC_Deactivate            = 1&lt;&lt;9,           // The thing is deactivated when triggered</a>
+<a name="528"><span class="lineNum">     528 </span>            :         THINGSPEC_Switch                        = 1&lt;&lt;10,  // The thing is alternatively activated and deactivated when triggered</a>
+<a name="529"><span class="lineNum">     529 </span>            : };</a>
+<a name="530"><span class="lineNum">     530 </span>            : </a>
+<a name="531"><span class="lineNum">     531 </span>            : // [RH] Like msecnode_t, but for the blockmap</a>
+<a name="532"><span class="lineNum">     532 </span>            : struct FBlockNode</a>
+<a name="533"><span class="lineNum">     533 </span>            : {</a>
+<a name="534"><span class="lineNum">     534 </span>            :         AActor *Me;                                             // actor this node references</a>
+<a name="535"><span class="lineNum">     535 </span>            :         int BlockIndex;                                 // index into blocklinks for the block this node is in</a>
+<a name="536"><span class="lineNum">     536 </span>            :         FBlockNode **PrevActor;                 // previous actor in this block</a>
+<a name="537"><span class="lineNum">     537 </span>            :         FBlockNode *NextActor;                  // next actor in this block</a>
+<a name="538"><span class="lineNum">     538 </span>            :         FBlockNode **PrevBlock;                 // previous block this actor is in</a>
+<a name="539"><span class="lineNum">     539 </span>            :         FBlockNode *NextBlock;                  // next block this actor is in</a>
+<a name="540"><span class="lineNum">     540 </span>            : </a>
+<a name="541"><span class="lineNum">     541 </span>            :         static FBlockNode *Create (AActor *who, int x, int y);</a>
+<a name="542"><span class="lineNum">     542 </span>            :         void Release ();</a>
+<a name="543"><span class="lineNum">     543 </span>            : </a>
+<a name="544"><span class="lineNum">     544 </span>            :         static FBlockNode *FreeBlocks;</a>
+<a name="545"><span class="lineNum">     545 </span>            : };</a>
+<a name="546"><span class="lineNum">     546 </span>            : </a>
+<a name="547"><span class="lineNum">     547 </span>            : class FDecalBase;</a>
+<a name="548"><span class="lineNum">     548 </span>            : class AInventory;</a>
+<a name="549"><span class="lineNum">     549 </span>            : </a>
+<a name="550"><span class="lineNum">     550 </span>            : inline AActor *GetDefaultByName (const char *name)</a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">          3 : {</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">          3 :         return (AActor *)(PClass::FindClass(name)-&gt;Defaults);</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">          3 : }</span></a>
+<a name="554"><span class="lineNum">     554 </span>            : </a>
+<a name="555"><span class="lineNum">     555 </span>            : inline AActor *GetDefaultByType (const PClass *type)</a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">       3283 : {</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">       3283 :         return (AActor *)(type-&gt;Defaults);</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">       3283 : }</span></a>
+<a name="559"><span class="lineNum">     559 </span>            : </a>
+<a name="560"><span class="lineNum">     560 </span>            : template&lt;class T&gt;</a>
+<a name="561"><span class="lineNum">     561 </span>            : inline T *GetDefault ()</a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">          7 : {</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          7 :         return (T *)(RUNTIME_CLASS(T)-&gt;Defaults);</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          7 : }</span></a>
+<a name="565"><span class="lineNum">     565 </span>            : </a>
+<a name="566"><span class="lineNum">     566 </span>            : struct line_t;</a>
+<a name="567"><span class="lineNum">     567 </span>            : struct secplane_t;</a>
+<a name="568"><span class="lineNum">     568 </span>            : struct FStrifeDialogueNode;</a>
+<a name="569"><span class="lineNum">     569 </span>            : </a>
+<a name="570"><span class="lineNum">     570 </span>            : enum</a>
+<a name="571"><span class="lineNum">     571 </span>            : {</a>
+<a name="572"><span class="lineNum">     572 </span>            :         AMETA_BASE = 0x12000,</a>
+<a name="573"><span class="lineNum">     573 </span>            : </a>
+<a name="574"><span class="lineNum">     574 </span>            :         AMETA_Obituary,                 // string (player was killed by this actor)</a>
+<a name="575"><span class="lineNum">     575 </span>            :         AMETA_HitObituary,              // string (player was killed by this actor in melee)</a>
+<a name="576"><span class="lineNum">     576 </span>            :         AMETA_DeathHeight,              // fixed (height on normal death)</a>
+<a name="577"><span class="lineNum">     577 </span>            :         AMETA_BurnHeight,               // fixed (height on burning death)</a>
+<a name="578"><span class="lineNum">     578 </span>            :         AMETA_StrifeName,               // string (for named Strife objects)</a>
+<a name="579"><span class="lineNum">     579 </span>            :         AMETA_BloodColor,               // colorized blood</a>
+<a name="580"><span class="lineNum">     580 </span>            :         AMETA_GibHealth,                // negative health below which this monster dies an extreme death</a>
+<a name="581"><span class="lineNum">     581 </span>            :         AMETA_WoundHealth,              // health needed to enter wound state</a>
+<a name="582"><span class="lineNum">     582 </span>            :         AMETA_FastSpeed,                // Speed in fast mode</a>
+<a name="583"><span class="lineNum">     583 </span>            :         AMETA_RDFactor,                 // Radius damage factor</a>
+<a name="584"><span class="lineNum">     584 </span>            :         AMETA_CameraHeight,             // Height of camera when used as such</a>
+<a name="585"><span class="lineNum">     585 </span>            :         AMETA_HowlSound,                // Sound being played when electrocuted or poisoned</a>
+<a name="586"><span class="lineNum">     586 </span>            :         AMETA_BloodType,                // Blood replacement type</a>
+<a name="587"><span class="lineNum">     587 </span>            :         AMETA_BloodType2,               // Bloodsplatter replacement type</a>
+<a name="588"><span class="lineNum">     588 </span>            :         AMETA_BloodType3,               // AxeBlood replacement type</a>
+<a name="589"><span class="lineNum">     589 </span>            : };</a>
+<a name="590"><span class="lineNum">     590 </span>            : </a>
+<a name="591"><span class="lineNum">     591 </span>            : struct fixedvec3</a>
+<a name="592"><span class="lineNum">     592 </span>            : {</a>
+<a name="593"><span class="lineNum">     593 </span>            :         fixed_t x, y, z;</a>
+<a name="594"><span class="lineNum">     594 </span>            : };</a>
+<a name="595"><span class="lineNum">     595 </span>            : </a>
+<a name="596"><span class="lineNum">     596 </span>            : struct fixedvec2</a>
+<a name="597"><span class="lineNum">     597 </span>            : {</a>
+<a name="598"><span class="lineNum">     598 </span>            :         fixed_t x, y;</a>
+<a name="599"><span class="lineNum">     599 </span>            : };</a>
+<a name="600"><span class="lineNum">     600 </span>            : </a>
+<a name="601"><span class="lineNum">     601 </span>            : struct FDropItem </a>
+<a name="602"><span class="lineNum">     602 </span>            : {</a>
+<a name="603"><span class="lineNum">     603 </span>            :         FName Name;</a>
+<a name="604"><span class="lineNum">     604 </span>            :         int probability;</a>
+<a name="605"><span class="lineNum">     605 </span>            :         int amount;</a>
+<a name="606"><span class="lineNum">     606 </span>            :         FDropItem * Next;</a>
+<a name="607"><span class="lineNum">     607 </span>            : };</a>
+<a name="608"><span class="lineNum">     608 </span>            : </a>
+<a name="609"><span class="lineNum">     609 </span>            : class FDropItemPtrArray : public TArray&lt;FDropItem *&gt;</a>
+<a name="610"><span class="lineNum">     610 </span>            : {</a>
+<a name="611"><span class="lineNum">     611 </span>            : public:</a>
+<a name="612"><span class="lineNum">     612 </span>            :         ~FDropItemPtrArray()</a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="614"><span class="lineNum">     614 </span><span class="lineNoCov">          0 :                 Clear();</span></a>
+<a name="615"><span class="lineNum">     615 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="616"><span class="lineNum">     616 </span>            : </a>
+<a name="617"><span class="lineNum">     617 </span>            :         void Clear();</a>
+<a name="618"><span class="lineNum">     618 </span>            : };</a>
+<a name="619"><span class="lineNum">     619 </span>            : </a>
+<a name="620"><span class="lineNum">     620 </span>            : extern FDropItemPtrArray DropItemList;</a>
+<a name="621"><span class="lineNum">     621 </span>            : </a>
+<a name="622"><span class="lineNum">     622 </span>            : void FreeDropItemChain(FDropItem *chain);</a>
+<a name="623"><span class="lineNum">     623 </span>            : int StoreDropItemChain(FDropItem *chain);</a>
+<a name="624"><span class="lineNum">     624 </span>            : fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);       // since we cannot include p_local here...</a>
+<a name="625"><span class="lineNum">     625 </span>            : angle_t R_PointToAngle2 (fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2); // same reason here with r_defs.h</a>
+<a name="626"><span class="lineNum">     626 </span>            : </a>
+<a name="627"><span class="lineNum">     627 </span>            : </a>
+<a name="628"><span class="lineNum">     628 </span>            : // Map Object definition.</a>
+<a name="629"><span class="lineNum">     629 </span>            : class AActor : public DThinker</a>
+<a name="630"><span class="lineNum">     630 </span>            : {</a>
+<a name="631"><span class="lineNum">     631 </span>            :         DECLARE_CLASS (AActor, DThinker)</a>
+<a name="632"><span class="lineNum">     632 </span>            :         HAS_OBJECT_POINTERS</a>
+<a name="633"><span class="lineNum">     633 </span>            : public:</a>
+<a name="634"><span class="lineNum">     634 </span>            :         AActor () throw();</a>
+<a name="635"><span class="lineNum">     635 </span>            :         AActor (const AActor &amp;other) throw();</a>
+<a name="636"><span class="lineNum">     636 </span>            :         AActor &amp;operator= (const AActor &amp;other);</a>
+<a name="637"><span class="lineNum">     637 </span>            :         void Destroy ();</a>
+<a name="638"><span class="lineNum">     638 </span>            :         ~AActor ();</a>
+<a name="639"><span class="lineNum">     639 </span>            : </a>
+<a name="640"><span class="lineNum">     640 </span>            :         void Serialize (FArchive &amp;arc);</a>
+<a name="641"><span class="lineNum">     641 </span>            : </a>
+<a name="642"><span class="lineNum">     642 </span>            :         static AActor *StaticSpawn (const PClass *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement, bool SpawningMapThing = false);</a>
+<a name="643"><span class="lineNum">     643 </span>            : </a>
+<a name="644"><span class="lineNum">     644 </span>            :         inline AActor *GetDefault () const</a>
+<a name="645"><span class="lineNum">     645 </span><span class="lineCov">        601 :         {</span></a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineCov">        601 :                 return (AActor *)(RUNTIME_TYPE(this)-&gt;Defaults);</span></a>
+<a name="647"><span class="lineNum">     647 </span><span class="lineCov">        601 :         }</span></a>
+<a name="648"><span class="lineNum">     648 </span>            : </a>
+<a name="649"><span class="lineNum">     649 </span>            :         FDropItem *GetDropItems();</a>
+<a name="650"><span class="lineNum">     650 </span>            : </a>
+<a name="651"><span class="lineNum">     651 </span>            :         // Return true if the monster should use a missile attack, false for melee</a>
+<a name="652"><span class="lineNum">     652 </span>            :         bool SuggestMissileAttack (fixed_t dist);</a>
+<a name="653"><span class="lineNum">     653 </span>            : </a>
+<a name="654"><span class="lineNum">     654 </span>            :         // Adjusts the angle for deflection/reflection of incoming missiles</a>
+<a name="655"><span class="lineNum">     655 </span>            :         // Returns true if the missile should be allowed to explode anyway</a>
+<a name="656"><span class="lineNum">     656 </span>            :         bool AdjustReflectionAngle (AActor *thing, angle_t &amp;angle);</a>
+<a name="657"><span class="lineNum">     657 </span>            : </a>
+<a name="658"><span class="lineNum">     658 </span>            :         // Returns true if this actor is within melee range of its target</a>
+<a name="659"><span class="lineNum">     659 </span>            :         bool CheckMeleeRange();</a>
+<a name="660"><span class="lineNum">     660 </span>            : </a>
+<a name="661"><span class="lineNum">     661 </span>            :         virtual void BeginPlay();                       // Called immediately after the actor is created</a>
+<a name="662"><span class="lineNum">     662 </span>            :         virtual void PostBeginPlay();           // Called immediately before the actor's first tick</a>
+<a name="663"><span class="lineNum">     663 </span>            :         virtual void LevelSpawned();            // Called after BeginPlay if this actor was spawned by the world</a>
+<a name="664"><span class="lineNum">     664 </span>            :         virtual void HandleSpawnFlags();        // Translates SpawnFlags into in-game flags.</a>
+<a name="665"><span class="lineNum">     665 </span>            : </a>
+<a name="666"><span class="lineNum">     666 </span>            :         virtual void MarkPrecacheSounds() const;        // Marks sounds used by this actor for precaching.</a>
+<a name="667"><span class="lineNum">     667 </span>            : </a>
+<a name="668"><span class="lineNum">     668 </span>            :         virtual void Activate (AActor *activator);</a>
+<a name="669"><span class="lineNum">     669 </span>            :         virtual void Deactivate (AActor *activator);</a>
+<a name="670"><span class="lineNum">     670 </span>            : </a>
+<a name="671"><span class="lineNum">     671 </span>            :         virtual void Tick ();</a>
+<a name="672"><span class="lineNum">     672 </span>            : </a>
+<a name="673"><span class="lineNum">     673 </span>            :         // Called when actor dies</a>
+<a name="674"><span class="lineNum">     674 </span>            :         virtual void Die (AActor *source, AActor *inflictor, int dmgflags = 0);</a>
+<a name="675"><span class="lineNum">     675 </span>            : </a>
+<a name="676"><span class="lineNum">     676 </span>            :         // Perform some special damage action. Returns the amount of damage to do.</a>
+<a name="677"><span class="lineNum">     677 </span>            :         // Returning -1 signals the damage routine to exit immediately</a>
+<a name="678"><span class="lineNum">     678 </span>            :         virtual int DoSpecialDamage (AActor *target, int damage, FName damagetype);</a>
+<a name="679"><span class="lineNum">     679 </span>            : </a>
+<a name="680"><span class="lineNum">     680 </span>            :         // Like DoSpecialDamage, but called on the actor receiving the damage.</a>
+<a name="681"><span class="lineNum">     681 </span>            :         virtual int TakeSpecialDamage (AActor *inflictor, AActor *source, int damage, FName damagetype);</a>
+<a name="682"><span class="lineNum">     682 </span>            : </a>
+<a name="683"><span class="lineNum">     683 </span>            :         // Centaurs and ettins squeal when electrocuted, poisoned, or &quot;holy&quot;-ed</a>
+<a name="684"><span class="lineNum">     684 </span>            :         // Made a metadata property so no longer virtual</a>
+<a name="685"><span class="lineNum">     685 </span>            :         void Howl ();</a>
+<a name="686"><span class="lineNum">     686 </span>            : </a>
+<a name="687"><span class="lineNum">     687 </span>            :         // Actor just hit the floor</a>
+<a name="688"><span class="lineNum">     688 </span>            :         virtual void HitFloor ();</a>
+<a name="689"><span class="lineNum">     689 </span>            : </a>
+<a name="690"><span class="lineNum">     690 </span>            :         // plays bouncing sound</a>
+<a name="691"><span class="lineNum">     691 </span>            :         void PlayBounceSound(bool onfloor);</a>
+<a name="692"><span class="lineNum">     692 </span>            : </a>
+<a name="693"><span class="lineNum">     693 </span>            :         // Called when an actor with MF_MISSILE and MF2_FLOORBOUNCE hits the floor</a>
+<a name="694"><span class="lineNum">     694 </span>            :         virtual bool FloorBounceMissile (secplane_t &amp;plane);</a>
+<a name="695"><span class="lineNum">     695 </span>            : </a>
+<a name="696"><span class="lineNum">     696 </span>            :         // Called when an actor is to be reflected by a disc of repulsion.</a>
+<a name="697"><span class="lineNum">     697 </span>            :         // Returns true to continue normal blast processing.</a>
+<a name="698"><span class="lineNum">     698 </span>            :         virtual bool SpecialBlastHandling (AActor *source, fixed_t strength);</a>
+<a name="699"><span class="lineNum">     699 </span>            : </a>
+<a name="700"><span class="lineNum">     700 </span>            :         // Called by RoughBlockCheck</a>
+<a name="701"><span class="lineNum">     701 </span>            :         bool IsOkayToAttack (AActor *target);</a>
+<a name="702"><span class="lineNum">     702 </span>            : </a>
+<a name="703"><span class="lineNum">     703 </span>            :         // Plays the actor's ActiveSound if its voice isn't already making noise.</a>
+<a name="704"><span class="lineNum">     704 </span>            :         void PlayActiveSound ();</a>
+<a name="705"><span class="lineNum">     705 </span>            : </a>
+<a name="706"><span class="lineNum">     706 </span>            :         // Actor had MF_SKULLFLY set and rammed into something</a>
+<a name="707"><span class="lineNum">     707 </span>            :         // Returns false to stop moving and true to keep moving</a>
+<a name="708"><span class="lineNum">     708 </span>            :         virtual bool Slam (AActor *victim);</a>
+<a name="709"><span class="lineNum">     709 </span>            : </a>
+<a name="710"><span class="lineNum">     710 </span>            :         // Called by PIT_CheckThing() and needed for some Hexen things.</a>
+<a name="711"><span class="lineNum">     711 </span>            :         // Returns -1 for normal behavior, 0 to return false, and 1 to return true.</a>
+<a name="712"><span class="lineNum">     712 </span>            :         // I'm not sure I like it this way, but it will do for now.</a>
+<a name="713"><span class="lineNum">     713 </span>            :         virtual int SpecialMissileHit (AActor *victim);</a>
+<a name="714"><span class="lineNum">     714 </span>            : </a>
+<a name="715"><span class="lineNum">     715 </span>            :         // Returns true if it's okay to switch target to &quot;other&quot; after being attacked by it.</a>
+<a name="716"><span class="lineNum">     716 </span>            :         virtual bool OkayToSwitchTarget (AActor *other);</a>
+<a name="717"><span class="lineNum">     717 </span>            : </a>
+<a name="718"><span class="lineNum">     718 </span>            :         // Something just touched this actor.</a>
+<a name="719"><span class="lineNum">     719 </span>            :         virtual void Touch (AActor *toucher);</a>
+<a name="720"><span class="lineNum">     720 </span>            : </a>
+<a name="721"><span class="lineNum">     721 </span>            :         // Adds the item to this actor's inventory and sets its Owner.</a>
+<a name="722"><span class="lineNum">     722 </span>            :         virtual void AddInventory (AInventory *item);</a>
+<a name="723"><span class="lineNum">     723 </span>            : </a>
+<a name="724"><span class="lineNum">     724 </span>            :         // Removes the item from the inventory list.</a>
+<a name="725"><span class="lineNum">     725 </span>            :         virtual void RemoveInventory (AInventory *item);</a>
+<a name="726"><span class="lineNum">     726 </span>            : </a>
+<a name="727"><span class="lineNum">     727 </span>            :         // Take the amount value of an item from the inventory list.</a>
+<a name="728"><span class="lineNum">     728 </span>            :         // If nothing is left, the item may be destroyed.</a>
+<a name="729"><span class="lineNum">     729 </span>            :         // Returns true if the initial item count is positive.</a>
+<a name="730"><span class="lineNum">     730 </span>            :         virtual bool TakeInventory (const PClass *itemclass, int amount, bool fromdecorate = false, bool notakeinfinite = false);</a>
+<a name="731"><span class="lineNum">     731 </span>            : </a>
+<a name="732"><span class="lineNum">     732 </span>            :         // Uses an item and removes it from the inventory.</a>
+<a name="733"><span class="lineNum">     733 </span>            :         virtual bool UseInventory (AInventory *item);</a>
+<a name="734"><span class="lineNum">     734 </span>            : </a>
+<a name="735"><span class="lineNum">     735 </span>            :         // Tosses an item out of the inventory.</a>
+<a name="736"><span class="lineNum">     736 </span>            :         virtual AInventory *DropInventory (AInventory *item);</a>
+<a name="737"><span class="lineNum">     737 </span>            : </a>
+<a name="738"><span class="lineNum">     738 </span>            :         // Removes all items from the inventory.</a>
+<a name="739"><span class="lineNum">     739 </span>            :         void ClearInventory();</a>
+<a name="740"><span class="lineNum">     740 </span>            : </a>
+<a name="741"><span class="lineNum">     741 </span>            :         // Returns true if this view is considered &quot;local&quot; for the player.</a>
+<a name="742"><span class="lineNum">     742 </span>            :         bool CheckLocalView (int playernum) const;</a>
+<a name="743"><span class="lineNum">     743 </span>            : </a>
+<a name="744"><span class="lineNum">     744 </span>            :         // Finds the first item of a particular type.</a>
+<a name="745"><span class="lineNum">     745 </span>            :         AInventory *FindInventory (const PClass *type, bool subclass = false);</a>
+<a name="746"><span class="lineNum">     746 </span>            :         AInventory *FindInventory (FName type);</a>
+<a name="747"><span class="lineNum">     747 </span>            :         template&lt;class T&gt; T *FindInventory ()</a>
+<a name="748"><span class="lineNum">     748 </span><span class="lineCov">        173 :         {</span></a>
+<a name="749"><span class="lineNum">     749 </span><span class="lineCov">        173 :                 return static_cast&lt;T *&gt; (FindInventory (RUNTIME_CLASS(T)));</span></a>
+<a name="750"><span class="lineNum">     750 </span><span class="lineCov">        173 :         }</span></a>
+<a name="751"><span class="lineNum">     751 </span>            : </a>
+<a name="752"><span class="lineNum">     752 </span>            :         // Adds one item of a particular type. Returns NULL if it could not be added.</a>
+<a name="753"><span class="lineNum">     753 </span>            :         AInventory *GiveInventoryType (const PClass *type);</a>
+<a name="754"><span class="lineNum">     754 </span>            : </a>
+<a name="755"><span class="lineNum">     755 </span>            :         // Returns the first item held with IF_INVBAR set.</a>
+<a name="756"><span class="lineNum">     756 </span>            :         AInventory *FirstInv ();</a>
+<a name="757"><span class="lineNum">     757 </span>            : </a>
+<a name="758"><span class="lineNum">     758 </span>            :         // Tries to give the actor some ammo.</a>
+<a name="759"><span class="lineNum">     759 </span>            :         bool GiveAmmo (const PClass *type, int amount);</a>
+<a name="760"><span class="lineNum">     760 </span>            : </a>
+<a name="761"><span class="lineNum">     761 </span>            :         // Destroys all the inventory the actor is holding.</a>
+<a name="762"><span class="lineNum">     762 </span>            :         void DestroyAllInventory ();</a>
+<a name="763"><span class="lineNum">     763 </span>            : </a>
+<a name="764"><span class="lineNum">     764 </span>            :         // Set the alphacolor field properly</a>
+<a name="765"><span class="lineNum">     765 </span>            :         void SetShade (DWORD rgb);</a>
+<a name="766"><span class="lineNum">     766 </span>            :         void SetShade (int r, int g, int b);</a>
+<a name="767"><span class="lineNum">     767 </span>            : </a>
+<a name="768"><span class="lineNum">     768 </span>            :         // Plays a conversation animation</a>
+<a name="769"><span class="lineNum">     769 </span>            :         void ConversationAnimation (int animnum);</a>
+<a name="770"><span class="lineNum">     770 </span>            : </a>
+<a name="771"><span class="lineNum">     771 </span>            :         // Make this actor hate the same things as another actor</a>
+<a name="772"><span class="lineNum">     772 </span>            :         void CopyFriendliness (AActor *other, bool changeTarget, bool resetHealth=true);</a>
+<a name="773"><span class="lineNum">     773 </span>            : </a>
+<a name="774"><span class="lineNum">     774 </span>            :         // Moves the other actor's inventory to this one</a>
+<a name="775"><span class="lineNum">     775 </span>            :         void ObtainInventory (AActor *other);</a>
+<a name="776"><span class="lineNum">     776 </span>            : </a>
+<a name="777"><span class="lineNum">     777 </span>            :         // Die. Now.</a>
+<a name="778"><span class="lineNum">     778 </span>            :         virtual bool Massacre ();</a>
+<a name="779"><span class="lineNum">     779 </span>            : </a>
+<a name="780"><span class="lineNum">     780 </span>            :         // Transforms the actor into a finely-ground paste</a>
+<a name="781"><span class="lineNum">     781 </span>            :         virtual bool Grind(bool items);</a>
+<a name="782"><span class="lineNum">     782 </span>            : </a>
+<a name="783"><span class="lineNum">     783 </span>            :         // Get this actor's team</a>
+<a name="784"><span class="lineNum">     784 </span>            :         int GetTeam();</a>
+<a name="785"><span class="lineNum">     785 </span>            : </a>
+<a name="786"><span class="lineNum">     786 </span>            :         // Is the other actor on my team?</a>
+<a name="787"><span class="lineNum">     787 </span>            :         bool IsTeammate (AActor *other);</a>
+<a name="788"><span class="lineNum">     788 </span>            : </a>
+<a name="789"><span class="lineNum">     789 </span>            :         // Is the other actor my friend?</a>
+<a name="790"><span class="lineNum">     790 </span>            :         bool IsFriend (AActor *other);</a>
+<a name="791"><span class="lineNum">     791 </span>            : </a>
+<a name="792"><span class="lineNum">     792 </span>            :         // Do I hate the other actor?</a>
+<a name="793"><span class="lineNum">     793 </span>            :         bool IsHostile (AActor *other);</a>
+<a name="794"><span class="lineNum">     794 </span>            : </a>
+<a name="795"><span class="lineNum">     795 </span>            :         inline bool IsNoClip2() const;</a>
+<a name="796"><span class="lineNum">     796 </span>            : </a>
+<a name="797"><span class="lineNum">     797 </span>            :         // What species am I?</a>
+<a name="798"><span class="lineNum">     798 </span>            :         virtual FName GetSpecies();</a>
+<a name="799"><span class="lineNum">     799 </span>            : </a>
+<a name="800"><span class="lineNum">     800 </span>            :         fixed_t GetBobOffset(fixed_t ticfrac=0) const</a>
+<a name="801"><span class="lineNum">     801 </span><span class="lineCov">        342 :         {</span></a>
+<a name="802"><span class="lineNum">     802 </span><span class="lineCov">        342 :                  if (!(flags2 &amp; MF2_FLOATBOB))</span></a>
+<a name="803"><span class="lineNum">     803 </span><span class="lineCov">        342 :                  {</span></a>
+<a name="804"><span class="lineNum">     804 </span><span class="lineCov">        342 :                          return 0;</span></a>
+<a name="805"><span class="lineNum">     805 </span><span class="lineCov">        342 :                  }</span></a>
+<a name="806"><span class="lineNum">     806 </span><span class="lineNoCov">          0 :                  return finesine[MulScale22(((FloatBobPhase + level.maptime) &lt;&lt; FRACBITS) + ticfrac, FINEANGLES) &amp; FINEMASK] * 8;</span></a>
+<a name="807"><span class="lineNum">     807 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="808"><span class="lineNum">     808 </span>            : </a>
+<a name="809"><span class="lineNum">     809 </span>            :         // Enter the crash state</a>
+<a name="810"><span class="lineNum">     810 </span>            :         void Crash();</a>
+<a name="811"><span class="lineNum">     811 </span>            : </a>
+<a name="812"><span class="lineNum">     812 </span>            :         // Return starting health adjusted by skill level</a>
+<a name="813"><span class="lineNum">     813 </span>            :         int SpawnHealth();</a>
+<a name="814"><span class="lineNum">     814 </span>            :         int GibHealth();</a>
+<a name="815"><span class="lineNum">     815 </span>            : </a>
+<a name="816"><span class="lineNum">     816 </span>            :         inline bool isMissile(bool precise=true)</a>
+<a name="817"><span class="lineNum">     817 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="818"><span class="lineNum">     818 </span><span class="lineNoCov">          0 :                 return (flags&amp;MF_MISSILE) || (precise &amp;&amp; GetDefault()-&gt;flags&amp;MF_MISSILE);</span></a>
+<a name="819"><span class="lineNum">     819 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="820"><span class="lineNum">     820 </span>            : </a>
+<a name="821"><span class="lineNum">     821 </span>            :         // Check for monsters that count as kill but excludes all friendlies.</a>
+<a name="822"><span class="lineNum">     822 </span>            :         bool CountsAsKill() const</a>
+<a name="823"><span class="lineNum">     823 </span><span class="lineCov">         25 :         {</span></a>
+<a name="824"><span class="lineNum">     824 </span><span class="lineCov">         25 :                 return (flags &amp; MF_COUNTKILL) &amp;&amp; !(flags &amp; MF_FRIENDLY);</span></a>
+<a name="825"><span class="lineNum">     825 </span><span class="lineCov">         25 :         }</span></a>
+<a name="826"><span class="lineNum">     826 </span>            : </a>
+<a name="827"><span class="lineNum">     827 </span>            :         PalEntry GetBloodColor() const</a>
+<a name="828"><span class="lineNum">     828 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="829"><span class="lineNum">     829 </span><span class="lineNoCov">          0 :                 return (PalEntry)GetClass()-&gt;Meta.GetMetaInt(AMETA_BloodColor);</span></a>
+<a name="830"><span class="lineNum">     830 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="831"><span class="lineNum">     831 </span>            : </a>
+<a name="832"><span class="lineNum">     832 </span>            :         // These also set CF_INTERPVIEW for players.</a>
+<a name="833"><span class="lineNum">     833 </span>            :         void SetPitch(int p, bool interpolate, bool forceclamp = false);</a>
+<a name="834"><span class="lineNum">     834 </span>            :         void SetAngle(angle_t ang, bool interpolate);</a>
+<a name="835"><span class="lineNum">     835 </span>            :         void SetRoll(angle_t roll, bool interpolate);</a>
+<a name="836"><span class="lineNum">     836 </span>            : </a>
+<a name="837"><span class="lineNum">     837 </span>            :         const PClass *GetBloodType(int type = 0) const</a>
+<a name="838"><span class="lineNum">     838 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="839"><span class="lineNum">     839 </span><span class="lineNoCov">          0 :                 const PClass *bloodcls;</span></a>
+<a name="840"><span class="lineNum">     840 </span><span class="lineNoCov">          0 :                 if (type == 0)</span></a>
+<a name="841"><span class="lineNum">     841 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineNoCov">          0 :                         bloodcls = PClass::FindClass((ENamedName)GetClass()-&gt;Meta.GetMetaInt(AMETA_BloodType, NAME_Blood));</span></a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="844"><span class="lineNum">     844 </span><span class="lineNoCov">          0 :                 else if (type == 1)</span></a>
+<a name="845"><span class="lineNum">     845 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="846"><span class="lineNum">     846 </span><span class="lineNoCov">          0 :                         bloodcls = PClass::FindClass((ENamedName)GetClass()-&gt;Meta.GetMetaInt(AMETA_BloodType2, NAME_BloodSplatter));</span></a>
+<a name="847"><span class="lineNum">     847 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="848"><span class="lineNum">     848 </span><span class="lineNoCov">          0 :                 else if (type == 2)</span></a>
+<a name="849"><span class="lineNum">     849 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineNoCov">          0 :                         bloodcls = PClass::FindClass((ENamedName)GetClass()-&gt;Meta.GetMetaInt(AMETA_BloodType3, NAME_AxeBlood));</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineNoCov">          0 :                 else return NULL;</span></a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineNoCov">          0 : </span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :                 if (bloodcls != NULL)</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="856"><span class="lineNum">     856 </span><span class="lineNoCov">          0 :                         bloodcls = bloodcls-&gt;GetReplacement();</span></a>
+<a name="857"><span class="lineNum">     857 </span><span class="lineNoCov">          0 :                 }</span></a>
+<a name="858"><span class="lineNum">     858 </span><span class="lineNoCov">          0 :                 return bloodcls;</span></a>
+<a name="859"><span class="lineNum">     859 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="860"><span class="lineNum">     860 </span>            : </a>
+<a name="861"><span class="lineNum">     861 </span>            :         bool intersects(AActor *other) const</a>
+<a name="862"><span class="lineNum">     862 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="863"><span class="lineNum">     863 </span><span class="lineNoCov">          0 :                 fixed_t blockdist = radius + other-&gt;radius;</span></a>
+<a name="864"><span class="lineNum">     864 </span><span class="lineNoCov">          0 :                 return ( abs(X() - other-&gt;X()) &lt; blockdist &amp;&amp; abs(Y() - other-&gt;Y()) &lt; blockdist);</span></a>
+<a name="865"><span class="lineNum">     865 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="866"><span class="lineNum">     866 </span>            : </a>
+<a name="867"><span class="lineNum">     867 </span>            :         // 'absolute' is reserved for a linked portal implementation which needs</a>
+<a name="868"><span class="lineNum">     868 </span>            :         // to distinguish between portal-aware and portal-unaware distance calculation.</a>
+<a name="869"><span class="lineNum">     869 </span>            :         fixed_t AproxDistance(AActor *other, bool absolute = false)</a>
+<a name="870"><span class="lineNum">     870 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="871"><span class="lineNum">     871 </span><span class="lineNoCov">          0 :                 return P_AproxDistance(X() - other-&gt;X(), Y() - other-&gt;Y());</span></a>
+<a name="872"><span class="lineNum">     872 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="873"><span class="lineNum">     873 </span>            : </a>
+<a name="874"><span class="lineNum">     874 </span>            :         // same with 'ref' here.</a>
+<a name="875"><span class="lineNum">     875 </span>            :         fixed_t AproxDistance(fixed_t otherx, fixed_t othery, AActor *ref = NULL)</a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="877"><span class="lineNum">     877 </span><span class="lineNoCov">          0 :                 return P_AproxDistance(X() - otherx, Y() - othery);</span></a>
+<a name="878"><span class="lineNum">     878 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="879"><span class="lineNum">     879 </span>            : </a>
+<a name="880"><span class="lineNum">     880 </span>            :         fixed_t AproxDistance(AActor *other, fixed_t xadd, fixed_t yadd, bool absolute = false)</a>
+<a name="881"><span class="lineNum">     881 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="882"><span class="lineNum">     882 </span><span class="lineNoCov">          0 :                 return P_AproxDistance(X() - other-&gt;X() + xadd, Y() - other-&gt;Y() + yadd);</span></a>
+<a name="883"><span class="lineNum">     883 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="884"><span class="lineNum">     884 </span>            : </a>
+<a name="885"><span class="lineNum">     885 </span>            :         fixed_t AproxDistance3D(AActor *other, bool absolute = false)</a>
+<a name="886"><span class="lineNum">     886 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="887"><span class="lineNum">     887 </span><span class="lineNoCov">          0 :                 return P_AproxDistance(AproxDistance(other), Z() - other-&gt;Z());</span></a>
+<a name="888"><span class="lineNum">     888 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="889"><span class="lineNum">     889 </span>            : </a>
+<a name="890"><span class="lineNum">     890 </span>            :         // more precise, but slower version, being used in a few places</a>
+<a name="891"><span class="lineNum">     891 </span>            :         fixed_t Distance2D(AActor *other, bool absolute = false)</a>
+<a name="892"><span class="lineNum">     892 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="893"><span class="lineNum">     893 </span><span class="lineNoCov">          0 :                 return xs_RoundToInt(FVector2(X() - other-&gt;X(), Y() - other-&gt;Y()).Length());</span></a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="895"><span class="lineNum">     895 </span>            : </a>
+<a name="896"><span class="lineNum">     896 </span>            :         // a full 3D version of the above</a>
+<a name="897"><span class="lineNum">     897 </span>            :         fixed_t Distance3D(AActor *other, bool absolute = false)</a>
+<a name="898"><span class="lineNum">     898 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 :                 return xs_RoundToInt(FVector3(X() - other-&gt;X(), Y() - other-&gt;Y(), Z() - other-&gt;Z()).Length());</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="901"><span class="lineNum">     901 </span>            : </a>
+<a name="902"><span class="lineNum">     902 </span>            :         angle_t AngleTo(AActor *other, bool absolute = false) const</a>
+<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          9 :         {</span></a>
+<a name="904"><span class="lineNum">     904 </span><span class="lineCov">          9 :                 return R_PointToAngle2(X(), Y(), other-&gt;X(), other-&gt;Y());</span></a>
+<a name="905"><span class="lineNum">     905 </span><span class="lineCov">          9 :         }</span></a>
+<a name="906"><span class="lineNum">     906 </span>            : </a>
+<a name="907"><span class="lineNum">     907 </span>            :         angle_t AngleTo(AActor *other, fixed_t oxofs, fixed_t oyofs, bool absolute = false) const</a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="909"><span class="lineNum">     909 </span><span class="lineNoCov">          0 :                 return R_PointToAngle2(X(), Y(), other-&gt;X() + oxofs, other-&gt;Y() + oyofs);</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="911"><span class="lineNum">     911 </span>            : </a>
+<a name="912"><span class="lineNum">     912 </span>            :         fixed_t AngleTo(fixed_t otherx, fixed_t othery, AActor *ref = NULL)</a>
+<a name="913"><span class="lineNum">     913 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="914"><span class="lineNum">     914 </span><span class="lineNoCov">          0 :                 return R_PointToAngle2(X(), Y(), otherx, othery);</span></a>
+<a name="915"><span class="lineNum">     915 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="916"><span class="lineNum">     916 </span>            : </a>
+<a name="917"><span class="lineNum">     917 </span>            :         fixed_t AngleXYTo(fixed_t myx, fixed_t myy, AActor *other, bool absolute = false)</a>
+<a name="918"><span class="lineNum">     918 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="919"><span class="lineNum">     919 </span><span class="lineNoCov">          0 :                 return R_PointToAngle2(myx, myy, other-&gt;X(), other-&gt;Y());</span></a>
+<a name="920"><span class="lineNum">     920 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="921"><span class="lineNum">     921 </span>            : </a>
+<a name="922"><span class="lineNum">     922 </span>            :         fixedvec2 Vec2To(AActor *other) const</a>
+<a name="923"><span class="lineNum">     923 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="924"><span class="lineNum">     924 </span><span class="lineNoCov">          0 :                 fixedvec2 ret = { other-&gt;X() - X(), other-&gt;Y() - Y() };</span></a>
+<a name="925"><span class="lineNum">     925 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="926"><span class="lineNum">     926 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="927"><span class="lineNum">     927 </span>            : </a>
+<a name="928"><span class="lineNum">     928 </span>            :         fixedvec3 Vec3To(AActor *other) const</a>
+<a name="929"><span class="lineNum">     929 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="930"><span class="lineNum">     930 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { other-&gt;X() - X(), other-&gt;Y() - Y(), other-&gt;Z() - Z() };</span></a>
+<a name="931"><span class="lineNum">     931 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="932"><span class="lineNum">     932 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="933"><span class="lineNum">     933 </span>            : </a>
+<a name="934"><span class="lineNum">     934 </span>            :         fixedvec2 Vec2Offset(fixed_t dx, fixed_t dy, bool absolute = false) const</a>
+<a name="935"><span class="lineNum">     935 </span><span class="lineCov">          9 :         {</span></a>
+<a name="936"><span class="lineNum">     936 </span><span class="lineCov">          9 :                 fixedvec2 ret = { X() + dx, Y() + dy };</span></a>
+<a name="937"><span class="lineNum">     937 </span><span class="lineCov">          9 :                 return ret;</span></a>
+<a name="938"><span class="lineNum">     938 </span><span class="lineCov">          9 :         }</span></a>
+<a name="939"><span class="lineNum">     939 </span>            : </a>
+<a name="940"><span class="lineNum">     940 </span>            : </a>
+<a name="941"><span class="lineNum">     941 </span>            :         fixedvec2 Vec2Angle(fixed_t length, angle_t angle, bool absolute = false) const</a>
+<a name="942"><span class="lineNum">     942 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :                 fixedvec2 ret = { X() + FixedMul(length, finecosine[angle &gt;&gt; ANGLETOFINESHIFT]),</span></a>
+<a name="944"><span class="lineNum">     944 </span><span class="lineNoCov">          0 :                                                   Y() + FixedMul(length, finesine[angle &gt;&gt; ANGLETOFINESHIFT]) };</span></a>
+<a name="945"><span class="lineNum">     945 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="946"><span class="lineNum">     946 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="947"><span class="lineNum">     947 </span>            : </a>
+<a name="948"><span class="lineNum">     948 </span>            :         fixedvec3 Vec3Offset(fixed_t dx, fixed_t dy, fixed_t dz, bool absolute = false) const</a>
+<a name="949"><span class="lineNum">     949 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="950"><span class="lineNum">     950 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { X() + dx, Y() + dy, Z() + dz };</span></a>
+<a name="951"><span class="lineNum">     951 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="952"><span class="lineNum">     952 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="953"><span class="lineNum">     953 </span>            : </a>
+<a name="954"><span class="lineNum">     954 </span>            :         fixedvec3 Vec3Angle(fixed_t length, angle_t angle, fixed_t dz, bool absolute = false) const</a>
+<a name="955"><span class="lineNum">     955 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="956"><span class="lineNum">     956 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { X() + FixedMul(length, finecosine[angle &gt;&gt; ANGLETOFINESHIFT]),</span></a>
+<a name="957"><span class="lineNum">     957 </span><span class="lineNoCov">          0 :                                                   Y() + FixedMul(length, finesine[angle &gt;&gt; ANGLETOFINESHIFT]), Z() + dz };</span></a>
+<a name="958"><span class="lineNum">     958 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="959"><span class="lineNum">     959 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="960"><span class="lineNum">     960 </span>            : </a>
+<a name="961"><span class="lineNum">     961 </span>            :         void Move(fixed_t dx, fixed_t dy, fixed_t dz)</a>
+<a name="962"><span class="lineNum">     962 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="963"><span class="lineNum">     963 </span><span class="lineNoCov">          0 :                 SetOrigin(X() + dx, Y() + dy, Z() + dz, true);</span></a>
+<a name="964"><span class="lineNum">     964 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="965"><span class="lineNum">     965 </span>            : </a>
+<a name="966"><span class="lineNum">     966 </span>            :         void SetOrigin(const fixedvec3 &amp; npos, bool moving)</a>
+<a name="967"><span class="lineNum">     967 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineNoCov">          0 :                 SetOrigin(npos.x, npos.y, npos.z, moving);</span></a>
+<a name="969"><span class="lineNum">     969 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="970"><span class="lineNum">     970 </span>            : </a>
+<a name="971"><span class="lineNum">     971 </span>            :         inline void SetFriendPlayer(player_t *player);</a>
+<a name="972"><span class="lineNum">     972 </span>            : </a>
+<a name="973"><span class="lineNum">     973 </span>            :         bool IsVisibleToPlayer() const;</a>
+<a name="974"><span class="lineNum">     974 </span>            : </a>
+<a name="975"><span class="lineNum">     975 </span>            :         // Calculate amount of missile damage</a>
+<a name="976"><span class="lineNum">     976 </span>            :         virtual int GetMissileDamage(int mask, int add);</a>
+<a name="977"><span class="lineNum">     977 </span>            : </a>
+<a name="978"><span class="lineNum">     978 </span>            :         bool CanSeek(AActor *target) const;</a>
+<a name="979"><span class="lineNum">     979 </span>            : </a>
+<a name="980"><span class="lineNum">     980 </span>            :         fixed_t GetGravity() const;</a>
+<a name="981"><span class="lineNum">     981 </span>            :         bool IsSentient() const;</a>
+<a name="982"><span class="lineNum">     982 </span>            :         const char *GetTag(const char *def = NULL) const;</a>
+<a name="983"><span class="lineNum">     983 </span>            :         void SetTag(const char *def);</a>
+<a name="984"><span class="lineNum">     984 </span>            : </a>
+<a name="985"><span class="lineNum">     985 </span>            :         // Triggers SECSPAC_Exit/SECSPAC_Enter and related events if oldsec != current sector</a>
+<a name="986"><span class="lineNum">     986 </span>            :         void CheckSectorTransition(sector_t *oldsec);</a>
+<a name="987"><span class="lineNum">     987 </span>            : </a>
+<a name="988"><span class="lineNum">     988 </span>            : // info for drawing</a>
+<a name="989"><span class="lineNum">     989 </span>            : // NOTE: The first member variable *must* be snext.</a>
+<a name="990"><span class="lineNum">     990 </span>            :         AActor                  *snext, **sprev;        // links in sector (if needed)</a>
+<a name="991"><span class="lineNum">     991 </span>            :         fixedvec3               __pos;                          // double underscores so that it won't get used by accident. Access to this should be exclusively through the designated access functions.</a>
+<a name="992"><span class="lineNum">     992 </span>            : </a>
+<a name="993"><span class="lineNum">     993 </span>            :         angle_t                 angle;</a>
+<a name="994"><span class="lineNum">     994 </span>            :         WORD                    sprite;                         // used to find patch_t and flip value</a>
+<a name="995"><span class="lineNum">     995 </span>            :         BYTE                    frame;                          // sprite frame to draw</a>
+<a name="996"><span class="lineNum">     996 </span>            :         fixed_t                 scaleX, scaleY;         // Scaling values; FRACUNIT is normal size</a>
+<a name="997"><span class="lineNum">     997 </span>            :         FRenderStyle    RenderStyle;            // Style to draw this actor with</a>
+<a name="998"><span class="lineNum">     998 </span>            :         ActorRenderFlags        renderflags;            // Different rendering flags</a>
+<a name="999"><span class="lineNum">     999 </span>            :         FTextureID              picnum;                         // Draw this instead of sprite if valid</a>
+<a name="1000"><span class="lineNum">    1000 </span>            :         DWORD                   effects;                        // [RH] see p_effect.h</a>
+<a name="1001"><span class="lineNum">    1001 </span>            :         fixed_t                 alpha;</a>
+<a name="1002"><span class="lineNum">    1002 </span>            :         DWORD                   fillcolor;                      // Color to draw when STYLE_Shaded</a>
+<a name="1003"><span class="lineNum">    1003 </span>            : </a>
+<a name="1004"><span class="lineNum">    1004 </span>            : // interaction info</a>
+<a name="1005"><span class="lineNum">    1005 </span>            :         fixed_t                 pitch;</a>
+<a name="1006"><span class="lineNum">    1006 </span>            :         angle_t                 roll;   // This was fixed_t before, which is probably wrong</a>
+<a name="1007"><span class="lineNum">    1007 </span>            :         FBlockNode              *BlockNode;                     // links in blocks (if needed)</a>
+<a name="1008"><span class="lineNum">    1008 </span>            :         struct sector_t *Sector;</a>
+<a name="1009"><span class="lineNum">    1009 </span>            :         subsector_t *           subsector;</a>
+<a name="1010"><span class="lineNum">    1010 </span>            :         fixed_t                 floorz, ceilingz;       // closest together of contacted secs</a>
+<a name="1011"><span class="lineNum">    1011 </span>            :         fixed_t                 dropoffz;               // killough 11/98: the lowest floor over all contacted Sectors.</a>
+<a name="1012"><span class="lineNum">    1012 </span>            : </a>
+<a name="1013"><span class="lineNum">    1013 </span>            :         struct sector_t *floorsector;</a>
+<a name="1014"><span class="lineNum">    1014 </span>            :         FTextureID              floorpic;                       // contacted sec floorpic</a>
+<a name="1015"><span class="lineNum">    1015 </span>            :         int                             floorterrain;</a>
+<a name="1016"><span class="lineNum">    1016 </span>            :         struct sector_t *ceilingsector;</a>
+<a name="1017"><span class="lineNum">    1017 </span>            :         FTextureID              ceilingpic;                     // contacted sec ceilingpic</a>
+<a name="1018"><span class="lineNum">    1018 </span>            :         fixed_t                 radius, height;         // for movement checking</a>
+<a name="1019"><span class="lineNum">    1019 </span>            :         fixed_t                 projectilepassheight;   // height for clipping projectile movement against this actor</a>
+<a name="1020"><span class="lineNum">    1020 </span>            :         fixed_t                 velx, vely, velz;       // velocity</a>
+<a name="1021"><span class="lineNum">    1021 </span>            :         SDWORD                  tics;                           // state tic counter</a>
+<a name="1022"><span class="lineNum">    1022 </span>            :         FState                  *state;</a>
+<a name="1023"><span class="lineNum">    1023 </span>            :         SDWORD                  Damage;                 // For missiles and monster railgun</a>
+<a name="1024"><span class="lineNum">    1024 </span>            :         int                             projectileKickback;</a>
+<a name="1025"><span class="lineNum">    1025 </span>            :         ActorFlags              flags;</a>
+<a name="1026"><span class="lineNum">    1026 </span>            :         ActorFlags2             flags2;                 // Heretic flags</a>
+<a name="1027"><span class="lineNum">    1027 </span>            :         ActorFlags3             flags3;                 // [RH] Hexen/Heretic actor-dependant behavior made flaggable</a>
+<a name="1028"><span class="lineNum">    1028 </span>            :         ActorFlags4             flags4;                 // [RH] Even more flags!</a>
+<a name="1029"><span class="lineNum">    1029 </span>            :         ActorFlags5             flags5;                 // OMG! We need another one.</a>
+<a name="1030"><span class="lineNum">    1030 </span>            :         ActorFlags6             flags6;                 // Shit! Where did all the flags go?</a>
+<a name="1031"><span class="lineNum">    1031 </span>            :         ActorFlags7             flags7;                 // WHO WANTS TO BET ON 8!?</a>
+<a name="1032"><span class="lineNum">    1032 </span>            : </a>
+<a name="1033"><span class="lineNum">    1033 </span>            :         // [BB] If 0, everybody can see the actor, if &gt; 0, only members of team (VisibleToTeam-1) can see it.</a>
+<a name="1034"><span class="lineNum">    1034 </span>            :         DWORD                   VisibleToTeam;</a>
+<a name="1035"><span class="lineNum">    1035 </span>            : </a>
+<a name="1036"><span class="lineNum">    1036 </span>            :         int                             special1;               // Special info</a>
+<a name="1037"><span class="lineNum">    1037 </span>            :         int                             special2;               // Special info</a>
+<a name="1038"><span class="lineNum">    1038 </span>            :         int                             weaponspecial;  // Special info for weapons.</a>
+<a name="1039"><span class="lineNum">    1039 </span>            :         int                     health;</a>
+<a name="1040"><span class="lineNum">    1040 </span>            :         BYTE                    movedir;                // 0-7</a>
+<a name="1041"><span class="lineNum">    1041 </span>            :         SBYTE                   visdir;</a>
+<a name="1042"><span class="lineNum">    1042 </span>            :         SWORD                   movecount;              // when 0, select a new dir</a>
+<a name="1043"><span class="lineNum">    1043 </span>            :         SWORD                   strafecount;    // for MF3_AVOIDMELEE</a>
+<a name="1044"><span class="lineNum">    1044 </span>            :         TObjPtr&lt;AActor&gt; target;                   // thing being chased/attacked (or NULL)</a>
+<a name="1045"><span class="lineNum">    1045 </span>            :                                                                         // also the originator for missiles</a>
+<a name="1046"><span class="lineNum">    1046 </span>            :         TObjPtr&lt;AActor&gt;   lastenemy;              // Last known enemy -- killough 2/15/98</a>
+<a name="1047"><span class="lineNum">    1047 </span>            :         TObjPtr&lt;AActor&gt; LastHeard;                // [RH] Last actor this one heard</a>
+<a name="1048"><span class="lineNum">    1048 </span>            :         SDWORD                  reactiontime;   // if non 0, don't attack yet; used by</a>
+<a name="1049"><span class="lineNum">    1049 </span>            :                                                                         // player to freeze a bit after teleporting</a>
+<a name="1050"><span class="lineNum">    1050 </span>            :         SDWORD                  threshold;              // if &gt; 0, the target will be chased</a>
+<a name="1051"><span class="lineNum">    1051 </span>            :                                                                         // no matter what (even if shot)</a>
+<a name="1052"><span class="lineNum">    1052 </span>            :         player_t                *player;                // only valid if type of APlayerPawn</a>
+<a name="1053"><span class="lineNum">    1053 </span>            :         TObjPtr&lt;AActor&gt;   LastLookActor;  // Actor last looked for (if TIDtoHate != 0)</a>
+<a name="1054"><span class="lineNum">    1054 </span>            :         fixed_t                 SpawnPoint[3];  // For nightmare respawn</a>
+<a name="1055"><span class="lineNum">    1055 </span>            :         WORD                    SpawnAngle;</a>
+<a name="1056"><span class="lineNum">    1056 </span>            :         int                             StartHealth;</a>
+<a name="1057"><span class="lineNum">    1057 </span>            :         BYTE                    WeaveIndexXY;   // Separated from special2 because it's used by globally accessible functions.</a>
+<a name="1058"><span class="lineNum">    1058 </span>            :         BYTE                    WeaveIndexZ;</a>
+<a name="1059"><span class="lineNum">    1059 </span>            :         int                             skillrespawncount;</a>
+<a name="1060"><span class="lineNum">    1060 </span>            :         int                             TIDtoHate;                      // TID of things to hate (0 if none)</a>
+<a name="1061"><span class="lineNum">    1061 </span>            :         FNameNoInit             Species;                // For monster families</a>
+<a name="1062"><span class="lineNum">    1062 </span>            :         TObjPtr&lt;AActor&gt;   tracer;                 // Thing being chased/attacked for tracers</a>
+<a name="1063"><span class="lineNum">    1063 </span>            :         TObjPtr&lt;AActor&gt;   master;                 // Thing which spawned this one (prevents mutual attacks)</a>
+<a name="1064"><span class="lineNum">    1064 </span>            :         fixed_t                 floorclip;              // value to use for floor clipping</a>
+<a name="1065"><span class="lineNum">    1065 </span>            :         int                             tid;                    // thing identifier</a>
+<a name="1066"><span class="lineNum">    1066 </span>            :         int                             special;                // special</a>
+<a name="1067"><span class="lineNum">    1067 </span>            :         int                             args[5];                // special arguments</a>
+<a name="1068"><span class="lineNum">    1068 </span>            : </a>
+<a name="1069"><span class="lineNum">    1069 </span>            :         int             accuracy, stamina;              // [RH] Strife stats -- [XA] moved here for DECORATE/ACS access.</a>
+<a name="1070"><span class="lineNum">    1070 </span>            : </a>
+<a name="1071"><span class="lineNum">    1071 </span>            :         AActor                  *inext, **iprev;// Links to other mobjs in same bucket</a>
+<a name="1072"><span class="lineNum">    1072 </span>            :         TObjPtr&lt;AActor&gt; goal;                     // Monster's goal if not chasing anything</a>
+<a name="1073"><span class="lineNum">    1073 </span>            :         int                             waterlevel;             // 0=none, 1=feet, 2=waist, 3=eyes</a>
+<a name="1074"><span class="lineNum">    1074 </span>            :         BYTE                    boomwaterlevel; // splash information for non-swimmable water sectors</a>
+<a name="1075"><span class="lineNum">    1075 </span>            :         BYTE                    MinMissileChance;// [RH] If a random # is &gt; than this, then missile attack.</a>
+<a name="1076"><span class="lineNum">    1076 </span>            :         SBYTE                   LastLookPlayerNumber;// Player number last looked for (if TIDtoHate == 0)</a>
+<a name="1077"><span class="lineNum">    1077 </span>            :         ActorBounceFlags        BounceFlags;    // which bouncing type?</a>
+<a name="1078"><span class="lineNum">    1078 </span>            :         DWORD                   SpawnFlags;             // Increased to DWORD because of Doom 64</a>
+<a name="1079"><span class="lineNum">    1079 </span>            :         fixed_t                 meleerange;             // specifies how far a melee attack reaches.</a>
+<a name="1080"><span class="lineNum">    1080 </span>            :         fixed_t                 meleethreshold; // Distance below which a monster doesn't try to shoot missiles anynore</a>
+<a name="1081"><span class="lineNum">    1081 </span>            :                                                                         // but instead tries to come closer for a melee attack.</a>
+<a name="1082"><span class="lineNum">    1082 </span>            :                                                                         // This is not the same as meleerange</a>
+<a name="1083"><span class="lineNum">    1083 </span>            :         fixed_t                 maxtargetrange; // any target farther away cannot be attacked</a>
+<a name="1084"><span class="lineNum">    1084 </span>            :         fixed_t                 bouncefactor;   // Strife's grenades use 50%, Hexen's Flechettes 70.</a>
+<a name="1085"><span class="lineNum">    1085 </span>            :         fixed_t                 wallbouncefactor;       // The bounce factor for walls can be different.</a>
+<a name="1086"><span class="lineNum">    1086 </span>            :         int                             bouncecount;    // Strife's grenades only bounce twice before exploding</a>
+<a name="1087"><span class="lineNum">    1087 </span>            :         fixed_t                 gravity;                // [GRB] Gravity factor</a>
+<a name="1088"><span class="lineNum">    1088 </span>            :         fixed_t                 Friction;</a>
+<a name="1089"><span class="lineNum">    1089 </span>            :         int                     FastChaseStrafeCount;</a>
+<a name="1090"><span class="lineNum">    1090 </span>            :         fixed_t                 pushfactor;</a>
+<a name="1091"><span class="lineNum">    1091 </span>            :         int                             lastpush;</a>
+<a name="1092"><span class="lineNum">    1092 </span>            :         int                             activationtype; // How the thing behaves when activated with USESPECIAL or BUMPSPECIAL</a>
+<a name="1093"><span class="lineNum">    1093 </span>            :         int                             lastbump;               // Last time the actor was bumped, used to control BUMPSPECIAL</a>
+<a name="1094"><span class="lineNum">    1094 </span>            :         int                             Score;                  // manipulated by score items, ACS or DECORATE. The engine doesn't use this itself for anything.</a>
+<a name="1095"><span class="lineNum">    1095 </span>            :         FString *               Tag;                    // Strife's tag name.</a>
+<a name="1096"><span class="lineNum">    1096 </span>            :         int                             DesignatedTeam; // Allow for friendly fire cacluations to be done on non-players.</a>
+<a name="1097"><span class="lineNum">    1097 </span>            : </a>
+<a name="1098"><span class="lineNum">    1098 </span>            :         AActor                  *BlockingMobj;  // Actor that blocked the last move</a>
+<a name="1099"><span class="lineNum">    1099 </span>            :         line_t                  *BlockingLine;  // Line that blocked the last move</a>
+<a name="1100"><span class="lineNum">    1100 </span>            : </a>
+<a name="1101"><span class="lineNum">    1101 </span>            :         int PoisonDamage; // Damage received per tic from poison.</a>
+<a name="1102"><span class="lineNum">    1102 </span>            :         FNameNoInit PoisonDamageType; // Damage type dealt by poison.</a>
+<a name="1103"><span class="lineNum">    1103 </span>            :         int PoisonDuration; // Duration left for receiving poison damage.</a>
+<a name="1104"><span class="lineNum">    1104 </span>            :         int PoisonPeriod; // How often poison damage is applied. (Every X tics.)</a>
+<a name="1105"><span class="lineNum">    1105 </span>            : </a>
+<a name="1106"><span class="lineNum">    1106 </span>            :         int PoisonDamageReceived; // Damage received per tic from poison.</a>
+<a name="1107"><span class="lineNum">    1107 </span>            :         FNameNoInit PoisonDamageTypeReceived; // Damage type received by poison.</a>
+<a name="1108"><span class="lineNum">    1108 </span>            :         int PoisonDurationReceived; // Duration left for receiving poison damage.</a>
+<a name="1109"><span class="lineNum">    1109 </span>            :         int PoisonPeriodReceived; // How often poison damage is applied. (Every X tics.)</a>
+<a name="1110"><span class="lineNum">    1110 </span>            :         TObjPtr&lt;AActor&gt; Poisoner; // Last source of received poison damage.</a>
+<a name="1111"><span class="lineNum">    1111 </span>            : </a>
+<a name="1112"><span class="lineNum">    1112 </span>            :         // a linked list of sectors where this object appears</a>
+<a name="1113"><span class="lineNum">    1113 </span>            :         struct msecnode_t       *touching_sectorlist;                           // phares 3/14/98</a>
+<a name="1114"><span class="lineNum">    1114 </span>            : </a>
+<a name="1115"><span class="lineNum">    1115 </span>            :         TObjPtr&lt;AInventory&gt;       Inventory;              // [RH] This actor's inventory</a>
+<a name="1116"><span class="lineNum">    1116 </span>            :         DWORD                   InventoryID;    // A unique ID to keep track of inventory items</a>
+<a name="1117"><span class="lineNum">    1117 </span>            : </a>
+<a name="1118"><span class="lineNum">    1118 </span>            :         BYTE smokecounter;</a>
+<a name="1119"><span class="lineNum">    1119 </span>            :         BYTE FloatBobPhase;</a>
+<a name="1120"><span class="lineNum">    1120 </span>            :         BYTE FriendPlayer;                              // [RH] Player # + 1 this friendly monster works for (so 0 is no player, 1 is player 0, etc)</a>
+<a name="1121"><span class="lineNum">    1121 </span>            :         DWORD Translation;</a>
+<a name="1122"><span class="lineNum">    1122 </span>            : </a>
+<a name="1123"><span class="lineNum">    1123 </span>            :         // [RH] Stuff that used to be part of an Actor Info</a>
+<a name="1124"><span class="lineNum">    1124 </span>            :         FSoundIDNoInit SeeSound;</a>
+<a name="1125"><span class="lineNum">    1125 </span>            :         FSoundIDNoInit AttackSound;</a>
+<a name="1126"><span class="lineNum">    1126 </span>            :         FSoundIDNoInit PainSound;</a>
+<a name="1127"><span class="lineNum">    1127 </span>            :         FSoundIDNoInit DeathSound;</a>
+<a name="1128"><span class="lineNum">    1128 </span>            :         FSoundIDNoInit ActiveSound;</a>
+<a name="1129"><span class="lineNum">    1129 </span>            :         FSoundIDNoInit UseSound;                // [RH] Sound to play when an actor is used.</a>
+<a name="1130"><span class="lineNum">    1130 </span>            :         FSoundIDNoInit BounceSound;</a>
+<a name="1131"><span class="lineNum">    1131 </span>            :         FSoundIDNoInit WallBounceSound;</a>
+<a name="1132"><span class="lineNum">    1132 </span>            :         FSoundIDNoInit CrushPainSound;</a>
+<a name="1133"><span class="lineNum">    1133 </span>            : </a>
+<a name="1134"><span class="lineNum">    1134 </span>            :         fixed_t Speed;</a>
+<a name="1135"><span class="lineNum">    1135 </span>            :         fixed_t FloatSpeed;</a>
+<a name="1136"><span class="lineNum">    1136 </span>            :         fixed_t MaxDropOffHeight, MaxStepHeight;</a>
+<a name="1137"><span class="lineNum">    1137 </span>            :         SDWORD Mass;</a>
+<a name="1138"><span class="lineNum">    1138 </span>            :         SWORD PainChance;</a>
+<a name="1139"><span class="lineNum">    1139 </span>            :         int PainThreshold;</a>
+<a name="1140"><span class="lineNum">    1140 </span>            :         FNameNoInit DamageType;</a>
+<a name="1141"><span class="lineNum">    1141 </span>            :         FNameNoInit DamageTypeReceived;</a>
+<a name="1142"><span class="lineNum">    1142 </span>            :         fixed_t DamageFactor;</a>
+<a name="1143"><span class="lineNum">    1143 </span>            :         fixed_t DamageMultiply;</a>
+<a name="1144"><span class="lineNum">    1144 </span>            : </a>
+<a name="1145"><span class="lineNum">    1145 </span>            :         FNameNoInit PainType;</a>
+<a name="1146"><span class="lineNum">    1146 </span>            :         FNameNoInit DeathType;</a>
+<a name="1147"><span class="lineNum">    1147 </span>            :         const PClass *TeleFogSourceType;</a>
+<a name="1148"><span class="lineNum">    1148 </span>            :         const PClass *TeleFogDestType;</a>
+<a name="1149"><span class="lineNum">    1149 </span>            :         int RipperLevel;</a>
+<a name="1150"><span class="lineNum">    1150 </span>            :         int RipLevelMin;</a>
+<a name="1151"><span class="lineNum">    1151 </span>            :         int RipLevelMax;</a>
+<a name="1152"><span class="lineNum">    1152 </span>            : </a>
+<a name="1153"><span class="lineNum">    1153 </span>            :         FState *SpawnState;</a>
+<a name="1154"><span class="lineNum">    1154 </span>            :         FState *SeeState;</a>
+<a name="1155"><span class="lineNum">    1155 </span>            :         FState *MeleeState;</a>
+<a name="1156"><span class="lineNum">    1156 </span>            :         FState *MissileState;</a>
+<a name="1157"><span class="lineNum">    1157 </span>            : </a>
+<a name="1158"><span class="lineNum">    1158 </span>            :         </a>
+<a name="1159"><span class="lineNum">    1159 </span>            :         int ConversationRoot;                           // THe root of the current dialogue</a>
+<a name="1160"><span class="lineNum">    1160 </span>            :         FStrifeDialogueNode *Conversation;      // [RH] The dialogue to show when this actor is &quot;used.&quot;</a>
+<a name="1161"><span class="lineNum">    1161 </span>            : </a>
+<a name="1162"><span class="lineNum">    1162 </span>            :         // [RH] Decal(s) this weapon/projectile generates on impact.</a>
+<a name="1163"><span class="lineNum">    1163 </span>            :         FDecalBase *DecalGenerator;</a>
+<a name="1164"><span class="lineNum">    1164 </span>            : </a>
+<a name="1165"><span class="lineNum">    1165 </span>            :         // [RH] Used to interpolate the view to get &gt;35 FPS</a>
+<a name="1166"><span class="lineNum">    1166 </span>            :         fixed_t PrevX, PrevY, PrevZ;</a>
+<a name="1167"><span class="lineNum">    1167 </span>            :         angle_t PrevAngle;</a>
+<a name="1168"><span class="lineNum">    1168 </span>            : </a>
+<a name="1169"><span class="lineNum">    1169 </span>            :         // ThingIDs</a>
+<a name="1170"><span class="lineNum">    1170 </span>            :         static void ClearTIDHashes ();</a>
+<a name="1171"><span class="lineNum">    1171 </span>            :         void AddToHash ();</a>
+<a name="1172"><span class="lineNum">    1172 </span>            :         void RemoveFromHash ();</a>
+<a name="1173"><span class="lineNum">    1173 </span>            : </a>
+<a name="1174"><span class="lineNum">    1174 </span>            :         //VIZDOOM_CODE</a>
+<a name="1175"><span class="lineNum">    1175 </span>            :         int viz_id;</a>
+<a name="1176"><span class="lineNum">    1176 </span>            : </a>
+<a name="1177"><span class="lineNum">    1177 </span>            : private:</a>
+<a name="1178"><span class="lineNum">    1178 </span>            :         static AActor *TIDHash[128];</a>
+<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">          2 :         static inline int TIDHASH (int key) { return key &amp; 127; }</span></a>
+<a name="1180"><span class="lineNum">    1180 </span>            :         static FSharedStringArena mStringPropertyData;</a>
+<a name="1181"><span class="lineNum">    1181 </span>            : </a>
+<a name="1182"><span class="lineNum">    1182 </span>            :         friend class FActorIterator;</a>
+<a name="1183"><span class="lineNum">    1183 </span>            :         friend bool P_IsTIDUsed(int tid);</a>
+<a name="1184"><span class="lineNum">    1184 </span>            : </a>
+<a name="1185"><span class="lineNum">    1185 </span>            :         sector_t *LinkToWorldForMapThing ();</a>
+<a name="1186"><span class="lineNum">    1186 </span>            : </a>
+<a name="1187"><span class="lineNum">    1187 </span>            : public:</a>
+<a name="1188"><span class="lineNum">    1188 </span>            :         void LinkToWorld (bool buggy=false);</a>
+<a name="1189"><span class="lineNum">    1189 </span>            :         void LinkToWorld (sector_t *sector);</a>
+<a name="1190"><span class="lineNum">    1190 </span>            :         void UnlinkFromWorld ();</a>
+<a name="1191"><span class="lineNum">    1191 </span>            :         void AdjustFloorClip ();</a>
+<a name="1192"><span class="lineNum">    1192 </span>            :         void SetOrigin (fixed_t x, fixed_t y, fixed_t z, bool moving = false);</a>
+<a name="1193"><span class="lineNum">    1193 </span>            :         bool InStateSequence(FState * newstate, FState * basestate);</a>
+<a name="1194"><span class="lineNum">    1194 </span>            :         int GetTics(FState * newstate);</a>
+<a name="1195"><span class="lineNum">    1195 </span>            :         bool SetState (FState *newstate, bool nofunction=false);</a>
+<a name="1196"><span class="lineNum">    1196 </span>            :         virtual bool UpdateWaterLevel (fixed_t oldz, bool splash=true);</a>
+<a name="1197"><span class="lineNum">    1197 </span>            :         bool isFast();</a>
+<a name="1198"><span class="lineNum">    1198 </span>            :         bool isSlow();</a>
+<a name="1199"><span class="lineNum">    1199 </span>            :         void SetIdle(bool nofunction=false);</a>
+<a name="1200"><span class="lineNum">    1200 </span>            :         void ClearCounters();</a>
+<a name="1201"><span class="lineNum">    1201 </span>            :         FState *GetRaiseState();</a>
+<a name="1202"><span class="lineNum">    1202 </span>            :         void Revive();</a>
+<a name="1203"><span class="lineNum">    1203 </span>            : </a>
+<a name="1204"><span class="lineNum">    1204 </span>            :         FState *FindState (FName label) const</a>
+<a name="1205"><span class="lineNum">    1205 </span><span class="lineCov">         48 :         {</span></a>
+<a name="1206"><span class="lineNum">    1206 </span><span class="lineCov">         48 :                 return GetClass()-&gt;ActorInfo-&gt;FindState(1, &amp;label);</span></a>
+<a name="1207"><span class="lineNum">    1207 </span><span class="lineCov">         48 :         }</span></a>
+<a name="1208"><span class="lineNum">    1208 </span>            : </a>
+<a name="1209"><span class="lineNum">    1209 </span>            :         FState *FindState (FName label, FName sublabel, bool exact = false) const</a>
+<a name="1210"><span class="lineNum">    1210 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1211"><span class="lineNum">    1211 </span><span class="lineNoCov">          0 :                 FName names[] = { label, sublabel };</span></a>
+<a name="1212"><span class="lineNum">    1212 </span><span class="lineNoCov">          0 :                 return GetClass()-&gt;ActorInfo-&gt;FindState(2, names, exact);</span></a>
+<a name="1213"><span class="lineNum">    1213 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1214"><span class="lineNum">    1214 </span>            : </a>
+<a name="1215"><span class="lineNum">    1215 </span>            :         FState *FindState(int numnames, FName *names, bool exact = false) const</a>
+<a name="1216"><span class="lineNum">    1216 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1217"><span class="lineNum">    1217 </span><span class="lineNoCov">          0 :                 return GetClass()-&gt;ActorInfo-&gt;FindState(numnames, names, exact);</span></a>
+<a name="1218"><span class="lineNum">    1218 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1219"><span class="lineNum">    1219 </span>            : </a>
+<a name="1220"><span class="lineNum">    1220 </span>            :         bool HasSpecialDeathStates () const;</a>
+<a name="1221"><span class="lineNum">    1221 </span>            : </a>
+<a name="1222"><span class="lineNum">    1222 </span>            :         fixed_t X() const</a>
+<a name="1223"><span class="lineNum">    1223 </span><span class="lineCov">       4749 :         {</span></a>
+<a name="1224"><span class="lineNum">    1224 </span><span class="lineCov">       4749 :                 return __pos.x;</span></a>
+<a name="1225"><span class="lineNum">    1225 </span><span class="lineCov">       4749 :         }</span></a>
+<a name="1226"><span class="lineNum">    1226 </span>            :         fixed_t Y() const</a>
+<a name="1227"><span class="lineNum">    1227 </span><span class="lineCov">       4749 :         {</span></a>
+<a name="1228"><span class="lineNum">    1228 </span><span class="lineCov">       4749 :                 return __pos.y;</span></a>
+<a name="1229"><span class="lineNum">    1229 </span><span class="lineCov">       4749 :         }</span></a>
+<a name="1230"><span class="lineNum">    1230 </span>            :         fixed_t Z() const</a>
+<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">       5500 :         {</span></a>
+<a name="1232"><span class="lineNum">    1232 </span><span class="lineCov">       5500 :                 return __pos.z;</span></a>
+<a name="1233"><span class="lineNum">    1233 </span><span class="lineCov">       5500 :         }</span></a>
+<a name="1234"><span class="lineNum">    1234 </span>            :         fixedvec3 Pos() const</a>
+<a name="1235"><span class="lineNum">    1235 </span><span class="lineCov">        168 :         {</span></a>
+<a name="1236"><span class="lineNum">    1236 </span><span class="lineCov">        168 :                 fixedvec3 ret = { X(), Y(), Z() };</span></a>
+<a name="1237"><span class="lineNum">    1237 </span><span class="lineCov">        168 :                 return ret;</span></a>
+<a name="1238"><span class="lineNum">    1238 </span><span class="lineCov">        168 :         }</span></a>
+<a name="1239"><span class="lineNum">    1239 </span>            :         fixedvec3 PosRelative(AActor *other) const</a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1241"><span class="lineNum">    1241 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { X(), Y(), Z() };</span></a>
+<a name="1242"><span class="lineNum">    1242 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="1243"><span class="lineNum">    1243 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1244"><span class="lineNum">    1244 </span>            :         fixedvec3 PosRelative(sector_t *sec) const</a>
+<a name="1245"><span class="lineNum">    1245 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1246"><span class="lineNum">    1246 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { X(), Y(), Z() };</span></a>
+<a name="1247"><span class="lineNum">    1247 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="1248"><span class="lineNum">    1248 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1249"><span class="lineNum">    1249 </span>            :         fixedvec3 PosRelative(line_t *line) const</a>
+<a name="1250"><span class="lineNum">    1250 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1251"><span class="lineNum">    1251 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { X(), Y(), Z() };</span></a>
+<a name="1252"><span class="lineNum">    1252 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="1253"><span class="lineNum">    1253 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1254"><span class="lineNum">    1254 </span>            :         fixed_t SoundX() const</a>
+<a name="1255"><span class="lineNum">    1255 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1256"><span class="lineNum">    1256 </span><span class="lineNoCov">          0 :                 return X();</span></a>
+<a name="1257"><span class="lineNum">    1257 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1258"><span class="lineNum">    1258 </span>            :         fixed_t SoundY() const</a>
+<a name="1259"><span class="lineNum">    1259 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1260"><span class="lineNum">    1260 </span><span class="lineNoCov">          0 :                 return Y();</span></a>
+<a name="1261"><span class="lineNum">    1261 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1262"><span class="lineNum">    1262 </span>            :         fixed_t SoundZ() const</a>
+<a name="1263"><span class="lineNum">    1263 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1264"><span class="lineNum">    1264 </span><span class="lineNoCov">          0 :                 return Z();</span></a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1266"><span class="lineNum">    1266 </span>            :         fixedvec3 InterpolatedPosition(fixed_t ticFrac) const</a>
+<a name="1267"><span class="lineNum">    1267 </span><span class="lineCov">        342 :         {</span></a>
+<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">        342 :                 fixedvec3 ret;</span></a>
+<a name="1269"><span class="lineNum">    1269 </span><span class="lineCov">        342 : </span></a>
+<a name="1270"><span class="lineNum">    1270 </span><span class="lineCov">        342 :                 ret.x = PrevX + FixedMul (ticFrac, X() - PrevX);</span></a>
+<a name="1271"><span class="lineNum">    1271 </span><span class="lineCov">        342 :                 ret.y = PrevY + FixedMul (ticFrac, Y() - PrevY);</span></a>
+<a name="1272"><span class="lineNum">    1272 </span><span class="lineCov">        342 :                 ret.z = PrevZ + FixedMul (ticFrac, Z() - PrevZ);</span></a>
+<a name="1273"><span class="lineNum">    1273 </span><span class="lineCov">        342 :                 return ret;</span></a>
+<a name="1274"><span class="lineNum">    1274 </span><span class="lineCov">        342 :         }</span></a>
+<a name="1275"><span class="lineNum">    1275 </span>            :         fixedvec3 PosPlusZ(fixed_t zadd) const</a>
+<a name="1276"><span class="lineNum">    1276 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1277"><span class="lineNum">    1277 </span><span class="lineNoCov">          0 :                 fixedvec3 ret = { X(), Y(), Z() + zadd };</span></a>
+<a name="1278"><span class="lineNum">    1278 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="1279"><span class="lineNum">    1279 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1280"><span class="lineNum">    1280 </span>            :         fixed_t Top() const</a>
+<a name="1281"><span class="lineNum">    1281 </span><span class="lineCov">        128 :         {</span></a>
+<a name="1282"><span class="lineNum">    1282 </span><span class="lineCov">        128 :                 return Z() + height;</span></a>
+<a name="1283"><span class="lineNum">    1283 </span><span class="lineCov">        128 :         }</span></a>
+<a name="1284"><span class="lineNum">    1284 </span>            :         void SetZ(fixed_t newz, bool moving = true)</a>
+<a name="1285"><span class="lineNum">    1285 </span><span class="lineCov">          4 :         {</span></a>
+<a name="1286"><span class="lineNum">    1286 </span><span class="lineCov">          4 :                 __pos.z = newz;</span></a>
+<a name="1287"><span class="lineNum">    1287 </span><span class="lineCov">          4 :         }</span></a>
+<a name="1288"><span class="lineNum">    1288 </span>            :         void AddZ(fixed_t newz, bool moving = true)</a>
+<a name="1289"><span class="lineNum">    1289 </span><span class="lineCov">        124 :         {</span></a>
+<a name="1290"><span class="lineNum">    1290 </span><span class="lineCov">        124 :                 __pos.z += newz;</span></a>
+<a name="1291"><span class="lineNum">    1291 </span><span class="lineCov">        124 :         }</span></a>
+<a name="1292"><span class="lineNum">    1292 </span>            : </a>
+<a name="1293"><span class="lineNum">    1293 </span>            :         // These are not for general use as they do not link the actor into the world!</a>
+<a name="1294"><span class="lineNum">    1294 </span>            :         void SetXY(fixed_t xx, fixed_t yy)</a>
+<a name="1295"><span class="lineNum">    1295 </span><span class="lineCov">        168 :         {</span></a>
+<a name="1296"><span class="lineNum">    1296 </span><span class="lineCov">        168 :                 __pos.x = xx;</span></a>
+<a name="1297"><span class="lineNum">    1297 </span><span class="lineCov">        168 :                 __pos.y = yy;</span></a>
+<a name="1298"><span class="lineNum">    1298 </span><span class="lineCov">        168 :         }</span></a>
+<a name="1299"><span class="lineNum">    1299 </span>            :         void SetXYZ(fixed_t xx, fixed_t yy, fixed_t zz)</a>
+<a name="1300"><span class="lineNum">    1300 </span><span class="lineCov">         25 :         {</span></a>
+<a name="1301"><span class="lineNum">    1301 </span><span class="lineCov">         25 :                 __pos.x = xx;</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">         25 :                 __pos.y = yy;</span></a>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineCov">         25 :                 __pos.z = zz;</span></a>
+<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">         25 :         }</span></a>
+<a name="1305"><span class="lineNum">    1305 </span>            :         void SetXY(const fixedvec2 &amp;npos)</a>
+<a name="1306"><span class="lineNum">    1306 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1307"><span class="lineNum">    1307 </span><span class="lineNoCov">          0 :                 __pos.x = npos.x;</span></a>
+<a name="1308"><span class="lineNum">    1308 </span><span class="lineNoCov">          0 :                 __pos.y = npos.y;</span></a>
+<a name="1309"><span class="lineNum">    1309 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1310"><span class="lineNum">    1310 </span>            :         void SetXYZ(const fixedvec3 &amp;npos)</a>
+<a name="1311"><span class="lineNum">    1311 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1312"><span class="lineNum">    1312 </span><span class="lineNoCov">          0 :                 __pos.x = npos.x;</span></a>
+<a name="1313"><span class="lineNum">    1313 </span><span class="lineNoCov">          0 :                 __pos.y = npos.y;</span></a>
+<a name="1314"><span class="lineNum">    1314 </span><span class="lineNoCov">          0 :                 __pos.z = npos.z;</span></a>
+<a name="1315"><span class="lineNum">    1315 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1316"><span class="lineNum">    1316 </span>            :         void SetMovement(fixed_t x, fixed_t y, fixed_t z)</a>
+<a name="1317"><span class="lineNum">    1317 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1318"><span class="lineNum">    1318 </span><span class="lineNoCov">          0 :                 // not yet implemented</span></a>
+<a name="1319"><span class="lineNum">    1319 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1320"><span class="lineNum">    1320 </span>            : </a>
+<a name="1321"><span class="lineNum">    1321 </span>            : };</a>
+<a name="1322"><span class="lineNum">    1322 </span>            : </a>
+<a name="1323"><span class="lineNum">    1323 </span>            : class FActorIterator</a>
+<a name="1324"><span class="lineNum">    1324 </span>            : {</a>
+<a name="1325"><span class="lineNum">    1325 </span>            : public:</a>
+<a name="1326"><span class="lineNum">    1326 </span>            :         FActorIterator (int i) : base (NULL), id (i)</a>
+<a name="1327"><span class="lineNum">    1327 </span><span class="lineCov">         10 :         {</span></a>
+<a name="1328"><span class="lineNum">    1328 </span><span class="lineCov">         10 :         }</span></a>
+<a name="1329"><span class="lineNum">    1329 </span>            :         FActorIterator (int i, AActor *start) : base (start), id (i)</a>
+<a name="1330"><span class="lineNum">    1330 </span><span class="lineCov">         18 :         {</span></a>
+<a name="1331"><span class="lineNum">    1331 </span><span class="lineCov">         18 :         }</span></a>
+<a name="1332"><span class="lineNum">    1332 </span>            :         AActor *Next ()</a>
+<a name="1333"><span class="lineNum">    1333 </span><span class="lineCov">         36 :         {</span></a>
+<a name="1334"><span class="lineNum">    1334 </span><span class="lineCov">         36 :                 if (id == 0)</span></a>
+<a name="1335"><span class="lineNum">    1335 </span><span class="lineNoCov">          0 :                         return NULL;</span></a>
+<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">         36 :                 if (!base)</span></a>
+<a name="1337"><span class="lineNum">    1337 </span><span class="lineCov">         28 :                         base = AActor::TIDHash[id &amp; 127];</span></a>
+<a name="1338"><span class="lineNum">    1338 </span><span class="lineCov">          8 :                 else</span></a>
+<a name="1339"><span class="lineNum">    1339 </span><span class="lineCov">          8 :                         base = base-&gt;inext;</span></a>
+<a name="1340"><span class="lineNum">    1340 </span><span class="lineCov">         36 : </span></a>
+<a name="1341"><span class="lineNum">    1341 </span><span class="lineCov">         36 :                 while (base &amp;&amp; base-&gt;tid != id)</span></a>
+<a name="1342"><span class="lineNum">    1342 </span><span class="lineNoCov">          0 :                         base = base-&gt;inext;</span></a>
+<a name="1343"><span class="lineNum">    1343 </span><span class="lineCov">         36 : </span></a>
+<a name="1344"><span class="lineNum">    1344 </span><span class="lineCov">         36 :                 return base;</span></a>
+<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">         36 :         }</span></a>
+<a name="1346"><span class="lineNum">    1346 </span>            : private:</a>
+<a name="1347"><span class="lineNum">    1347 </span>            :         AActor *base;</a>
+<a name="1348"><span class="lineNum">    1348 </span>            :         int id;</a>
+<a name="1349"><span class="lineNum">    1349 </span>            : };</a>
+<a name="1350"><span class="lineNum">    1350 </span>            : </a>
+<a name="1351"><span class="lineNum">    1351 </span>            : template&lt;class T&gt;</a>
+<a name="1352"><span class="lineNum">    1352 </span>            : class TActorIterator : public FActorIterator</a>
+<a name="1353"><span class="lineNum">    1353 </span>            : {</a>
+<a name="1354"><span class="lineNum">    1354 </span>            : public:</a>
+<a name="1355"><span class="lineNum">    1355 </span><span class="lineNoCov">          0 :         TActorIterator (int id) : FActorIterator (id) {}</span></a>
+<a name="1356"><span class="lineNum">    1356 </span>            :         T *Next ()</a>
+<a name="1357"><span class="lineNum">    1357 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1358"><span class="lineNum">    1358 </span><span class="lineNoCov">          0 :                 AActor *actor;</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineNoCov">          0 :                 do</span></a>
+<a name="1360"><span class="lineNum">    1360 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="1361"><span class="lineNum">    1361 </span><span class="lineNoCov">          0 :                         actor = FActorIterator::Next ();</span></a>
+<a name="1362"><span class="lineNum">    1362 </span><span class="lineNoCov">          0 :                 } while (actor &amp;&amp; !actor-&gt;IsKindOf (RUNTIME_CLASS(T)));</span></a>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineNoCov">          0 :                 return static_cast&lt;T *&gt;(actor);</span></a>
+<a name="1364"><span class="lineNum">    1364 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1365"><span class="lineNum">    1365 </span>            : };</a>
+<a name="1366"><span class="lineNum">    1366 </span>            : </a>
+<a name="1367"><span class="lineNum">    1367 </span>            : class NActorIterator : public FActorIterator</a>
+<a name="1368"><span class="lineNum">    1368 </span>            : {</a>
+<a name="1369"><span class="lineNum">    1369 </span>            :         const PClass *type;</a>
+<a name="1370"><span class="lineNum">    1370 </span>            : public:</a>
+<a name="1371"><span class="lineNum">    1371 </span><span class="lineNoCov">          0 :         NActorIterator (const PClass *cls, int id) : FActorIterator (id) { type = cls; }</span></a>
+<a name="1372"><span class="lineNum">    1372 </span><span class="lineNoCov">          0 :         NActorIterator (FName cls, int id) : FActorIterator (id) { type = PClass::FindClass(cls); }</span></a>
+<a name="1373"><span class="lineNum">    1373 </span><span class="lineNoCov">          0 :         NActorIterator (const char *cls, int id) : FActorIterator (id) { type = PClass::FindClass(cls); }</span></a>
+<a name="1374"><span class="lineNum">    1374 </span>            :         AActor *Next ()</a>
+<a name="1375"><span class="lineNum">    1375 </span><span class="lineNoCov">          0 :         {</span></a>
+<a name="1376"><span class="lineNum">    1376 </span><span class="lineNoCov">          0 :                 AActor *actor;</span></a>
+<a name="1377"><span class="lineNum">    1377 </span><span class="lineNoCov">          0 :                 if (type == NULL) return NULL;</span></a>
+<a name="1378"><span class="lineNum">    1378 </span><span class="lineNoCov">          0 :                 do</span></a>
+<a name="1379"><span class="lineNum">    1379 </span><span class="lineNoCov">          0 :                 {</span></a>
+<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 :                         actor = FActorIterator::Next ();</span></a>
+<a name="1381"><span class="lineNum">    1381 </span><span class="lineNoCov">          0 :                 } while (actor &amp;&amp; !actor-&gt;IsKindOf (type));</span></a>
+<a name="1382"><span class="lineNum">    1382 </span><span class="lineNoCov">          0 :                 return actor;</span></a>
+<a name="1383"><span class="lineNum">    1383 </span><span class="lineNoCov">          0 :         }</span></a>
+<a name="1384"><span class="lineNum">    1384 </span>            : };</a>
+<a name="1385"><span class="lineNum">    1385 </span>            : </a>
+<a name="1386"><span class="lineNum">    1386 </span>            : bool P_IsTIDUsed(int tid);</a>
+<a name="1387"><span class="lineNum">    1387 </span>            : int P_FindUniqueTID(int start_tid, int limit);</a>
+<a name="1388"><span class="lineNum">    1388 </span>            : </a>
+<a name="1389"><span class="lineNum">    1389 </span>            : inline AActor *Spawn (const PClass *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement)</a>
+<a name="1390"><span class="lineNum">    1390 </span><span class="lineCov">         21 : {</span></a>
+<a name="1391"><span class="lineNum">    1391 </span><span class="lineCov">         21 :         return AActor::StaticSpawn (type, x, y, z, allowreplacement);</span></a>
+<a name="1392"><span class="lineNum">    1392 </span><span class="lineCov">         21 : }</span></a>
+<a name="1393"><span class="lineNum">    1393 </span>            : </a>
+<a name="1394"><span class="lineNum">    1394 </span>            : inline AActor *Spawn (const PClass *type, const fixedvec3 &amp;pos, replace_t allowreplacement)</a>
+<a name="1395"><span class="lineNum">    1395 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="1396"><span class="lineNum">    1396 </span><span class="lineNoCov">          0 :         return AActor::StaticSpawn (type, pos.x, pos.y, pos.z, allowreplacement);</span></a>
+<a name="1397"><span class="lineNum">    1397 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1398"><span class="lineNum">    1398 </span>            : </a>
+<a name="1399"><span class="lineNum">    1399 </span>            : AActor *Spawn (const char *type, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement);</a>
+<a name="1400"><span class="lineNum">    1400 </span>            : AActor *Spawn (FName classname, fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement);</a>
+<a name="1401"><span class="lineNum">    1401 </span>            : </a>
+<a name="1402"><span class="lineNum">    1402 </span>            : inline AActor *Spawn (const char *type, const fixedvec3 &amp;pos, replace_t allowreplacement)</a>
+<a name="1403"><span class="lineNum">    1403 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="1404"><span class="lineNum">    1404 </span><span class="lineNoCov">          0 :         return Spawn (type, pos.x, pos.y, pos.z, allowreplacement);</span></a>
+<a name="1405"><span class="lineNum">    1405 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1406"><span class="lineNum">    1406 </span>            : </a>
+<a name="1407"><span class="lineNum">    1407 </span>            : inline AActor *Spawn (FName classname, const fixedvec3 &amp;pos, replace_t allowreplacement)</a>
+<a name="1408"><span class="lineNum">    1408 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="1409"><span class="lineNum">    1409 </span><span class="lineNoCov">          0 :         return Spawn (classname, pos.x, pos.y, pos.z, allowreplacement);</span></a>
+<a name="1410"><span class="lineNum">    1410 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1411"><span class="lineNum">    1411 </span>            : </a>
+<a name="1412"><span class="lineNum">    1412 </span>            : </a>
+<a name="1413"><span class="lineNum">    1413 </span>            : template&lt;class T&gt;</a>
+<a name="1414"><span class="lineNum">    1414 </span>            : inline T *Spawn (fixed_t x, fixed_t y, fixed_t z, replace_t allowreplacement)</a>
+<a name="1415"><span class="lineNum">    1415 </span><span class="lineCov">          4 : {</span></a>
+<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">          4 :         return static_cast&lt;T *&gt;(AActor::StaticSpawn (RUNTIME_CLASS(T), x, y, z, allowreplacement));</span></a>
+<a name="1417"><span class="lineNum">    1417 </span><span class="lineCov">          4 : }</span></a>
+<a name="1418"><span class="lineNum">    1418 </span>            : </a>
+<a name="1419"><span class="lineNum">    1419 </span>            : template&lt;class T&gt;</a>
+<a name="1420"><span class="lineNum">    1420 </span>            : inline T *Spawn (const fixedvec3 &amp;pos, replace_t allowreplacement)</a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="1422"><span class="lineNum">    1422 </span><span class="lineNoCov">          0 :         return static_cast&lt;T *&gt;(AActor::StaticSpawn (RUNTIME_CLASS(T), pos.x, pos.y, pos.z, allowreplacement));</span></a>
+<a name="1423"><span class="lineNum">    1423 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1424"><span class="lineNum">    1424 </span>            : </a>
+<a name="1425"><span class="lineNum">    1425 </span>            : inline fixedvec2 Vec2Angle(fixed_t length, angle_t angle) </a>
+<a name="1426"><span class="lineNum">    1426 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="1427"><span class="lineNum">    1427 </span><span class="lineNoCov">          0 :         fixedvec2 ret = { FixedMul(length, finecosine[angle &gt;&gt; ANGLETOFINESHIFT]),</span></a>
+<a name="1428"><span class="lineNum">    1428 </span><span class="lineNoCov">          0 :                                                 FixedMul(length, finesine[angle &gt;&gt; ANGLETOFINESHIFT]) };</span></a>
+<a name="1429"><span class="lineNum">    1429 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="1430"><span class="lineNum">    1430 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1431"><span class="lineNum">    1431 </span>            : </a>
+<a name="1432"><span class="lineNum">    1432 </span>            : inline fixedvec3 PosRelative(const fixedvec3 &amp;pos, line_t *line, sector_t *refsec = NULL)</a>
+<a name="1433"><span class="lineNum">    1433 </span><span class="lineNoCov">          0 : {</span></a>
+<a name="1434"><span class="lineNum">    1434 </span><span class="lineNoCov">          0 :         return pos;</span></a>
+<a name="1435"><span class="lineNum">    1435 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1436"><span class="lineNum">    1436 </span>            : </a>
+<a name="1437"><span class="lineNum">    1437 </span>            : void PrintMiscActorInfo(AActor * query);</a>
+<a name="1438"><span class="lineNum">    1438 </span>            : </a>
+<a name="1439"><span class="lineNum">    1439 </span>            : #define S_FREETARGMOBJ  1</a>
+<a name="1440"><span class="lineNum">    1440 </span>            : </a>
+<a name="1441"><span class="lineNum">    1441 </span>            : #endif // __P_MOBJ_H__</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
